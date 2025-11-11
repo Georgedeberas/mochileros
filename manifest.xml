@@ -4,21 +4,21 @@
            xmlns:bt="http://schemas.microsoft.com/office/officeappbasictypes/1.0"
            xmlns:ov="http://schemas.microsoft.com/office/taskpaneappversionoverrides"
            xsi:type="TaskPaneApp">
-  <Id>{2dedd97a-5b16-476b-8a0a-ac78380232d0}</Id>
+  <Id>9a0b2f18-1f72-4fa4-9a34-7c1a1bca3c9e</Id>
   <Version>1.0.0.0</Version>
   <ProviderName>Mochileros RD</ProviderName>
   <DefaultLocale>es-ES</DefaultLocale>
   <DisplayName DefaultValue="Mochileros RD"/>
-  <Description DefaultValue="Complemento básico con panel de Configuración y opción 'Actualizar'."/>
-  <IconUrl DefaultValue="https://YOUR_DOMAIN/mochileros/icon-32.png"/>
-  <HighResolutionIconUrl DefaultValue="https://YOUR_DOMAIN/mochileros/icon-80.png"/>
+  <Description DefaultValue="Complemento de Excel para la gestión de reservas de la agencia Mochileros RD."/>
+  <IconUrl DefaultValue="https://georgedebaras.github.io/mochileros/icon-32.png"/>
+  <HighResolutionIconUrl DefaultValue="https://georgedebaras.github.io/mochileros/icon-80.png"/>
 
   <Hosts>
     <Host Name="Workbook"/>
   </Hosts>
 
   <DefaultSettings>
-    <SourceLocation DefaultValue="https://YOUR_DOMAIN/mochileros/index.html"/>
+    <SourceLocation DefaultValue="https://georgedebaras.github.io/mochileros/index.html"/>
   </DefaultSettings>
 
   <VersionOverrides xsi:type="ov:VersionOverrides" Version="1.0">
@@ -65,12 +65,12 @@
 
     <Resources>
       <bt:Images>
-        <bt:Image id="Icon.16x16" DefaultValue="https://YOUR_DOMAIN/mochileros/icon-16.png"/>
-        <bt:Image id="Icon.32x32" DefaultValue="https://YOUR_DOMAIN/mochileros/icon-32.png"/>
-        <bt:Image id="Icon.80x80" DefaultValue="https://YOUR_DOMAIN/mochileros/icon-80.png"/>
+        <bt:Image id="Icon.16x16" DefaultValue="https://georgedebaras.github.io/mochileros/icon-16.png"/>
+        <bt:Image id="Icon.32x32" DefaultValue="https://georgedebaras.github.io/mochileros/icon-32.png"/>
+        <bt:Image id="Icon.80x80" DefaultValue="https://georgedebaras.github.io/mochileros/icon-80.png"/>
       </bt:Images>
       <bt:Urls>
-        <bt:Url id="TaskPane.Url" DefaultValue="https://YOUR_DOMAIN/mochileros/index.html"/>
+        <bt:Url id="TaskPane.Url" DefaultValue="https://georgedebaras.github.io/mochileros/index.html"/>
       </bt:Urls>
       <bt:ShortStrings>
         <bt:String id="CustomTab.Label" DefaultValue="Mochileros RD"/>
