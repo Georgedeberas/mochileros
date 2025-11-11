@@ -30,3 +30,5 @@ p{margin:6px 0}
 .muted{color:var(--muted)}
 .primary{background:var(--accent);border:0;color:#000;padding:8px 12px;border-radius:8px;cursor:pointer}
 .primary:hover{filter:brightness(.95)}
+
+/* trigger pages */
