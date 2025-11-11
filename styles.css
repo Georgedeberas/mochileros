@@ -1,0 +1,32 @@
+:root{
+  --bg: #0b1220;
+  --pane: #0f1d36;
+  --line: #1d2940;
+  --text: #e6f0ff;
+  --muted:#8aa0c6;
+  --accent:#f58320;
+  --btn: #1a2a4d;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--pane);color:var(--text);font:14px/1.4 system-ui,Segoe UI,Arial,sans-serif}
+.topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 12px;background:#192a46;border-bottom:1px solid var(--line);
+  position:sticky;top:0;z-index:5;
+}
+.brand{display:flex;align-items:center;gap:8px}
+.brand .dot{width:10px;height:10px;border-radius:50%;background:var(--accent);display:inline-block}
+.ghost{background:transparent;border:0;color:var(--text);padding:6px;border-radius:8px;cursor:pointer}
+.ghost:hover{background:#203455}
+.gear-wrap{position:relative}
+.menu{position:absolute;right:0;top:36px;min-width:240px;background:#0e1933;border:1px solid var(--line);
+  border-radius:8px;display:none;box-shadow:0 8px 24px rgba(0,0,0,.35)}
+.menu[aria-hidden="false"]{display:block}
+.menu button{all:unset;display:block;width:100%;padding:10px 12px;cursor:pointer;color:var(--text)}
+.menu button:hover{background:#15223a}
+.content{padding:16px}
+h1{margin:6px 0 10px;font-size:18px}
+p{margin:6px 0}
+.muted{color:var(--muted)}
+.primary{background:var(--accent);border:0;color:#000;padding:8px 12px;border-radius:8px;cursor:pointer}
+.primary:hover{filter:brightness(.95)}

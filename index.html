@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Mochileros RD · Configuración</title>
+  <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
+  <link rel="stylesheet" href="./styles.css?v=1" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><span class="dot"></span><strong>Mochileros RD</strong> · Configuración</div>
+    <div class="gear-wrap">
+      <button id="btn-gear" title="Configurar" aria-haspopup="true" aria-expanded="false" class="ghost">
+        <img src="./icon-32.png" alt="gear" width="20" height="20"/>
+      </button>
+      <div id="gear-menu" class="menu" role="menu" aria-hidden="true">
+        <button id="action-refresh" role="menuitem">Actualizar (recargar complemento)</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="content">
+    <h1>Panel de configuración · v1</h1>
+    <p>Este es el primer despliegue del complemento. Por ahora, solo incluye la opción <em>Actualizar</em>.</p>
+    <p>Sube nuevas versiones de <code>index.html</code>, <code>styles.css</code> o <code>app.js</code> a tu hosting, y luego pulsa <strong>Actualizar</strong>.</p>
+    <p class="muted" id="env"></p>
+    <button id="btn-refresh-inline" class="primary">Actualizar ahora</button>
+  </main>
+
+  <script src="./app.js?v=1"></script>
+</body>
+</html>
