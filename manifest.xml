@@ -4,27 +4,37 @@
            xmlns:bt="http://schemas.microsoft.com/office/officeappbasictypes/1.0"
            xmlns:ov="http://schemas.microsoft.com/office/taskpaneappversionoverrides"
            xsi:type="TaskPaneApp">
+
+  <!-- Identificador único del complemento -->
   <Id>9a0b2f18-1f72-4fa4-9a34-7c1a1bca3c9e</Id>
+
   <Version>1.0.0.0</Version>
   <ProviderName>Mochileros RD</ProviderName>
   <DefaultLocale>es-ES</DefaultLocale>
   <DisplayName DefaultValue="Mochileros RD"/>
   <Description DefaultValue="Complemento de Excel para la gestión de reservas de la agencia Mochileros RD."/>
+
+  <!-- Iconos -->
   <IconUrl DefaultValue="https://georgedebaras.github.io/mochileros/icon-32.png"/>
   <HighResolutionIconUrl DefaultValue="https://georgedebaras.github.io/mochileros/icon-80.png"/>
 
+  <!-- Tipo de host -->
   <Hosts>
     <Host Name="Workbook"/>
   </Hosts>
 
+  <!-- Página principal (panel) -->
   <DefaultSettings>
     <SourceLocation DefaultValue="https://georgedebaras.github.io/mochileros/index.html"/>
   </DefaultSettings>
 
+  <!-- Configuración de la cinta -->
   <VersionOverrides xsi:type="ov:VersionOverrides" Version="1.0">
     <Hosts>
       <Host xsi:type="ov:Workbook">
         <DesktopFormFactor>
+          
+          <!-- Botón principal en la cinta -->
           <ExtensionPoint xsi:type="ov:PrimaryCommandSurface">
             <CustomTab id="MochilerosRD.Tab">
               <Group id="MochilerosRD.GroupConfig">
@@ -34,6 +44,7 @@
                   <bt:Image size="32" resid="Icon.32x32"/>
                   <bt:Image size="80" resid="Icon.80x80"/>
                 </Icon>
+
                 <Control xsi:type="ov:Button" id="MochilerosRD.ButtonConfig">
                   <Label resid="ButtonConfig.Label"/>
                   <Supertip>
@@ -51,35 +62,43 @@
                   </Action>
                 </Control>
               </Group>
+
               <Label resid="CustomTab.Label"/>
             </CustomTab>
           </ExtensionPoint>
 
+          <!-- Panel de configuración -->
           <ExtensionPoint xsi:type="ov:Taskpane">
             <ov:TaskpaneId>Taskpane.Config</ov:TaskpaneId>
             <ov:SourceLocation resid="TaskPane.Url"/>
           </ExtensionPoint>
+
         </DesktopFormFactor>
       </Host>
     </Hosts>
 
+    <!-- Recursos (iconos, textos, URLs) -->
     <Resources>
       <bt:Images>
         <bt:Image id="Icon.16x16" DefaultValue="https://georgedebaras.github.io/mochileros/icon-16.png"/>
         <bt:Image id="Icon.32x32" DefaultValue="https://georgedebaras.github.io/mochileros/icon-32.png"/>
         <bt:Image id="Icon.80x80" DefaultValue="https://georgedebaras.github.io/mochileros/icon-80.png"/>
       </bt:Images>
+
       <bt:Urls>
         <bt:Url id="TaskPane.Url" DefaultValue="https://georgedebaras.github.io/mochileros/index.html"/>
       </bt:Urls>
+
       <bt:ShortStrings>
         <bt:String id="CustomTab.Label" DefaultValue="Mochileros RD"/>
         <bt:String id="GroupConfig.Label" DefaultValue="Configuración"/>
         <bt:String id="ButtonConfig.Label" DefaultValue="Configuración"/>
       </bt:ShortStrings>
+
       <bt:LongStrings>
         <bt:String id="ButtonConfig.Tooltip" DefaultValue="Abrir panel de Configuración (incluye opción Actualizar)."/>
       </bt:LongStrings>
     </Resources>
   </VersionOverrides>
 </OfficeApp>
+
