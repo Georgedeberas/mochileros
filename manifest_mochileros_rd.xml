@@ -1,97 +1,147 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<OfficeApp xmlns="http://schemas.microsoft.com/office/appforoffice/1.1"
-           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-           xmlns:bt="http://schemas.microsoft.com/office/officeappbasictypes/1.0"
-           xmlns:ov="http://schemas.microsoft.com/office/mailappversionoverrides/1.1"
-           xsi:type="TaskPaneApp">
-
-  <!-- Subimos la versión para forzar recarga de Office -->
-  <Id>c25e52c8-4d45-4a87-91f7-56d8a36fd009</Id>
-  <Version>1.0.2.0</Version>
+<OfficeApp
+    xmlns="http://schemas.microsoft.com/office/appforoffice/1.1"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:bt="http://schemas.microsoft.com/office/officeappbasictypes/1.0"
+    xmlns:ov="http://schemas.microsoft.com/office/taskpaneappversionoverrides"
+    xsi:type="TaskPaneApp">
+  <Id>f6f8e5b6-5e1b-4af3-9b7a-6c22e7d0a9d5</Id>
+  <Version>1.0.0.0</Version>
   <ProviderName>Mochileros RD</ProviderName>
   <DefaultLocale>es-ES</DefaultLocale>
-  <DisplayName DefaultValue="Mochileros RD"/>
-  <Description DefaultValue="Cinta simple con 2 botones y panel lateral."/>
-  <IconUrl DefaultValue="https://georgedeberas.github.io/mochileros/icon-80.png"/>
-  <SupportUrl DefaultValue="https://georgedeberas.github.io/mochileros/"/>
+  <DisplayName DefaultValue="Mochileros RD" />
+  <Description DefaultValue="Panel de navegación para tours de Mochileros RD." />
+  <IconUrl DefaultValue="https://georgedeberas.github.io/mochileros/icon-32.png" />
+  <HighResolutionIconUrl DefaultValue="https://georgedeberas.github.io/mochileros/icon-80.png" />
+  <SupportUrl DefaultValue="https://georgedeberas.github.io/mochileros/" />
 
   <AppDomains>
     <AppDomain>https://georgedeberas.github.io</AppDomain>
   </AppDomains>
 
   <Hosts>
-    <Host Name="Workbook"/>
+    <Host Name="Workbook" />
   </Hosts>
 
   <Requirements>
-    <Sets DefaultMinVersion="1.1">
-      <Set Name="RibbonApi"/>
+    <Sets DefaultMinVersion="1.3">
+      <Set Name="ExcelApi" MinVersion="1.13" />
     </Sets>
   </Requirements>
 
   <DefaultSettings>
-    <!-- OJO: sin ?v= aquí. El cache-busting lo manejamos en app.js -->
-    <SourceLocation DefaultValue="https://georgedeberas.github.io/mochileros/index.html"/>
+    <SourceLocation DefaultValue="https://georgedeberas.github.io/mochileros/index.html" />
   </DefaultSettings>
 
   <Permissions>ReadWriteDocument</Permissions>
 
-  <VersionOverrides xsi:type="VersionOverridesV1_1"
-    xmlns="http://schemas.microsoft.com/office/mailappversionoverrides/1.1">
+  <VersionOverrides xmlns="http://schemas.microsoft.com/office/taskpaneappversionoverrides"
+                    xsi:type="VersionOverridesV1_0">
 
     <Hosts>
       <Host xsi:type="Workbook">
+        <DesktopFormFactor>
 
-        <Runtimes>
-          <Runtime resid="Commands.Url" lifetime="long"/>
-        </Runtimes>
+          <GetStarted>
+            <Title resid="GetStarted.Title" />
+            <Description resid="GetStarted.Description" />
+            <LearnMoreUrl resid="Support.Url" />
+          </GetStarted>
 
-        <ExtensionPoint xsi:type="PrimaryCommandSurface">
-          <CustomTab id="Tab.Mochileros">
-            <Label resid="Tab.Label"/>
+          <!-- Archivo que contiene las funciones de los botones de la cinta -->
+          <FunctionFile resid="Commands.Url" />
 
-            <Group id="Group.Main" label="Mochileros RD">
-              <!-- Botón 1: Activar panel (toggle mediante ExecuteFunction) -->
-              <Control xsi:type="Button" id="Btn.Toggle">
-                <Label resid="Btn.Toggle.Label"/>
+          <!-- Cinta personalizada -->
+          <ExtensionPoint xsi:type="PrimaryCommandSurface">
+            <CustomTab id="MochilerosRD.Tab">
+              <Label resid="Tab.Label" />
+              <Icon>
+                <bt:Image size="16" resid="Icon.16x16" />
+                <bt:Image size="32" resid="Icon.32x32" />
+                <bt:Image size="80" resid="Icon.80x80" />
+              </Icon>
+
+              <Group id="MochilerosRD.GroupMain">
+                <Label resid="Group.Main.Label" />
                 <Icon>
-                  <bt:Image size="16" resid="Icon.Panel"/>
+                  <bt:Image size="16" resid="Icon.16x16" />
+                  <bt:Image size="32" resid="Icon.32x32" />
+                  <bt:Image size="80" resid="Icon.80x80" />
                 </Icon>
-                <Action xsi:type="ExecuteFunction">
-                  <FunctionName>togglePanel</FunctionName>
-                </Action>
-              </Control>
 
-              <!-- Botón 2: Actualizar Sistema (verifica version.json y fuerza refresco) -->
-              <Control xsi:type="Button" id="Btn.Update">
-                <Label resid="Btn.Update.Label"/>
-                <Icon>
-                  <bt:Image size="16" resid="Icon.Update"/>
-                </Icon>
-                <Action xsi:type="ExecuteFunction">
-                  <FunctionName>updateSystem</FunctionName>
-                </Action>
-              </Control>
-            </Group>
-          </CustomTab>
-        </ExtensionPoint>
+                <!-- Botón 1: Activar panel (abre el panel lateral) -->
+                <Control xsi:type="Button" id="MochilerosRD.TogglePanel">
+                  <Label resid="Button.TogglePanel.Label" />
+                  <Supertip>
+                    <Title resid="Button.TogglePanel.Label" />
+                    <Description resid="Button.TogglePanel.Tooltip" />
+                  </Supertip>
+                  <Icon>
+                    <bt:Image size="16" resid="Icon.16x16" />
+                    <bt:Image size="32" resid="Icon.32x32" />
+                    <bt:Image size="80" resid="Icon.80x80" />
+                  </Icon>
+                  <Action xsi:type="ShowTaskpane">
+                    <TaskpaneId>MochilerosRD.Taskpane</TaskpaneId>
+                    <SourceLocation resid="Taskpane.Url" />
+                  </Action>
+                </Control>
+
+                <!-- Botón 2: Actualizar sistema (gancho para futuras mejoras) -->
+                <Control xsi:type="Button" id="MochilerosRD.UpdateSystem">
+                  <Label resid="Button.UpdateSystem.Label" />
+                  <Supertip>
+                    <Title resid="Button.UpdateSystem.Label" />
+                    <Description resid="Button.UpdateSystem.Tooltip" />
+                  </Supertip>
+                  <Icon>
+                    <bt:Image size="16" resid="Icon.16x16" />
+                    <bt:Image size="32" resid="Icon.32x32" />
+                    <bt:Image size="80" resid="Icon.80x80" />
+                  </Icon>
+                  <Action xsi:type="ExecuteFunction">
+                    <FunctionName>mochilerosUpdateSystem</FunctionName>
+                  </Action>
+                </Control>
+
+              </Group>
+            </CustomTab>
+          </ExtensionPoint>
+
+          <!-- Definición del taskpane para Insertar → Mis complementos -->
+          <ExtensionPoint xsi:type="Taskpane">
+            <TaskpaneId>MochilerosRD.Taskpane</TaskpaneId>
+            <SourceLocation resid="Taskpane.Url" />
+            <Title resid="Taskpane.Title" />
+          </ExtensionPoint>
+
+        </DesktopFormFactor>
       </Host>
     </Hosts>
 
     <Resources>
       <bt:Images>
-        <bt:Image id="Icon.Panel"  DefaultValue="https://cdn-icons-png.flaticon.com/512/3208/3208707.png"/>
-        <bt:Image id="Icon.Update" DefaultValue="https://cdn-icons-png.flaticon.com/512/159/159657.png"/>
+        <bt:Image id="Icon.16x16" DefaultValue="https://georgedeberas.github.io/mochileros/icon-16.png" />
+        <bt:Image id="Icon.32x32" DefaultValue="https://georgedeberas.github.io/mochileros/icon-32.png" />
+        <bt:Image id="Icon.80x80" DefaultValue="https://georgedeberas.github.io/mochileros/icon-80.png" />
       </bt:Images>
 
       <bt:Urls>
-        <bt:Url id="Commands.Url"  DefaultValue="https://georgedeberas.github.io/mochileros/commands.html"/>
+        <bt:Url id="Taskpane.Url" DefaultValue="https://georgedeberas.github.io/mochileros/index.html" />
+        <bt:Url id="Commands.Url" DefaultValue="https://georgedeberas.github.io/mochileros/commands.html" />
+        <bt:Url id="Support.Url" DefaultValue="https://georgedeberas.github.io/mochileros/" />
       </bt:Urls>
 
       <bt:ShortStrings>
-        <bt:String id="Tab.Label"          DefaultValue="Mochileros RD"/>
-        <bt:String id="Btn.Toggle.Label"   DefaultValue="Activar panel"/>
-        <bt:String id="Btn.Update.Label"   DefaultValue="Actualizar sistema"/>
+        <bt:String id="GetStarted.Title" DefaultValue="Mochileros RD" />
+        <bt:String id="GetStarted.Description" DefaultValue="Usa el panel de Mochileros RD para gestionar tours, estados y navegación por fechas." />
+        <bt:String id="Tab.Label" DefaultValue="Mochileros RD" />
+        <bt:String id="Group.Main.Label" DefaultValue="Mochileros RD" />
+        <bt:String id="Button.TogglePanel.Label" DefaultValue="Activar panel" />
+        <bt:String id="Button.TogglePanel.Tooltip" DefaultValue="Mostrar el panel lateral de Mochileros RD." />
+        <bt:String id="Button.UpdateSystem.Label" DefaultValue="Actualizar sistema" />
+        <bt:String id="Button.UpdateSystem.Tooltip" DefaultValue="Vuelve a cargar el complemento con la última versión publicada." />
+        <bt:String id="Taskpane.Title" DefaultValue="Panel Mochileros RD" />
       </bt:ShortStrings>
     </Resources>
   </VersionOverrides>
