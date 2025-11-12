@@ -1,33 +1,129 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <title>Mochileros RD — Panel</title>
+  <meta charset="utf-8" />
+  <title>Mochileros RD - Panel</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <!-- Sin ?v=; el cache-busting lo hará app.js leyendo version.json -->
   <link rel="stylesheet" href="styles.css" />
-  <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
-  <script defer src="app.js"></script>
+  <script type="text/javascript" src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
+  <script type="text/javascript" src="app.js" defer></script>
 </head>
 <body>
-  <header class="bar">
-    <strong>Mochileros RD</strong>
-    <div class="spacer"></div>
-    <button id="btnRefresh" class="btn">Actualizar</button>
-    <button id="btnNew" class="btn btn-ghost">Nuevo tour</button>
-  </header>
+  <div class="mochi-panel">
+    <header class="mochi-header">
+      <div class="mochi-header-main">
+        <div class="mochi-logo">
+          <div class="mochi-logo-mark">M</div>
+          <div class="mochi-logo-text">
+            <div class="mochi-logo-title">Mochileros RD</div>
+            <div class="mochi-logo-sub">Panel de tours</div>
+          </div>
+        </div>
+        <div class="mochi-header-actions">
+          <button id="btnRefresh" class="mochi-btn mochi-btn-primary">Actualizar</button>
+          <label class="mochi-toggle">
+            <input type="checkbox" id="chkAuto" />
+            <span class="mochi-toggle-label">Auto</span>
+          </label>
+        </div>
+      </div>
+      <div class="mochi-header-status">
+        <span id="status">Listo</span>
+      </div>
+    </header>
 
-  <section class="tools">
-    <input id="search" type="search" placeholder="Buscar hoja (nombre, mes, estado)..." />
-    <button id="btnFind" class="btn">Buscar hoja…</button>
-  </section>
+    <main class="mochi-main">
+      <!-- NUEVO TOUR -->
+      <section class="mochi-card">
+        <header class="mochi-card-header" id="newToggle">
+          <div class="mochi-card-title">
+            <span class="mochi-pill">Nuevo</span>
+            <span>Nuevo tour</span>
+          </div>
+          <button type="button" class="mochi-icon-button" aria-label="Expandir" id="newArrow">
+            ▾
+          </button>
+        </header>
+        <div class="mochi-card-body" id="newBody">
+          <div class="mochi-form-grid">
+            <label class="mochi-field">
+              <span class="mochi-field-label">Nombre del tour</span>
+              <input id="newName" type="text" class="mochi-input" placeholder="Ej. Saona VIP" />
+            </label>
 
-  <main class="content" id="content">
-    <div class="empty">
-      <h3>Panel lateral funcionando correctamente.</h3>
-      <p>Pulsa <em>Actualizar</em> para refrescar índices y estados. Usa <em>Nuevo tour</em> para crear una hoja usando tus plantillas.</p>
-    </div>
-    <!-- Aquí se renderiza la lista agrupada por meses/año según tu lógica (se implementa en app.js) -->
-  </main>
+            <label class="mochi-field">
+              <span class="mochi-field-label">Plantilla</span>
+              <select id="newTemplate" class="mochi-input">
+                <option value="Nacional">Nacional</option>
+                <option value="Internacional">Internacional</option>
+              </select>
+            </label>
+
+            <label class="mochi-field">
+              <span class="mochi-field-label">Fecha</span>
+              <input id="newDate" type="date" class="mochi-input" />
+            </label>
+          </div>
+          <div class="mochi-card-footer">
+            <button id="btnCreate" class="mochi-btn mochi-btn-primary">Crear tour</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- FILTROS / BÚSQUEDA -->
+      <section class="mochi-card">
+        <header class="mochi-card-header">
+          <div class="mochi-card-title">Buscar / filtrar</div>
+        </header>
+        <div class="mochi-card-body mochi-filters">
+          <label class="mochi-field mochi-field-grow">
+            <span class="mochi-field-label">Buscar</span>
+            <input id="txtSearch" type="text" class="mochi-input" placeholder="Nombre, fecha..." />
+          </label>
+          <label class="mochi-field">
+            <span class="mochi-field-label">Estado</span>
+            <select id="selState" class="mochi-input">
+              <option value="all">Todos</option>
+              <option value="open">Abiertos</option>
+              <option value="cancelled">Cancelados</option>
+              <option value="closed">Cerrados</option>
+              <option value="system">Sistema</option>
+              <option value="unclassified">Sin clasificar</option>
+            </select>
+          </label>
+        </div>
+      </section>
+
+      <!-- MENÚ DE MESES / TOURS -->
+      <section class="mochi-card mochi-card-scroll">
+        <header class="mochi-card-header">
+          <div class="mochi-card-title">Tours por mes</div>
+        </header>
+        <div class="mochi-card-body" id="menu">
+          <!-- Aquí se dibujan los meses y hojas -->
+        </div>
+      </section>
+    </main>
+
+    <footer class="mochi-footer">
+      <div class="mochi-legend">
+        <span class="mochi-legend-item">
+          <span class="mochi-dot mochi-dot-open"></span> Abierto
+        </span>
+        <span class="mochi-legend-item">
+          <span class="mochi-dot mochi-dot-cancelled"></span> Cancelado
+        </span>
+        <span class="mochi-legend-item">
+          <span class="mochi-dot mochi-dot-closed"></span> Cerrado
+        </span>
+        <span class="mochi-legend-item">
+          <span class="mochi-dot mochi-dot-system"></span> Sistema
+        </span>
+        <span class="mochi-legend-item">
+          <span class="mochi-dot mochi-dot-unclassified"></span> Sin clasificar
+        </span>
+      </div>
+    </footer>
+  </div>
 </body>
 </html>
