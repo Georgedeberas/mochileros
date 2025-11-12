@@ -1,55 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<OfficeApp xmlns="http://schemas.microsoft.com/office/appforoffice/1.1"
-           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-           xmlns:bt="http://schemas.microsoft.com/office/officeappbasictypes/1.0"
-           xmlns:ov="http://schemas.microsoft.com/office/taskpaneappversionoverrides"
-           xsi:type="TaskPaneApp">
+<OfficeApp
+  xmlns="http://schemas.microsoft.com/office/appforoffice/1.1"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:bt="http://schemas.microsoft.com/office/officeappbasictypes/1.0"
+  xmlns:ov="http://schemas.microsoft.com/office/taskpaneappversionoverrides"
+  xsi:type="TaskPaneApp">
 
-  <!-- Identificador único del complemento -->
-  <Id>9a0b2f18-1f72-4fa4-9a34-7c1a1bca3c9e</Id>
-
-  <Version>1.0.0.0</Version>
+  <!-- GUID único del complemento -->
+  <Id>e8a512a2-9ac4-4b18-97b3-4d2ef9d2a6f2</Id>
+  <Version>1.0.0.3</Version>
   <ProviderName>Mochileros RD</ProviderName>
   <DefaultLocale>es-ES</DefaultLocale>
   <DisplayName DefaultValue="Mochileros RD"/>
   <Description DefaultValue="Complemento de Excel para la gestión de reservas de la agencia Mochileros RD."/>
+  <Permissions>ReadWriteDocument</Permissions>
 
-  <!-- Iconos -->
-  <IconUrl DefaultValue="https://georgedebaras.github.io/mochileros/icon-32.png"/>
-  <HighResolutionIconUrl DefaultValue="https://georgedebaras.github.io/mochileros/icon-80.png"/>
+  <!-- Iconos (subirás estos PNG al mismo repo/ruta) -->
+  <IconUrl DefaultValue="https://georgedeberas.github.io/mochileros/icon-32.png"/>
+  <HighResolutionIconUrl DefaultValue="https://georgedeberas.github.io/mochileros/icon-80.png"/>
 
-  <!-- Tipo de host -->
   <Hosts>
     <Host Name="Workbook"/>
   </Hosts>
 
-  <!-- Página principal (panel) -->
+  <!-- (opcional) página por defecto; mantengo para compatibilidad -->
   <DefaultSettings>
-    <SourceLocation DefaultValue="https://georgedebaras.github.io/mochileros/index.html"/>
+    <SourceLocation DefaultValue="https://georgedeberas.github.io/mochileros/index.html"/>
   </DefaultSettings>
 
-  <!-- Configuración de la cinta -->
-  <VersionOverrides xsi:type="ov:VersionOverrides" Version="1.0">
+  <VersionOverrides Version="1.0" xsi:type="ov:VersionOverrides">
     <Hosts>
       <Host xsi:type="ov:Workbook">
         <DesktopFormFactor>
-          
-          <!-- Botón principal en la cinta -->
           <ExtensionPoint xsi:type="ov:PrimaryCommandSurface">
             <CustomTab id="MochilerosRD.Tab">
-              <Group id="MochilerosRD.GroupConfig">
-                <Label resid="GroupConfig.Label"/>
-                <Icon>
-                  <bt:Image size="16" resid="Icon.16x16"/>
-                  <bt:Image size="32" resid="Icon.32x32"/>
-                  <bt:Image size="80" resid="Icon.80x80"/>
-                </Icon>
-
-                <Control xsi:type="ov:Button" id="MochilerosRD.ButtonConfig">
-                  <Label resid="ButtonConfig.Label"/>
+              <Group id="MochilerosRD.GroupMain">
+                <Label resid="GroupMain.Label"/>
+                <Control xsi:type="ov:Button" id="MochilerosRD.OpenTaskPane">
+                  <Label resid="OpenTaskPane.Label"/>
                   <Supertip>
-                    <Title resid="ButtonConfig.Label"/>
-                    <Description resid="ButtonConfig.Tooltip"/>
+                    <Title resid="OpenTaskPane.Label"/>
+                    <Description resid="OpenTaskPane.Tooltip"/>
                   </Supertip>
                   <Icon>
                     <bt:Image size="16" resid="Icon.16x16"/>
@@ -57,48 +48,37 @@
                     <bt:Image size="80" resid="Icon.80x80"/>
                   </Icon>
                   <Action xsi:type="ov:ShowTaskpane">
-                    <ov:TaskpaneId>Taskpane.Config</ov:TaskpaneId>
-                    <ov:SourceLocation resid="TaskPane.Url"/>
+                    <SourceLocation resid="TaskPane.Url"/>
                   </Action>
                 </Control>
               </Group>
-
               <Label resid="CustomTab.Label"/>
             </CustomTab>
           </ExtensionPoint>
-
-          <!-- Panel de configuración -->
-          <ExtensionPoint xsi:type="ov:Taskpane">
-            <ov:TaskpaneId>Taskpane.Config</ov:TaskpaneId>
-            <ov:SourceLocation resid="TaskPane.Url"/>
-          </ExtensionPoint>
-
         </DesktopFormFactor>
       </Host>
     </Hosts>
 
-    <!-- Recursos (iconos, textos, URLs) -->
     <Resources>
       <bt:Images>
-        <bt:Image id="Icon.16x16" DefaultValue="https://georgedebaras.github.io/mochileros/icon-16.png"/>
-        <bt:Image id="Icon.32x32" DefaultValue="https://georgedebaras.github.io/mochileros/icon-32.png"/>
-        <bt:Image id="Icon.80x80" DefaultValue="https://georgedebaras.github.io/mochileros/icon-80.png"/>
+        <bt:Image id="Icon.16x16" DefaultValue="https://georgedeberas.github.io/mochileros/icon-16.png"/>
+        <bt:Image id="Icon.32x32" DefaultValue="https://georgedeberas.github.io/mochileros/icon-32.png"/>
+        <bt:Image id="Icon.80x80" DefaultValue="https://georgedeberas.github.io/mochileros/icon-80.png"/>
       </bt:Images>
 
       <bt:Urls>
-        <bt:Url id="TaskPane.Url" DefaultValue="https://georgedebaras.github.io/mochileros/index.html"/>
+        <bt:Url id="TaskPane.Url" DefaultValue="https://georgedeberas.github.io/mochileros/index.html"/>
       </bt:Urls>
 
       <bt:ShortStrings>
         <bt:String id="CustomTab.Label" DefaultValue="Mochileros RD"/>
-        <bt:String id="GroupConfig.Label" DefaultValue="Configuración"/>
-        <bt:String id="ButtonConfig.Label" DefaultValue="Configuración"/>
+        <bt:String id="GroupMain.Label" DefaultValue="Configuración"/>
+        <bt:String id="OpenTaskPane.Label" DefaultValue="Abrir panel"/>
       </bt:ShortStrings>
 
       <bt:LongStrings>
-        <bt:String id="ButtonConfig.Tooltip" DefaultValue="Abrir panel de Configuración (incluye opción Actualizar)."/>
+        <bt:String id="OpenTaskPane.Tooltip" DefaultValue="Abre el panel de configuración del complemento Mochileros RD."/>
       </bt:LongStrings>
     </Resources>
   </VersionOverrides>
 </OfficeApp>
-
