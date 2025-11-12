@@ -1,57 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<OfficeApp xmlns="http://schemas.microsoft.com/office/appforoffice/1.1"
-           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-           xmlns:bt="http://schemas.microsoft.com/office/officeappbasictypes/1.0"
-           xmlns:ov="http://schemas.microsoft.com/office/taskpaneappversionoverrides"
-           xsi:type="TaskPaneApp">
-
-  <Id>e8a512a2-9ac4-4b18-97b3-4d2ef9d2a6f2</Id>
+<OfficeApp xsi:type="TaskPaneApp" xmlns="http://schemas.microsoft.com/office/appforoffice/1.1" 
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+          xmlns:bt="http://schemas.microsoft.com/office/officeappbasictypes/1.0" 
+          xmlns:ov="http://schemas.microsoft.com/office/taskpaneappversionoverrides" 
+          xmlns:mailappor="http://schemas.microsoft.com/office/mailappversionoverrides">
+  <!-- Metadatos básicos -->
+  <Id>**{TU-GUID-AQUÍ}**</Id>
   <Version>1.0.0.0</Version>
-  <ProviderName>Mochileros RD</ProviderName>
+  <ProviderName>George De Beras</ProviderName>
   <DefaultLocale>es-ES</DefaultLocale>
   <DisplayName DefaultValue="Mochileros RD"/>
-  <Description DefaultValue="Complemento de configuración para reservas y operaciones de Mochileros RD."/>
+  <Description DefaultValue="Complemento de Excel para recomendaciones (Mochileros RD)"/>
   <IconUrl DefaultValue="https://georgedeberas.github.io/mochileros/icon-32.png"/>
-  <HighResolutionIconUrl DefaultValue="https://georgedeberas.github.io/mochileros/icon-80.png"/>
-  <SupportUrl DefaultValue="https://georgedeberas.github.io/mochileros"/>
-
+  <SupportUrl DefaultValue="https://georgedeberas.github.io/mochileros/"/>
   <AppDomains>
-    <AppDomain>https://georgedeberas.github.io</AppDomain>
+    <!-- (Opcional) Agregar dominios externos necesarios si el add-in llama APIs externas -->
+    <!-- <AppDomain>https://tuservicio.api.com</AppDomain> -->
   </AppDomains>
-
   <Hosts>
-    <Host Name="Workbook"/>
+    <Host Name="Workbook"/>  <!-- Habilitado para Excel (Workbook) -->
   </Hosts>
+  <Permissions>ReadWriteDocument</Permissions>
 
+  <!-- Configuración por defecto (carga inicial) -->
   <DefaultSettings>
     <SourceLocation DefaultValue="https://georgedeberas.github.io/mochileros/index.html"/>
   </DefaultSettings>
 
-  <Permissions>ReadWriteDocument</Permissions>
-
-  <VersionOverrides xmlns="http://schemas.microsoft.com/office/taskpaneappversionoverrides" Version="1.0">
-
-    <!-- Panel lateral común (funciona tanto en Online como en Escritorio) -->
+  <!-- Definición de comandos de cinta y panel (VersionOverrides) -->
+  <VersionOverrides xsi:type="VersionOverridesV1_0" xmlns="http://schemas.microsoft.com/office/taskpaneappversionoverrides" Version="1.0">
     <Hosts>
       <Host xsi:type="Workbook">
         <DesktopFormFactor>
-          <FunctionFile resid="Taskpane.Url"/>
+          <!-- Archivo de funciones (requerido si se usan comandos) -->
+          <FunctionFile resid="Commands.Url"/>
+          <!-- Punto de extensión en la cinta principal -->
           <ExtensionPoint xsi:type="PrimaryCommandSurface">
+            <!-- Usamos la pestaña Inicio existente -->
             <OfficeTab id="TabHome">
-              <Group id="MochilerosRD.Group" label="Mochileros RD" insertBeforeQ="GroupClipboard">
-                <Control xsi:type="Button" id="MochilerosRD.OpenPaneButton">
-                  <Label resid="Taskpane.ButtonLabel"/>
+              <Group id="MochilerosRD.Group1">
+                <Label resid="GroupLabel"/>
+                <Icon>
+                  <bt:Image size="16" resid="Icon16"/>
+                  <bt:Image size="32" resid="Icon32"/>
+                  <bt:Image size="80" resid="Icon80"/>
+                </Icon>
+                <!-- Botón que abre el panel -->
+                <Control xsi:type="Button" id="MochilerosRD.TaskpaneButton">
+                  <Label resid="TaskpaneButton.Label"/>
                   <Supertip>
-                    <Title resid="Taskpane.ButtonLabel"/>
-                    <Description resid="Taskpane.ButtonDesc"/>
+                    <Title resid="TaskpaneButton.Label"/>
+                    <Description resid="TaskpaneButton.Tooltip"/>
                   </Supertip>
                   <Icon>
-                    <bt:Image size="16" resid="Icon.16x16"/>
-                    <bt:Image size="32" resid="Icon.32x32"/>
-                    <bt:Image size="80" resid="Icon.80x80"/>
+                    <bt:Image size="16" resid="Icon16"/>
+                    <bt:Image size="32" resid="Icon32"/>
+                    <bt:Image size="80" resid="Icon80"/>
                   </Icon>
                   <Action xsi:type="ShowTaskpane">
-                    <TaskpaneId>ButtonID1</TaskpaneId>
+                    <TaskpaneId>MochilerosRD.Panel1</TaskpaneId>
                     <SourceLocation resid="Taskpane.Url"/>
                   </Action>
                 </Control>
@@ -59,53 +66,30 @@
             </OfficeTab>
           </ExtensionPoint>
         </DesktopFormFactor>
-
-        <!-- Excel Online también usa TaskPane -->
-        <WebFormFactor>
-          <FunctionFile resid="Taskpane.Url"/>
-          <ExtensionPoint xsi:type="PrimaryCommandSurface">
-            <OfficeTab id="TabHome">
-              <Group id="MochilerosRD.Group.Web" label="Mochileros RD">
-                <Control xsi:type="Button" id="MochilerosRD.OpenPaneButton.Web">
-                  <Label resid="Taskpane.ButtonLabel"/>
-                  <Supertip>
-                    <Title resid="Taskpane.ButtonLabel"/>
-                    <Description resid="Taskpane.ButtonDesc"/>
-                  </Supertip>
-                  <Icon>
-                    <bt:Image size="16" resid="Icon.16x16"/>
-                    <bt:Image size="32" resid="Icon.32x32"/>
-                    <bt:Image size="80" resid="Icon.80x80"/>
-                  </Icon>
-                  <Action xsi:type="ShowTaskpane">
-                    <TaskpaneId>ButtonID2</TaskpaneId>
-                    <SourceLocation resid="Taskpane.Url"/>
-                  </Action>
-                </Control>
-              </Group>
-            </OfficeTab>
-          </ExtensionPoint>
-        </WebFormFactor>
       </Host>
     </Hosts>
 
-    <!-- Recursos compartidos -->
+    <!-- Recursos: definiciones de URL, imágenes e identificadores de texto -->
     <Resources>
       <bt:Images>
-        <bt:Image id="Icon.16x16" DefaultValue="https://georgedeberas.github.io/mochileros/icon-16.png"/>
-        <bt:Image id="Icon.32x32" DefaultValue="https://georgedeberas.github.io/mochileros/icon-32.png"/>
-        <bt:Image id="Icon.80x80" DefaultValue="https://georgedeberas.github.io/mochileros/icon-80.png"/>
+        <!-- Iconos para el botón (usar la misma imagen o distintas según tamaño) -->
+        <bt:Image id="Icon16" DefaultValue="https://georgedeberas.github.io/mochileros/icon-16.png"/>
+        <bt:Image id="Icon32" DefaultValue="https://georgedeberas.github.io/mochileros/icon-32.png"/>
+        <bt:Image id="Icon80" DefaultValue="https://georgedeberas.github.io/mochileros/icon-80.png"/>
       </bt:Images>
       <bt:Urls>
+        <!-- Página HTML del panel lateral -->
         <bt:Url id="Taskpane.Url" DefaultValue="https://georgedeberas.github.io/mochileros/index.html"/>
+        <!-- Página oculta para comandos (contiene Office.js) -->
+        <bt:Url id="Commands.Url" DefaultValue="https://georgedeberas.github.io/mochileros/commands.html"/>
       </bt:Urls>
       <bt:ShortStrings>
-        <bt:String id="Taskpane.ButtonLabel" DefaultValue="Abrir panel"/>
+        <bt:String id="GroupLabel" DefaultValue="Mochileros RD"/>
+        <bt:String id="TaskpaneButton.Label" DefaultValue="Abrir Panel"/>
       </bt:ShortStrings>
       <bt:LongStrings>
-        <bt:String id="Taskpane.ButtonDesc" DefaultValue="Abre el panel lateral de configuración del complemento Mochileros RD."/>
+        <bt:String id="TaskpaneButton.Tooltip" DefaultValue="Abre el panel lateral del complemento Mochileros RD."/>
       </bt:LongStrings>
     </Resources>
-
   </VersionOverrides>
 </OfficeApp>
