@@ -1,52 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<OfficeApp xsi:type="TaskPaneApp" xmlns="http://schemas.microsoft.com/office/appforoffice/1.1" 
-          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-          xmlns:bt="http://schemas.microsoft.com/office/officeappbasictypes/1.0" 
-          xmlns:ov="http://schemas.microsoft.com/office/taskpaneappversionoverrides" 
-          xmlns:mailappor="http://schemas.microsoft.com/office/mailappversionoverrides">
-  <!-- Metadatos básicos -->
-  <Id>**{TU-GUID-AQUÍ}**</Id>
+<OfficeApp xmlns="http://schemas.microsoft.com/office/appforoffice/1.1"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xmlns:bt="http://schemas.microsoft.com/office/officeappbasictypes/1.0"
+           xmlns:ov="http://schemas.microsoft.com/office/taskpaneappversionoverrides"
+           xsi:type="TaskPaneApp">
+
+  <!-- Identificación -->
+  <Id>f3b7a6f5-0a45-4c0e-9c26-8a5bb9b0b7b0</Id>
   <Version>1.0.0.0</Version>
-  <ProviderName>George De Beras</ProviderName>
+  <ProviderName>George De Beras – Mochileros RD</ProviderName>
   <DefaultLocale>es-ES</DefaultLocale>
   <DisplayName DefaultValue="Mochileros RD"/>
-  <Description DefaultValue="Complemento de Excel para recomendaciones (Mochileros RD)"/>
+  <Description DefaultValue="Complemento de Excel con panel lateral y botón en cinta para Mochileros RD"/>
   <IconUrl DefaultValue="https://georgedeberas.github.io/mochileros/icon-32.png"/>
   <SupportUrl DefaultValue="https://georgedeberas.github.io/mochileros/"/>
-  <AppDomains>
-    <!-- (Opcional) Agregar dominios externos necesarios si el add-in llama APIs externas -->
-    <!-- <AppDomain>https://tuservicio.api.com</AppDomain> -->
-  </AppDomains>
-  <Hosts>
-    <Host Name="Workbook"/>  <!-- Habilitado para Excel (Workbook) -->
-  </Hosts>
-  <Permissions>ReadWriteDocument</Permissions>
+  <AppDomains/>
 
-  <!-- Configuración por defecto (carga inicial) -->
+  <Hosts>
+    <Host Name="Workbook"/>
+  </Hosts>
+
+  <Requirements>
+    <Sets DefaultMinVersion="1.1">
+      <Set Name="SharedRuntime" MinVersion="1.1"/>
+    </Sets>
+  </Requirements>
+
   <DefaultSettings>
     <SourceLocation DefaultValue="https://georgedeberas.github.io/mochileros/index.html"/>
   </DefaultSettings>
 
-  <!-- Definición de comandos de cinta y panel (VersionOverrides) -->
-  <VersionOverrides xsi:type="VersionOverridesV1_0" xmlns="http://schemas.microsoft.com/office/taskpaneappversionoverrides" Version="1.0">
+  <Permissions>ReadWriteDocument</Permissions>
+
+  <VersionOverrides xmlns="http://schemas.microsoft.com/office/taskpaneappversionoverrides" Version="1.0">
     <Hosts>
       <Host xsi:type="Workbook">
         <DesktopFormFactor>
-          <!-- Archivo de funciones (requerido si se usan comandos) -->
           <FunctionFile resid="Commands.Url"/>
-          <!-- Punto de extensión en la cinta principal -->
           <ExtensionPoint xsi:type="PrimaryCommandSurface">
-            <!-- Usamos la pestaña Inicio existente -->
             <OfficeTab id="TabHome">
-              <Group id="MochilerosRD.Group1">
+              <Group id="Mochileros.Group">
                 <Label resid="GroupLabel"/>
                 <Icon>
                   <bt:Image size="16" resid="Icon16"/>
                   <bt:Image size="32" resid="Icon32"/>
                   <bt:Image size="80" resid="Icon80"/>
                 </Icon>
-                <!-- Botón que abre el panel -->
-                <Control xsi:type="Button" id="MochilerosRD.TaskpaneButton">
+                <Control xsi:type="Button" id="Mochileros.Button">
                   <Label resid="TaskpaneButton.Label"/>
                   <Supertip>
                     <Title resid="TaskpaneButton.Label"/>
@@ -58,7 +58,7 @@
                     <bt:Image size="80" resid="Icon80"/>
                   </Icon>
                   <Action xsi:type="ShowTaskpane">
-                    <TaskpaneId>MochilerosRD.Panel1</TaskpaneId>
+                    <TaskpaneId>Taskpane1</TaskpaneId>
                     <SourceLocation resid="Taskpane.Url"/>
                   </Action>
                 </Control>
@@ -69,24 +69,23 @@
       </Host>
     </Hosts>
 
-    <!-- Recursos: definiciones de URL, imágenes e identificadores de texto -->
     <Resources>
       <bt:Images>
-        <!-- Iconos para el botón (usar la misma imagen o distintas según tamaño) -->
         <bt:Image id="Icon16" DefaultValue="https://georgedeberas.github.io/mochileros/icon-16.png"/>
         <bt:Image id="Icon32" DefaultValue="https://georgedeberas.github.io/mochileros/icon-32.png"/>
         <bt:Image id="Icon80" DefaultValue="https://georgedeberas.github.io/mochileros/icon-80.png"/>
       </bt:Images>
+
       <bt:Urls>
-        <!-- Página HTML del panel lateral -->
         <bt:Url id="Taskpane.Url" DefaultValue="https://georgedeberas.github.io/mochileros/index.html"/>
-        <!-- Página oculta para comandos (contiene Office.js) -->
         <bt:Url id="Commands.Url" DefaultValue="https://georgedeberas.github.io/mochileros/commands.html"/>
       </bt:Urls>
+
       <bt:ShortStrings>
         <bt:String id="GroupLabel" DefaultValue="Mochileros RD"/>
         <bt:String id="TaskpaneButton.Label" DefaultValue="Abrir Panel"/>
       </bt:ShortStrings>
+
       <bt:LongStrings>
         <bt:String id="TaskpaneButton.Tooltip" DefaultValue="Abre el panel lateral del complemento Mochileros RD."/>
       </bt:LongStrings>
