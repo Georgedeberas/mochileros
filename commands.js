@@ -1,58 +1,56 @@
 Office.onReady(() => {
-  console.log("✅ Mochileros RD Add-in - Comandos cargados correctamente.");
+  console.log("✅ Commands runtime listo.");
 });
 
+// Botones
 function accionBasica(event) {
-  alert("🔘 Botón simple presionado.");
+  notify("Botón simple presionado.");
   event.completed();
 }
 
 function accionIcono(event) {
-  alert("🟠 Botón con ícono ejecutado.");
+  notify("Botón con ícono ejecutado.");
   event.completed();
 }
 
+// Menú
 function menuAccionA(event) {
-  alert("Seleccionaste: Opción A del menú desplegable.");
+  notify("Menú → Opción A.");
   event.completed();
 }
-
 function menuAccionB(event) {
-  alert("Seleccionaste: Opción B del menú desplegable.");
+  notify("Menú → Opción B.");
   event.completed();
 }
 
+// Split button
 function accionPrincipal(event) {
-  alert("Menú dividido → Acción principal ejecutada.");
+  notify("Menú dividido → Acción principal.");
   event.completed();
 }
-
 function accionSub1(event) {
-  alert("Subacción 1 ejecutada.");
+  notify("Menú dividido → Subacción 1.");
   event.completed();
 }
-
 function accionSub2(event) {
-  alert("Subacción 2 ejecutada.");
+  notify("Menú dividido → Subacción 2.");
   event.completed();
 }
 
-function colorRojo(event) {
-  alert("🎨 Color Rojo seleccionado.");
-  event.completed();
+// Utilidad visual
+function notify(msg) {
+  if (typeof Office !== "undefined" && Office.context && Office.context.ui && Office.context.ui.displayDialogAsync) {
+    console.log(msg);
+  } else {
+    console.log(msg);
+  }
 }
 
-function colorVerde(event) {
-  alert("🎨 Color Verde seleccionado.");
-  event.completed();
-}
-
-function colorAzul(event) {
-  alert("🎨 Color Azul seleccionado.");
-  event.completed();
-}
-
-function accionFinal(event) {
-  alert("✅ Acción final completada correctamente.");
-  event.completed();
-}
+// Export global (Excel Online requiere global)
+window.accionBasica = accionBasica;
+window.accionIcono = accionIcono;
+window.menuAccionA = menuAccionA;
+window.menuAccionB = menuAccionB;
+window.accionPrincipal = accionPrincipal;
+window.accionSub1 = accionSub1;
+window.accionSub2 = accionSub2;
