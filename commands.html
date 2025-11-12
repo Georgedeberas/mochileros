@@ -1,37 +1,15 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
-<head>
-  <meta charset="utf-8" />
-  <title>Commands - Mochileros RD</title>
-  <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
-</head>
-<body>
-<script>
-  Office.onReady(() => {});
-
-  // Refresco duro: el panel escuchará "mo_force_reload" y hará window.location.href con cache-buster
-  function ribbonHardReload(event){
-    try{
-      Office.context.document.settings.set("mo_force_reload", Date.now());
-      Office.context.document.settings.saveAsync(()=> event.completed());
-    }catch(e){
-      console.error(e);
-      event.completed();
-    }
-  }
-
-  // Abrir guía de desinstalación en diálogo
-  function openUninstallGuide(event){
-    try{
-      const url = "https://georgedeberas.github.io/mochileros/uninstall.html";
-      Office.context.ui.displayDialogAsync(url, {height:50, width:40, requireHTTPS:true}, (res)=>{});
-    }catch(e){ console.error(e); }
-    finally{ event.completed(); }
-  }
-
-  // Exponer
-  window.ribbonHardReload = ribbonHardReload;
-  window.openUninstallGuide = openUninstallGuide;
-</script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Mochileros RD - Comandos</title>
+    <link rel="stylesheet" href="style_commands.css" />
+    <script src="commands.js"></script>
+  </head>
+  <body>
+    <div class="header">
+      <h2>🟧 Mochileros RD</h2>
+      <p>Panel de pruebas de interfaz de Excel Add-in</p>
+    </div>
+  </body>
 </html>
