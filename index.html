@@ -4,19 +4,30 @@
   <meta charset="UTF-8" />
   <title>Mochileros RD — Panel</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="styles.css?v=101" />
+  <!-- Sin ?v=; el cache-busting lo hará app.js leyendo version.json -->
+  <link rel="stylesheet" href="styles.css" />
   <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
-  <script src="app.js?v=101" defer></script>
+  <script defer src="app.js"></script>
 </head>
 <body>
   <header class="bar">
     <strong>Mochileros RD</strong>
     <div class="spacer"></div>
-    <button id="btnRefresh">Actualizar</button>
+    <button id="btnRefresh" class="btn">Actualizar</button>
+    <button id="btnNew" class="btn btn-ghost">Nuevo tour</button>
   </header>
 
-  <main class="content">
-    <p>Panel lateral funcionando correctamente.</p>
+  <section class="tools">
+    <input id="search" type="search" placeholder="Buscar hoja (nombre, mes, estado)..." />
+    <button id="btnFind" class="btn">Buscar hoja…</button>
+  </section>
+
+  <main class="content" id="content">
+    <div class="empty">
+      <h3>Panel lateral funcionando correctamente.</h3>
+      <p>Pulsa <em>Actualizar</em> para refrescar índices y estados. Usa <em>Nuevo tour</em> para crear una hoja usando tus plantillas.</p>
+    </div>
+    <!-- Aquí se renderiza la lista agrupada por meses/año según tu lógica (se implementa en app.js) -->
   </main>
 </body>
 </html>
