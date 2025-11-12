@@ -2,27 +2,23 @@
 <html lang="es">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Mochileros RD</title>
-
-  <!-- Necesario para inicializar el panel en Excel Online -->
+  <title>Mochileros RD - Panel</title>
+  <!-- Cargar la biblioteca de Office.js -->
   <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
-
-  <link rel="stylesheet" href="styles.css" />
+  <!-- (Opcional) Agregar estilo propio o Bootstrap si se requiere -->
 </head>
 <body>
-  <header class="hdr">
-    <h2 class="ttl">Mochileros RD</h2>
-    <span class="ver">v1</span>
-  </header>
+  <h2>Bienvenido al complemento Mochileros RD</h2>
+  <p>**Contenido del panel lateral.** Aquí puede implementar la lógica de su aplicación (por ejemplo, recomendaciones de viajes, rutas, etc.).</p>
 
-  <main class="main">
-    <p class="muted">Panel base de configuración del complemento.</p>
-    <button id="btnRefresh" class="btn">Actualizar</button>
-    <div id="status" class="muted" style="margin-top:8px;"></div>
-  </main>
-
-  <script src="app.js"></script>
+  <script>
+    // Inicializar Office.js cuando esté listo
+    Office.onReady(() => {
+      // Puede agregar aquí código de inicialización si es necesario
+      console.log("Complemento Mochileros RD listo.");
+    });
+  </script>
 </body>
 </html>
+
 
