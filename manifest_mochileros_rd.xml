@@ -5,14 +5,14 @@
            xmlns:ov="http://schemas.microsoft.com/office/mailappversionoverrides/1.1"
            xsi:type="TaskPaneApp">
 
-  <!-- Sube la versión para forzar recarga -->
+  <!-- Subimos la versión para forzar recarga de Office -->
   <Id>c25e52c8-4d45-4a87-91f7-56d8a36fd009</Id>
-  <Version>1.0.1.0</Version>
+  <Version>1.0.2.0</Version>
   <ProviderName>Mochileros RD</ProviderName>
   <DefaultLocale>es-ES</DefaultLocale>
   <DisplayName DefaultValue="Mochileros RD"/>
-  <Description DefaultValue="Pestaña de prueba: botones, menús y split-button en la cinta."/>
-  <IconUrl DefaultValue="https://cdn-icons-png.flaticon.com/512/3208/3208707.png"/>
+  <Description DefaultValue="Cinta simple con 2 botones y panel lateral."/>
+  <IconUrl DefaultValue="https://georgedeberas.github.io/mochileros/icon-80.png"/>
   <SupportUrl DefaultValue="https://georgedeberas.github.io/mochileros/"/>
 
   <AppDomains>
@@ -30,7 +30,8 @@
   </Requirements>
 
   <DefaultSettings>
-    <SourceLocation DefaultValue="https://georgedeberas.github.io/mochileros/index.html?v=101"/>
+    <!-- OJO: sin ?v= aquí. El cache-busting lo manejamos en app.js -->
+    <SourceLocation DefaultValue="https://georgedeberas.github.io/mochileros/index.html"/>
   </DefaultSettings>
 
   <Permissions>ReadWriteDocument</Permissions>
@@ -41,88 +42,37 @@
     <Hosts>
       <Host xsi:type="Workbook">
 
-        <!-- Runtime para comandos de cinta -->
         <Runtimes>
           <Runtime resid="Commands.Url" lifetime="long"/>
         </Runtimes>
 
-        <!-- CINTA -->
         <ExtensionPoint xsi:type="PrimaryCommandSurface">
-          <!-- UNA sola pestaña, con varios grupos -->
           <CustomTab id="Tab.Mochileros">
             <Label resid="Tab.Label"/>
 
-            <!-- Grupo: Principal -->
-            <Group id="Group.Main" label="Principal">
-              <Control xsi:type="Button" id="Cmd.OpenPane">
-                <Label resid="Cmd.OpenPane.Label"/>
+            <Group id="Group.Main" label="Mochileros RD">
+              <!-- Botón 1: Activar panel (toggle mediante ExecuteFunction) -->
+              <Control xsi:type="Button" id="Btn.Toggle">
+                <Label resid="Btn.Toggle.Label"/>
                 <Icon>
-                  <bt:Image size="16" resid="Icon.Open"/>
-                </Icon>
-                <Action xsi:type="ShowTaskpane">
-                  <SourceLocation resid="Taskpane.Url"/>
-                </Action>
-              </Control>
-            </Group>
-
-            <!-- Grupo: Botones -->
-            <Group id="Group.Buttons" label="Botones">
-              <Control xsi:type="Button" id="Cmd.Simple">
-                <Label resid="Cmd.Simple.Label"/>
-                <Icon>
-                  <bt:Image size="16" resid="Icon.Dot"/>
+                  <bt:Image size="16" resid="Icon.Panel"/>
                 </Icon>
                 <Action xsi:type="ExecuteFunction">
-                  <FunctionName>accionBasica</FunctionName>
+                  <FunctionName>togglePanel</FunctionName>
                 </Action>
               </Control>
 
-              <Control xsi:type="Button" id="Cmd.Icon">
-                <Label resid="Cmd.Icon.Label"/>
+              <!-- Botón 2: Actualizar Sistema (verifica version.json y fuerza refresco) -->
+              <Control xsi:type="Button" id="Btn.Update">
+                <Label resid="Btn.Update.Label"/>
                 <Icon>
-                  <bt:Image size="16" resid="Icon.Add"/>
+                  <bt:Image size="16" resid="Icon.Update"/>
                 </Icon>
                 <Action xsi:type="ExecuteFunction">
-                  <FunctionName>accionIcono</FunctionName>
+                  <FunctionName>updateSystem</FunctionName>
                 </Action>
               </Control>
             </Group>
-
-            <!-- Grupo: Menús -->
-            <Group id="Group.Menus" label="Menús">
-              <Control xsi:type="Menu" id="Cmd.Menu">
-                <Label resid="Cmd.Menu.Label"/>
-                <Icon>
-                  <bt:Image size="16" resid="Icon.Menu"/>
-                </Icon>
-                <Items>
-                  <Item id="Menu.A" label="Opción A" onAction="menuAccionA"/>
-                  <!-- “Separador” simulado: item deshabilitado -->
-                  <Item id="Menu.Sep" label="──────────" enabled="false"/>
-                  <Item id="Menu.B" label="Opción B" onAction="menuAccionB"/>
-                </Items>
-              </Control>
-            </Group>
-
-            <!-- Grupo: Menú dividido -->
-            <Group id="Group.Split" label="Menú dividido">
-              <Control xsi:type="SplitButton" id="Cmd.Split">
-                <Label resid="Cmd.Split.Label"/>
-                <Icon>
-                  <bt:Image size="16" resid="Icon.Split"/>
-                </Icon>
-                <Action xsi:type="ExecuteFunction">
-                  <FunctionName>accionPrincipal</FunctionName>
-                </Action>
-                <Menu>
-                  <Items>
-                    <Item id="Split.1" label="Subacción 1" onAction="accionSub1"/>
-                    <Item id="Split.2" label="Subacción 2" onAction="accionSub2"/>
-                  </Items>
-                </Menu>
-              </Control>
-            </Group>
-
           </CustomTab>
         </ExtensionPoint>
       </Host>
@@ -130,25 +80,18 @@
 
     <Resources>
       <bt:Images>
-        <bt:Image id="Icon.Open"  DefaultValue="https://cdn-icons-png.flaticon.com/512/3208/3208707.png"/>
-        <bt:Image id="Icon.Dot"   DefaultValue="https://cdn-icons-png.flaticon.com/512/1828/1828817.png"/>
-        <bt:Image id="Icon.Add"   DefaultValue="https://cdn-icons-png.flaticon.com/512/1828/1828919.png"/>
-        <bt:Image id="Icon.Menu"  DefaultValue="https://cdn-icons-png.flaticon.com/512/2099/2099153.png"/>
-        <bt:Image id="Icon.Split" DefaultValue="https://cdn-icons-png.flaticon.com/512/1828/1828749.png"/>
+        <bt:Image id="Icon.Panel"  DefaultValue="https://cdn-icons-png.flaticon.com/512/3208/3208707.png"/>
+        <bt:Image id="Icon.Update" DefaultValue="https://cdn-icons-png.flaticon.com/512/159/159657.png"/>
       </bt:Images>
 
       <bt:Urls>
-        <bt:Url id="Taskpane.Url"  DefaultValue="https://georgedeberas.github.io/mochileros/index.html?v=101"/>
-        <bt:Url id="Commands.Url"  DefaultValue="https://georgedeberas.github.io/mochileros/commands.html?v=101"/>
+        <bt:Url id="Commands.Url"  DefaultValue="https://georgedeberas.github.io/mochileros/commands.html"/>
       </bt:Urls>
 
       <bt:ShortStrings>
-        <bt:String id="Tab.Label"             DefaultValue="Mochileros RD"/>
-        <bt:String id="Cmd.OpenPane.Label"    DefaultValue="Abrir panel"/>
-        <bt:String id="Cmd.Simple.Label"      DefaultValue="Botón simple"/>
-        <bt:String id="Cmd.Icon.Label"        DefaultValue="Botón con ícono"/>
-        <bt:String id="Cmd.Menu.Label"        DefaultValue="Menú"/>
-        <bt:String id="Cmd.Split.Label"       DefaultValue="Menú dividido"/>
+        <bt:String id="Tab.Label"          DefaultValue="Mochileros RD"/>
+        <bt:String id="Btn.Toggle.Label"   DefaultValue="Activar panel"/>
+        <bt:String id="Btn.Update.Label"   DefaultValue="Actualizar sistema"/>
       </bt:ShortStrings>
     </Resources>
   </VersionOverrides>
