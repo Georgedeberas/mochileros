@@ -5,12 +5,13 @@
            xmlns:ov="http://schemas.microsoft.com/office/taskpaneappversionoverrides"
            xsi:type="TaskPaneApp">
 
+  <!-- Identidad -->
   <Id>f3b7a6f5-0a45-4c0e-9c26-8a5bb9b0b7b0</Id>
-  <Version>1.0.1.0</Version>
-  <ProviderName>George De Beras – Mochileros RD</ProviderName>
+  <Version>1.1.0.0</Version>
+  <ProviderName>Mochileros RD</ProviderName>
   <DefaultLocale>es-ES</DefaultLocale>
   <DisplayName DefaultValue="Mochileros RD"/>
-  <Description DefaultValue="Complemento de Excel con panel lateral y pestaña propia en la cinta"/>
+  <Description DefaultValue="Panel lateral y pestaña propia en la cinta."/>
   <IconUrl DefaultValue="https://georgedeberas.github.io/mochileros/icon-32.png"/>
   <SupportUrl DefaultValue="https://georgedeberas.github.io/mochileros/"/>
 
@@ -18,34 +19,43 @@
     <Host Name="Workbook"/>
   </Hosts>
 
+  <!-- Requisitos para CustomTab -->
+  <Requirements>
+    <Sets>
+      <Set Name="RibbonApi" MinVersion="1.1"/>
+      <!-- SharedRuntime no es obligatorio; lo puedes añadir más adelante -->
+    </Sets>
+  </Requirements>
+
   <DefaultSettings>
     <SourceLocation DefaultValue="https://georgedeberas.github.io/mochileros/index.html"/>
   </DefaultSettings>
 
   <Permissions>ReadWriteDocument</Permissions>
 
-  <VersionOverrides xmlns="http://schemas.microsoft.com/office/taskpaneappversionoverrides" Version="1.0">
+  <VersionOverrides xmlns="http://schemas.microsoft.com/office/taskpaneappversionoverrides" Version="1.1">
     <Hosts>
       <Host xsi:type="Workbook">
         <DesktopFormFactor>
+          <!-- requerido por comandos: apunta a commands.html -->
           <FunctionFile resid="Commands.Url"/>
 
-          <!-- Pestaña personalizada -->
+          <!-- 👇 pestaña propia en la cinta -->
           <ExtensionPoint xsi:type="CustomTab">
-            <CustomTab id="TabMochileros">
-              <Label resid="CustomTabLabel"/>
-              <Group id="Mochileros.Group">
-                <Label resid="GroupLabel"/>
+            <CustomTab id="Tab.Mochileros">
+              <Label resid="CustomTab.Label"/>
+              <Group id="Group.Panel">
+                <Label resid="Group.Panel.Label"/>
                 <Icon>
                   <bt:Image size="16" resid="Icon16"/>
                   <bt:Image size="32" resid="Icon32"/>
                   <bt:Image size="80" resid="Icon80"/>
                 </Icon>
-                <Control xsi:type="Button" id="Mochileros.Button">
-                  <Label resid="TaskpaneButton.Label"/>
+                <Control xsi:type="Button" id="Btn.OpenPanel">
+                  <Label resid="Btn.OpenPanel.Label"/>
                   <Supertip>
-                    <Title resid="TaskpaneButton.Label"/>
-                    <Description resid="TaskpaneButton.Tooltip"/>
+                    <Title resid="Btn.OpenPanel.Label"/>
+                    <Description resid="Btn.OpenPanel.Tip"/>
                   </Supertip>
                   <Icon>
                     <bt:Image size="16" resid="Icon16"/>
@@ -77,13 +87,13 @@
       </bt:Urls>
 
       <bt:ShortStrings>
-        <bt:String id="CustomTabLabel" DefaultValue="Mochileros RD"/>
-        <bt:String id="GroupLabel" DefaultValue="Panel"/>
-        <bt:String id="TaskpaneButton.Label" DefaultValue="Abrir Panel"/>
+        <bt:String id="CustomTab.Label" DefaultValue="Mochileros RD"/>
+        <bt:String id="Group.Panel.Label" DefaultValue="Panel"/>
+        <bt:String id="Btn.OpenPanel.Label" DefaultValue="Abrir panel"/>
       </bt:ShortStrings>
 
       <bt:LongStrings>
-        <bt:String id="TaskpaneButton.Tooltip" DefaultValue="Abre el panel lateral del complemento Mochileros RD."/>
+        <bt:String id="Btn.OpenPanel.Tip" DefaultValue="Abre el panel lateral del complemento Mochileros RD."/>
       </bt:LongStrings>
     </Resources>
   </VersionOverrides>
