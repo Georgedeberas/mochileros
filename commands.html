@@ -1,10 +1,32 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
   <meta charset="utf-8" />
+  <title>Commands - Mochileros RD</title>
   <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
 </head>
 <body>
-  <script>Office.onReady(()=>{});</script>
+<script>
+  Office.onReady(() => {
+    // ok
+  });
+
+  // Botón de la cinta: Actualizar
+  async function ribbonRefresh(event) {
+    try {
+      Office.context.document.settings.set("mo_refresh", Date.now());
+      Office.context.document.settings.saveAsync(() => {
+        // listo
+        event.completed();
+      });
+    } catch (e) {
+      console.error(e);
+      event.completed();
+    }
+  }
+
+  // Exponer funciones para ExecuteFunction
+  window.ribbonRefresh = ribbonRefresh;
+</script>
 </body>
 </html>
