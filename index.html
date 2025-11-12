@@ -6,16 +6,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
 <style>
-  :root{
-    --accent:#f58320;
-    --bg:#ffffff;
-    --muted:#f5f5f7;
-    --text:#1a1a1a;
-    --green:#28a745;
-    --blue:#0d47a1;
-    --black:#000000;
-    --sys:#fcff3c;
-  }
+  :root{ --accent:#f58320; --bg:#ffffff; --muted:#f5f5f7; --text:#1a1a1a;
+         --green:#28a745; --blue:#0d47a1; --black:#000000; --sys:#fcff3c; }
   body{font-family:Segoe UI,system-ui,Arial,sans-serif;margin:0;color:var(--text);background:var(--bg);}
   .bar{background:var(--accent);color:#fff;padding:10px 12px;display:flex;gap:8px;align-items:center;position:sticky;top:0;z-index:5}
   .bar h1{font-size:14px;font-weight:600;margin:0 8px 0 0}
@@ -49,9 +41,7 @@
     <div id="newTour" style="display:none;">
       <h3>Nuevo tour</h3>
       <form id="formNew">
-        <div class="row">
-          <input id="tourName" placeholder="Nombre del tour (ej. Saona VIP)"/>
-        </div>
+        <div class="row"><input id="tourName" placeholder="Nombre del tour (ej. Saona VIP)"/></div>
         <div class="row">
           <select id="template">
             <option value="Nacional">Nacional (plantilla)</option>
@@ -65,32 +55,16 @@
         </div>
       </form>
     </div>
-
     <div id="list"></div>
   </div>
 
 <script>
-  const COLORS = {
-    open:   "#28a745",
-    cancel: "#0d47a1",
-    closed: "#000000",
-    sys:    "#fcff3c"
-  };
-
-  let lastRefreshTick = 0;
+  const COLORS = { open:"#28a745", cancel:"#0d47a1", closed:"#000000", sys:"#fcff3c" };
+  let lastRefreshTick = 0, lastHardReload = 0;
 
   Office.onReady(async () => {
-    // Escucha de "Actualizar" desde la cinta (SettingsChanged)
     Office.context.document.settings.addHandlerAsync(
-      Office.EventType.SettingsChanged,
-      () => {
-        const t = Office.context.document.settings.get("mo_refresh");
-        if (t && t !== lastRefreshTick) {
-          lastRefreshTick = t;
-          buildMenu();
-        }
-      }
-    );
+      Office.EventType.SettingsChanged, onSettingsChanged);
 
     document.getElementById("btnRefresh").onclick = () => triggerRefresh();
     document.getElementById("btnNewToggle").onclick = () => {
@@ -106,7 +80,23 @@
     buildMenu();
   });
 
-  function triggerRefresh() {
+  function onSettingsChanged(){
+    const soft = Office.context.document.settings.get("mo_refresh");
+    if (soft && soft !== lastRefreshTick) {
+      lastRefreshTick = soft;
+      buildMenu();
+    }
+    const hard = Office.context.document.settings.get("mo_force_reload");
+    if (hard && hard !== lastHardReload) {
+      lastHardReload = hard;
+      // cache-buster → recarga HTML/JS/CSS desde GitHub Pages
+      const url = new URL(window.location.href);
+      url.searchParams.set("_r", String(hard));
+      window.location.href = url.toString();
+    }
+  }
+
+  function triggerRefresh(){
     Office.context.document.settings.set("mo_refresh", Date.now());
     Office.context.document.settings.saveAsync(()=>{});
   }
@@ -119,16 +109,13 @@
     });
   }
 
-  // Parse dd.mm al final del nombre
   function parseSuffixDate(name){
     const m = name.trim().match(/(\d{2})\.(\d{2})$/);
     if(!m) return null;
     const dd = parseInt(m[1],10), mm = parseInt(m[2],10);
-    const now = new Date();
-    const currentMonth = now.getMonth()+1;
+    const now = new Date(), currentMonth = now.getMonth()+1;
     let year = now.getFullYear();
-    // Regla B (rollover): si el mes del sufijo < mes actual, asumimos año siguiente
-    if(mm < currentMonth) year++;
+    if(mm < currentMonth) year++; // rollover
     return { dd, mm, yyyy: year };
   }
 
@@ -147,27 +134,23 @@
         sheets.load("items/name,items/tabColor");
         await ctx.sync();
 
-        // Armar grupos por mes (excluimos plantillas sistema color amarillo)
         const groups = new Map();
         sheets.items.forEach(ws=>{
           const name = ws.name;
           const color = (ws.tabColor || "").toLowerCase();
-          const isSystem = color === COLORS.sys.toLowerCase() || name === "Nacional" || name === "Internacional";
+          const isSystem = color === COLORS.sys.toLowerCase() || name==="Nacional" || name==="Internacional";
           const info = parseSuffixDate(name);
-          // Si no tiene sufijo dd.mm, lo ignoramos del menú (suelen ser auxiliares)
           if(!info || isSystem) return;
           const k = monthKey(info);
-          if(!groups.has(k)) groups.set(k, {info, label: monthLabel(info), items:[]});
-          groups.get(k).items.push({name, color});
+          if(!groups.has(k)) groups.set(k, {info,label:monthLabel(info),items:[]});
+          groups.get(k).items.push({name,color});
         });
 
-        // Orden ascendente por año/mes
         const ordered = Array.from(groups.values()).sort((a,b)=>{
           if(a.info.yyyy !== b.info.yyyy) return a.info.yyyy - b.info.yyyy;
           return a.info.mm - b.info.mm;
         });
 
-        // Pintar UI
         container.innerHTML = "";
         ordered.forEach(gr=>{
           const det = document.createElement("details");
@@ -181,32 +164,25 @@
             row.className = "sheet";
             row.dataset.name = it.name;
 
-            // Estado por color
             let stateClass = "";
             const lc = (it.color||"").toLowerCase();
             if(lc === COLORS.open.toLowerCase()) stateClass="open";
             else if(lc === COLORS.cancel.toLowerCase()) stateClass="cancel";
             else if(lc === COLORS.closed.toLowerCase()) stateClass="closed";
-            else stateClass="";
 
             row.innerHTML = `
               <div>
                 <div><strong>${it.name}</strong></div>
                 <div class="small meta">Click para ir a la hoja</div>
               </div>
-              <div title="Estado por color de pestaña">
-                <span class="state ${stateClass}"></span>
-              </div>
+              <div title="Estado por color de pestaña"><span class="state ${stateClass}"></span></div>
             `;
-
-            // Navegar a la hoja al clic
             row.addEventListener("click", ()=>selectSheet(it.name));
             det.appendChild(row);
           });
 
           container.appendChild(det);
         });
-
       });
     }catch(err){
       console.error(err);
@@ -228,11 +204,9 @@
     ev.preventDefault();
     const name = document.getElementById("tourName").value.trim();
     const template = document.getElementById("template").value.trim();
-    const dateStr = document.getElementById("tourDate").value; // yyyy-mm-dd
-
+    const dateStr = document.getElementById("tourDate").value;
     if(!name || !template || !dateStr){ alert("Completa nombre, plantilla y fecha."); return; }
 
-    // Formatear dd.mm
     const d = new Date(dateStr);
     const dd = String(d.getDate()).padStart(2,"0");
     const mm = String(d.getMonth()+1).padStart(2,"0");
@@ -245,20 +219,15 @@
         tpl.load("name");
         await ctx.sync();
 
-        // Copiar plantilla al final
         const copy = tpl.copy(Excel.WorksheetPositionType.end);
         copy.load("name");
         await ctx.sync();
 
-        // Renombrar
         copy.name = finalName;
-        // Color de abierto
         copy.tabColor = COLORS.open;
-
         await ctx.sync();
       });
 
-      // limpiar y recargar
       document.getElementById("formNew").reset();
       document.getElementById("newTour").style.display = "none";
       triggerRefresh();
