@@ -1,27 +1,18 @@
-body {
-  font-family: 'Segoe UI', sans-serif;
-  background-color: #fff;
-  color: #333;
-  margin: 0;
-  padding: 10px 20px;
+:root{
+  --orange:#f58320;
+  --orange-weak:#fff3e7;
+  --text:#333;
 }
-
-.header {
-  border-left: 6px solid #ff7f00;
-  padding: 10px 20px;
-  background: #fff5ec;
-  border-radius: 8px;
-  margin-bottom: 20px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+*{box-sizing:border-box}
+body{
+  font-family: Segoe UI, system-ui, -apple-system, Roboto, Arial, sans-serif;
+  margin:0; padding:16px; color:var(--text); background:#fff;
 }
-
-.header h2 {
-  color: #ff7f00;
-  margin: 0;
+.header{
+  border-left:6px solid var(--orange);
+  background:var(--orange-weak);
+  padding:12px 16px; border-radius:10px;
+  box-shadow:0 2px 6px rgba(0,0,0,.05);
 }
-
-.header p {
-  color: #444;
-  margin: 0;
-  font-size: 14px;
-}
+.header h2{margin:0 0 4px 0; color:var(--orange)}
+.header p{margin:0; opacity:.8}
