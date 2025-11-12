@@ -1,32 +1,272 @@
 <!doctype html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <title>Commands - Mochileros RD</title>
-  <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
+<meta charset="utf-8"/>
+<title>Mochileros RD – Panel</title>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
+<style>
+  :root{
+    --accent:#f58320;
+    --bg:#ffffff;
+    --muted:#f5f5f7;
+    --text:#1a1a1a;
+    --green:#28a745;
+    --blue:#0d47a1;
+    --black:#000000;
+    --sys:#fcff3c;
+  }
+  body{font-family:Segoe UI,system-ui,Arial,sans-serif;margin:0;color:var(--text);background:var(--bg);}
+  .bar{background:var(--accent);color:#fff;padding:10px 12px;display:flex;gap:8px;align-items:center;position:sticky;top:0;z-index:5}
+  .bar h1{font-size:14px;font-weight:600;margin:0 8px 0 0}
+  .bar button{border:0;background:#fff;color:#333;border-radius:6px;padding:6px 10px;cursor:pointer}
+  .bar input{flex:1;border:0;border-radius:6px;padding:7px 10px;min-width:120px}
+  .wrap{padding:12px}
+  details{background:var(--muted);border-radius:8px;margin-bottom:10px;padding:8px 10px}
+  summary{cursor:pointer;font-weight:600}
+  .sheet{display:flex;justify-content:space-between;align-items:center;background:#fff;border-radius:8px;padding:8px 10px;margin:6px 0;border:1px solid #eee}
+  .meta{font-size:12px;color:#666}
+  .state{display:inline-block;min-width:10px;height:10px;border-radius:50%}
+  .state.open{background:var(--green)}
+  .state.cancel{background:var(--blue)}
+  .state.closed{background:var(--black)}
+  .state.sys{background:var(--sys);border:1px solid #bbb}
+  .small{font-size:12px}
+  form .row{display:flex;gap:8px;margin:8px 0}
+  form input,form select{flex:1;padding:7px 10px;border:1px solid #ddd;border-radius:6px}
+  form button{background:var(--accent);color:#fff;border:0;border-radius:6px;padding:8px 12px;cursor:pointer}
+</style>
 </head>
 <body>
+  <div class="bar">
+    <h1>Mochileros RD</h1>
+    <button id="btnRefresh">Actualizar</button>
+    <button id="btnNewToggle">Nuevo tour</button>
+    <input id="searchBox" placeholder="Buscar hoja…" />
+  </div>
+
+  <div class="wrap">
+    <div id="newTour" style="display:none;">
+      <h3>Nuevo tour</h3>
+      <form id="formNew">
+        <div class="row">
+          <input id="tourName" placeholder="Nombre del tour (ej. Saona VIP)"/>
+        </div>
+        <div class="row">
+          <select id="template">
+            <option value="Nacional">Nacional (plantilla)</option>
+            <option value="Internacional">Internacional (plantilla)</option>
+          </select>
+          <input id="tourDate" type="date"/>
+        </div>
+        <div class="row">
+          <button type="submit">Crear</button>
+          <button type="button" id="cancelNew">Cancelar</button>
+        </div>
+      </form>
+    </div>
+
+    <div id="list"></div>
+  </div>
+
 <script>
-  Office.onReady(() => {
-    // ok
+  const COLORS = {
+    open:   "#28a745",
+    cancel: "#0d47a1",
+    closed: "#000000",
+    sys:    "#fcff3c"
+  };
+
+  let lastRefreshTick = 0;
+
+  Office.onReady(async () => {
+    // Escucha de "Actualizar" desde la cinta (SettingsChanged)
+    Office.context.document.settings.addHandlerAsync(
+      Office.EventType.SettingsChanged,
+      () => {
+        const t = Office.context.document.settings.get("mo_refresh");
+        if (t && t !== lastRefreshTick) {
+          lastRefreshTick = t;
+          buildMenu();
+        }
+      }
+    );
+
+    document.getElementById("btnRefresh").onclick = () => triggerRefresh();
+    document.getElementById("btnNewToggle").onclick = () => {
+      const p = document.getElementById("newTour");
+      p.style.display = (p.style.display === "none") ? "block" : "none";
+    };
+    document.getElementById("cancelNew").onclick = () => {
+      document.getElementById("newTour").style.display = "none";
+    };
+    document.getElementById("formNew").addEventListener("submit", createTour);
+    document.getElementById("searchBox").addEventListener("input", filterList);
+
+    buildMenu();
   });
 
-  // Botón de la cinta: Actualizar
-  async function ribbonRefresh(event) {
-    try {
-      Office.context.document.settings.set("mo_refresh", Date.now());
-      Office.context.document.settings.saveAsync(() => {
-        // listo
-        event.completed();
+  function triggerRefresh() {
+    Office.context.document.settings.set("mo_refresh", Date.now());
+    Office.context.document.settings.saveAsync(()=>{});
+  }
+
+  function filterList(e){
+    const q = e.target.value.toLowerCase();
+    document.querySelectorAll(".sheet").forEach(card=>{
+      const text = card.dataset.name.toLowerCase();
+      card.style.display = text.includes(q) ? "" : "none";
+    });
+  }
+
+  // Parse dd.mm al final del nombre
+  function parseSuffixDate(name){
+    const m = name.trim().match(/(\d{2})\.(\d{2})$/);
+    if(!m) return null;
+    const dd = parseInt(m[1],10), mm = parseInt(m[2],10);
+    const now = new Date();
+    const currentMonth = now.getMonth()+1;
+    let year = now.getFullYear();
+    // Regla B (rollover): si el mes del sufijo < mes actual, asumimos año siguiente
+    if(mm < currentMonth) year++;
+    return { dd, mm, yyyy: year };
+  }
+
+  function monthKey(d){ return `${d.yyyy}-${String(d.mm).padStart(2,"0")}`; }
+  function monthLabel(d){
+    const meses = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+    return `${meses[d.mm-1]} ${d.yyyy}`;
+  }
+
+  async function buildMenu(){
+    const container = document.getElementById("list");
+    container.innerHTML = "Cargando…";
+    try{
+      await Excel.run(async (ctx)=>{
+        const sheets = ctx.workbook.worksheets;
+        sheets.load("items/name,items/tabColor");
+        await ctx.sync();
+
+        // Armar grupos por mes (excluimos plantillas sistema color amarillo)
+        const groups = new Map();
+        sheets.items.forEach(ws=>{
+          const name = ws.name;
+          const color = (ws.tabColor || "").toLowerCase();
+          const isSystem = color === COLORS.sys.toLowerCase() || name === "Nacional" || name === "Internacional";
+          const info = parseSuffixDate(name);
+          // Si no tiene sufijo dd.mm, lo ignoramos del menú (suelen ser auxiliares)
+          if(!info || isSystem) return;
+          const k = monthKey(info);
+          if(!groups.has(k)) groups.set(k, {info, label: monthLabel(info), items:[]});
+          groups.get(k).items.push({name, color});
+        });
+
+        // Orden ascendente por año/mes
+        const ordered = Array.from(groups.values()).sort((a,b)=>{
+          if(a.info.yyyy !== b.info.yyyy) return a.info.yyyy - b.info.yyyy;
+          return a.info.mm - b.info.mm;
+        });
+
+        // Pintar UI
+        container.innerHTML = "";
+        ordered.forEach(gr=>{
+          const det = document.createElement("details");
+          det.open = true;
+          const sum = document.createElement("summary");
+          sum.textContent = gr.label;
+          det.appendChild(sum);
+
+          gr.items.forEach(it=>{
+            const row = document.createElement("div");
+            row.className = "sheet";
+            row.dataset.name = it.name;
+
+            // Estado por color
+            let stateClass = "";
+            const lc = (it.color||"").toLowerCase();
+            if(lc === COLORS.open.toLowerCase()) stateClass="open";
+            else if(lc === COLORS.cancel.toLowerCase()) stateClass="cancel";
+            else if(lc === COLORS.closed.toLowerCase()) stateClass="closed";
+            else stateClass="";
+
+            row.innerHTML = `
+              <div>
+                <div><strong>${it.name}</strong></div>
+                <div class="small meta">Click para ir a la hoja</div>
+              </div>
+              <div title="Estado por color de pestaña">
+                <span class="state ${stateClass}"></span>
+              </div>
+            `;
+
+            // Navegar a la hoja al clic
+            row.addEventListener("click", ()=>selectSheet(it.name));
+            det.appendChild(row);
+          });
+
+          container.appendChild(det);
+        });
+
       });
-    } catch (e) {
-      console.error(e);
-      event.completed();
+    }catch(err){
+      console.error(err);
+      container.innerHTML = "No se pudo cargar el menú.";
     }
   }
 
-  // Exponer funciones para ExecuteFunction
-  window.ribbonRefresh = ribbonRefresh;
+  async function selectSheet(name){
+    try{
+      await Excel.run(async (ctx)=>{
+        const ws = ctx.workbook.worksheets.getItem(name);
+        ws.activate();
+        await ctx.sync();
+      });
+    }catch(e){ console.error(e); }
+  }
+
+  async function createTour(ev){
+    ev.preventDefault();
+    const name = document.getElementById("tourName").value.trim();
+    const template = document.getElementById("template").value.trim();
+    const dateStr = document.getElementById("tourDate").value; // yyyy-mm-dd
+
+    if(!name || !template || !dateStr){ alert("Completa nombre, plantilla y fecha."); return; }
+
+    // Formatear dd.mm
+    const d = new Date(dateStr);
+    const dd = String(d.getDate()).padStart(2,"0");
+    const mm = String(d.getMonth()+1).padStart(2,"0");
+    const finalName = `${name} ${dd}.${mm}`;
+
+    try{
+      await Excel.run(async (ctx)=>{
+        const wb = ctx.workbook;
+        const tpl = wb.worksheets.getItem(template);
+        tpl.load("name");
+        await ctx.sync();
+
+        // Copiar plantilla al final
+        const copy = tpl.copy(Excel.WorksheetPositionType.end);
+        copy.load("name");
+        await ctx.sync();
+
+        // Renombrar
+        copy.name = finalName;
+        // Color de abierto
+        copy.tabColor = COLORS.open;
+
+        await ctx.sync();
+      });
+
+      // limpiar y recargar
+      document.getElementById("formNew").reset();
+      document.getElementById("newTour").style.display = "none";
+      triggerRefresh();
+    }catch(err){
+      console.error(err);
+      alert("No se pudo crear la hoja. Verifica que existan las plantillas 'Nacional' e 'Internacional'.");
+    }
+  }
 </script>
 </body>
 </html>
