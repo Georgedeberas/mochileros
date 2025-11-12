@@ -5,14 +5,15 @@
            xmlns:ov="http://schemas.microsoft.com/office/mailappversionoverrides/1.1"
            xsi:type="TaskPaneApp">
 
+  <!-- Sube la versión para forzar recarga -->
   <Id>c25e52c8-4d45-4a87-91f7-56d8a36fd009</Id>
-  <Version>1.0.0.0</Version>
+  <Version>1.0.1.0</Version>
   <ProviderName>Mochileros RD</ProviderName>
   <DefaultLocale>es-ES</DefaultLocale>
-  <DisplayName DefaultValue="Mochileros RD - Pruebas de interfaz" />
-  <Description DefaultValue="Prueba visual de pestañas, botones, menús y galerías en Excel Add-in." />
-  <IconUrl DefaultValue="https://cdn-icons-png.flaticon.com/512/3208/3208707.png" />
-  <SupportUrl DefaultValue="https://georgedeberas.github.io/mochileros/" />
+  <DisplayName DefaultValue="Mochileros RD"/>
+  <Description DefaultValue="Pestaña de prueba: botones, menús y split-button en la cinta."/>
+  <IconUrl DefaultValue="https://cdn-icons-png.flaticon.com/512/3208/3208707.png"/>
+  <SupportUrl DefaultValue="https://georgedeberas.github.io/mochileros/"/>
 
   <AppDomains>
     <AppDomain>https://georgedeberas.github.io</AppDomain>
@@ -22,163 +23,133 @@
     <Host Name="Workbook"/>
   </Hosts>
 
+  <Requirements>
+    <Sets DefaultMinVersion="1.1">
+      <Set Name="RibbonApi"/>
+    </Sets>
+  </Requirements>
+
   <DefaultSettings>
-    <SourceLocation DefaultValue="https://georgedeberas.github.io/mochileros/index.html"/>
+    <SourceLocation DefaultValue="https://georgedeberas.github.io/mochileros/index.html?v=101"/>
   </DefaultSettings>
 
   <Permissions>ReadWriteDocument</Permissions>
 
-  <VersionOverrides xmlns="http://schemas.microsoft.com/office/mailappversionoverrides/1.1" xsi:type="VersionOverridesV1_1">
+  <VersionOverrides xsi:type="VersionOverridesV1_1"
+    xmlns="http://schemas.microsoft.com/office/mailappversionoverrides/1.1">
 
     <Hosts>
       <Host xsi:type="Workbook">
-        <Runtimes>
-          <Runtime resid="Commands.Url" lifetime="long" />
-        </Runtimes>
-        <ExtensionPoint xsi:type="PrimaryCommandSurface">
 
-          <!-- ====================================================== -->
-          <!-- 🟧 PESTAÑA PRINCIPAL - Mochileros RD -->
-          <!-- ====================================================== -->
-          <CustomTab id="TabMochileros">
-            <Label resid="TabMochileros.Label"/>
-            <Group id="GroupMain" label="Principal">
-              <Control xsi:type="Button" id="BtnAbrirPanel">
-                <Label resid="BtnAbrirPanel.Label"/>
+        <!-- Runtime para comandos de cinta -->
+        <Runtimes>
+          <Runtime resid="Commands.Url" lifetime="long"/>
+        </Runtimes>
+
+        <!-- CINTA -->
+        <ExtensionPoint xsi:type="PrimaryCommandSurface">
+          <!-- UNA sola pestaña, con varios grupos -->
+          <CustomTab id="Tab.Mochileros">
+            <Label resid="Tab.Label"/>
+
+            <!-- Grupo: Principal -->
+            <Group id="Group.Main" label="Principal">
+              <Control xsi:type="Button" id="Cmd.OpenPane">
+                <Label resid="Cmd.OpenPane.Label"/>
                 <Icon>
-                  <bt:Image size="16" resid="IconAbrir"/>
+                  <bt:Image size="16" resid="Icon.Open"/>
                 </Icon>
                 <Action xsi:type="ShowTaskpane">
                   <SourceLocation resid="Taskpane.Url"/>
                 </Action>
               </Control>
             </Group>
-          </CustomTab>
 
-          <!-- ====================================================== -->
-          <!-- 🧩 PESTAÑA 1 - BOTONES -->
-          <!-- ====================================================== -->
-          <CustomTab id="TabPrueba1">
-            <Label resid="TabPrueba1.Label"/>
-            <Group id="GroupButtons" label="Botones básicos">
-              <Control xsi:type="Button" id="BtnSimple">
-                <Label resid="BtnSimple.Label"/>
+            <!-- Grupo: Botones -->
+            <Group id="Group.Buttons" label="Botones">
+              <Control xsi:type="Button" id="Cmd.Simple">
+                <Label resid="Cmd.Simple.Label"/>
                 <Icon>
-                  <bt:Image size="16" resid="IconSimple"/>
+                  <bt:Image size="16" resid="Icon.Dot"/>
                 </Icon>
                 <Action xsi:type="ExecuteFunction">
                   <FunctionName>accionBasica</FunctionName>
                 </Action>
               </Control>
-              <Control xsi:type="Button" id="BtnConIcono">
-                <Label resid="BtnConIcono.Label"/>
+
+              <Control xsi:type="Button" id="Cmd.Icon">
+                <Label resid="Cmd.Icon.Label"/>
                 <Icon>
-                  <bt:Image size="16" resid="IconAdd"/>
+                  <bt:Image size="16" resid="Icon.Add"/>
                 </Icon>
                 <Action xsi:type="ExecuteFunction">
                   <FunctionName>accionIcono</FunctionName>
                 </Action>
               </Control>
             </Group>
-          </CustomTab>
 
-          <!-- ====================================================== -->
-          <!-- 🧩 PESTAÑA 2 - MENÚS -->
-          <!-- ====================================================== -->
-          <CustomTab id="TabPrueba2">
-            <Label resid="TabPrueba2.Label"/>
-            <Group id="GroupMenus" label="Menús desplegables">
-              <Control xsi:type="Menu" id="MenuDesplegable">
-                <Label resid="MenuDesplegable.Label"/>
+            <!-- Grupo: Menús -->
+            <Group id="Group.Menus" label="Menús">
+              <Control xsi:type="Menu" id="Cmd.Menu">
+                <Label resid="Cmd.Menu.Label"/>
                 <Icon>
-                  <bt:Image size="16" resid="IconMenu"/>
+                  <bt:Image size="16" resid="Icon.Menu"/>
                 </Icon>
                 <Items>
-                  <Item id="MenuItem1" label="Opción A" onAction="menuAccionA"/>
-                  <Item id="MenuItem2" label="Opción B" onAction="menuAccionB"/>
+                  <Item id="Menu.A" label="Opción A" onAction="menuAccionA"/>
+                  <!-- “Separador” simulado: item deshabilitado -->
+                  <Item id="Menu.Sep" label="──────────" enabled="false"/>
+                  <Item id="Menu.B" label="Opción B" onAction="menuAccionB"/>
                 </Items>
               </Control>
-              <Control xsi:type="SplitButton" id="MenuDividido">
-                <Label resid="MenuDividido.Label"/>
+            </Group>
+
+            <!-- Grupo: Menú dividido -->
+            <Group id="Group.Split" label="Menú dividido">
+              <Control xsi:type="SplitButton" id="Cmd.Split">
+                <Label resid="Cmd.Split.Label"/>
                 <Icon>
-                  <bt:Image size="16" resid="IconSplit"/>
+                  <bt:Image size="16" resid="Icon.Split"/>
                 </Icon>
                 <Action xsi:type="ExecuteFunction">
                   <FunctionName>accionPrincipal</FunctionName>
                 </Action>
                 <Menu>
                   <Items>
-                    <Item id="SplitItem1" label="Subacción 1" onAction="accionSub1"/>
-                    <Item id="SplitItem2" label="Subacción 2" onAction="accionSub2"/>
+                    <Item id="Split.1" label="Subacción 1" onAction="accionSub1"/>
+                    <Item id="Split.2" label="Subacción 2" onAction="accionSub2"/>
                   </Items>
                 </Menu>
               </Control>
             </Group>
-          </CustomTab>
 
-          <!-- ====================================================== -->
-          <!-- 🧩 PESTAÑA 3 - GALERÍAS -->
-          <!-- ====================================================== -->
-          <CustomTab id="TabPrueba3">
-            <Label resid="TabPrueba3.Label"/>
-            <Group id="GroupGallery" label="Galerías y separadores">
-              <Control xsi:type="Gallery" id="GalleryDemo">
-                <Label resid="GalleryDemo.Label"/>
-                <GalleryItems>
-                  <Item id="GalleryItem1" label="Rojo" icon="IconRed" onAction="colorRojo"/>
-                  <Item id="GalleryItem2" label="Verde" icon="IconGreen" onAction="colorVerde"/>
-                  <Item id="GalleryItem3" label="Azul" icon="IconBlue" onAction="colorAzul"/>
-                </GalleryItems>
-              </Control>
-              <Control xsi:type="Separator" id="Separator1"/>
-              <Control xsi:type="Button" id="BtnFinal">
-                <Label resid="BtnFinal.Label"/>
-                <Icon>
-                  <bt:Image size="16" resid="IconCheck"/>
-                </Icon>
-                <Action xsi:type="ExecuteFunction">
-                  <FunctionName>accionFinal</FunctionName>
-                </Action>
-              </Control>
-            </Group>
           </CustomTab>
-
         </ExtensionPoint>
       </Host>
     </Hosts>
 
     <Resources>
       <bt:Images>
-        <bt:Image id="IconAbrir" DefaultValue="https://cdn-icons-png.flaticon.com/512/3208/3208707.png"/>
-        <bt:Image id="IconSimple" DefaultValue="https://cdn-icons-png.flaticon.com/512/1828/1828817.png"/>
-        <bt:Image id="IconAdd" DefaultValue="https://cdn-icons-png.flaticon.com/512/1828/1828919.png"/>
-        <bt:Image id="IconMenu" DefaultValue="https://cdn-icons-png.flaticon.com/512/2099/2099153.png"/>
-        <bt:Image id="IconSplit" DefaultValue="https://cdn-icons-png.flaticon.com/512/1828/1828749.png"/>
-        <bt:Image id="IconRed" DefaultValue="https://cdn-icons-png.flaticon.com/512/32/32195.png"/>
-        <bt:Image id="IconGreen" DefaultValue="https://cdn-icons-png.flaticon.com/512/32/32324.png"/>
-        <bt:Image id="IconBlue" DefaultValue="https://cdn-icons-png.flaticon.com/512/32/32177.png"/>
-        <bt:Image id="IconCheck" DefaultValue="https://cdn-icons-png.flaticon.com/512/1828/1828640.png"/>
+        <bt:Image id="Icon.Open"  DefaultValue="https://cdn-icons-png.flaticon.com/512/3208/3208707.png"/>
+        <bt:Image id="Icon.Dot"   DefaultValue="https://cdn-icons-png.flaticon.com/512/1828/1828817.png"/>
+        <bt:Image id="Icon.Add"   DefaultValue="https://cdn-icons-png.flaticon.com/512/1828/1828919.png"/>
+        <bt:Image id="Icon.Menu"  DefaultValue="https://cdn-icons-png.flaticon.com/512/2099/2099153.png"/>
+        <bt:Image id="Icon.Split" DefaultValue="https://cdn-icons-png.flaticon.com/512/1828/1828749.png"/>
       </bt:Images>
 
       <bt:Urls>
-        <bt:Url id="Taskpane.Url" DefaultValue="https://georgedeberas.github.io/mochileros/index.html"/>
-        <bt:Url id="Commands.Url" DefaultValue="https://georgedeberas.github.io/mochileros/commands.html"/>
+        <bt:Url id="Taskpane.Url"  DefaultValue="https://georgedeberas.github.io/mochileros/index.html?v=101"/>
+        <bt:Url id="Commands.Url"  DefaultValue="https://georgedeberas.github.io/mochileros/commands.html?v=101"/>
       </bt:Urls>
 
       <bt:ShortStrings>
-        <bt:String id="TabMochileros.Label" DefaultValue="Mochileros RD"/>
-        <bt:String id="TabPrueba1.Label" DefaultValue="Prueba 1"/>
-        <bt:String id="TabPrueba2.Label" DefaultValue="Prueba 2"/>
-        <bt:String id="TabPrueba3.Label" DefaultValue="Prueba 3"/>
-        <bt:String id="BtnAbrirPanel.Label" DefaultValue="Abrir panel"/>
-        <bt:String id="BtnSimple.Label" DefaultValue="Botón simple"/>
-        <bt:String id="BtnConIcono.Label" DefaultValue="Botón con icono"/>
-        <bt:String id="MenuDesplegable.Label" DefaultValue="Menú desplegable"/>
-        <bt:String id="MenuDividido.Label" DefaultValue="Menú dividido"/>
-        <bt:String id="GalleryDemo.Label" DefaultValue="Galería de colores"/>
-        <bt:String id="BtnFinal.Label" DefaultValue="Finalizar"/>
+        <bt:String id="Tab.Label"             DefaultValue="Mochileros RD"/>
+        <bt:String id="Cmd.OpenPane.Label"    DefaultValue="Abrir panel"/>
+        <bt:String id="Cmd.Simple.Label"      DefaultValue="Botón simple"/>
+        <bt:String id="Cmd.Icon.Label"        DefaultValue="Botón con ícono"/>
+        <bt:String id="Cmd.Menu.Label"        DefaultValue="Menú"/>
+        <bt:String id="Cmd.Split.Label"       DefaultValue="Menú dividido"/>
       </bt:ShortStrings>
     </Resources>
-
   </VersionOverrides>
 </OfficeApp>
