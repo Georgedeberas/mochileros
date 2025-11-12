@@ -2,17 +2,21 @@
 <OfficeApp xmlns="http://schemas.microsoft.com/office/appforoffice/1.1"
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xmlns:bt="http://schemas.microsoft.com/office/officeappbasictypes/1.0"
-           xmlns:ov="http://schemas.microsoft.com/office/taskpaneappversionoverrides"
+           xmlns:ov="http://schemas.microsoft.com/office/mailappversionoverrides/1.1"
            xsi:type="TaskPaneApp">
 
-  <Id>f3b7a6f5-0a45-4c0e-9c26-8a5bb9b0b7b0</Id>
-  <Version>1.4.0.0</Version>
+  <Id>c25e52c8-4d45-4a87-91f7-56d8a36fd009</Id>
+  <Version>1.0.0.0</Version>
   <ProviderName>Mochileros RD</ProviderName>
   <DefaultLocale>es-ES</DefaultLocale>
-  <DisplayName DefaultValue="Mochileros RD"/>
-  <Description DefaultValue="Complemento para Excel con panel lateral, pestaña personalizada y actualización automática desde GitHub Pages."/>
-  <IconUrl DefaultValue="https://georgedeberas.github.io/mochileros/icon-32.png"/>
-  <SupportUrl DefaultValue="https://georgedeberas.github.io/mochileros/"/>
+  <DisplayName DefaultValue="Mochileros RD - Pruebas de interfaz" />
+  <Description DefaultValue="Prueba visual de pestañas, botones, menús y galerías en Excel Add-in." />
+  <IconUrl DefaultValue="https://cdn-icons-png.flaticon.com/512/3208/3208707.png" />
+  <SupportUrl DefaultValue="https://georgedeberas.github.io/mochileros/" />
+
+  <AppDomains>
+    <AppDomain>https://georgedeberas.github.io</AppDomain>
+  </AppDomains>
 
   <Hosts>
     <Host Name="Workbook"/>
@@ -24,111 +28,157 @@
 
   <Permissions>ReadWriteDocument</Permissions>
 
-  <VersionOverrides xmlns="http://schemas.microsoft.com/office/taskpaneappversionoverrides" Version="1.0">
+  <VersionOverrides xmlns="http://schemas.microsoft.com/office/mailappversionoverrides/1.1" xsi:type="VersionOverridesV1_1">
+
     <Hosts>
       <Host xsi:type="Workbook">
-        <DesktopFormFactor>
-          <SupportsPinning>true</SupportsPinning>
-          <FunctionFile resid="Commands.Url"/>
+        <Runtimes>
+          <Runtime resid="Commands.Url" lifetime="long" />
+        </Runtimes>
+        <ExtensionPoint xsi:type="PrimaryCommandSurface">
 
-          <ExtensionPoint xsi:type="PrimaryCommandSurface">
-            <CustomTab id="Mochileros.Tab">
-              <Label resid="TabLabel"/>
-
-              <Group id="Mochileros.Group">
-                <Label resid="GroupLabel"/>
+          <!-- ====================================================== -->
+          <!-- 🟧 PESTAÑA PRINCIPAL - Mochileros RD -->
+          <!-- ====================================================== -->
+          <CustomTab id="TabMochileros">
+            <Label resid="TabMochileros.Label"/>
+            <Group id="GroupMain" label="Principal">
+              <Control xsi:type="Button" id="BtnAbrirPanel">
+                <Label resid="BtnAbrirPanel.Label"/>
                 <Icon>
-                  <bt:Image size="16" resid="Icon16"/>
-                  <bt:Image size="32" resid="Icon32"/>
-                  <bt:Image size="80" resid="Icon80"/>
+                  <bt:Image size="16" resid="IconAbrir"/>
                 </Icon>
+                <Action xsi:type="ShowTaskpane">
+                  <SourceLocation resid="Taskpane.Url"/>
+                </Action>
+              </Control>
+            </Group>
+          </CustomTab>
 
-                <!-- Abrir panel -->
-                <Control xsi:type="Button" id="BtnOpen">
-                  <Label resid="BtnOpen.Label"/>
-                  <Supertip>
-                    <Title resid="BtnOpen.Label"/>
-                    <Description resid="BtnOpen.Tip"/>
-                  </Supertip>
-                  <Icon>
-                    <bt:Image size="16" resid="Icon16"/>
-                    <bt:Image size="32" resid="Icon32"/>
-                    <bt:Image size="80" resid="Icon80"/>
-                  </Icon>
-                  <Action xsi:type="ShowTaskpane">
-                    <TaskpaneId>Taskpane1</TaskpaneId>
-                    <SourceLocation resid="Taskpane.Url"/>
-                  </Action>
-                </Control>
+          <!-- ====================================================== -->
+          <!-- 🧩 PESTAÑA 1 - BOTONES -->
+          <!-- ====================================================== -->
+          <CustomTab id="TabPrueba1">
+            <Label resid="TabPrueba1.Label"/>
+            <Group id="GroupButtons" label="Botones básicos">
+              <Control xsi:type="Button" id="BtnSimple">
+                <Label resid="BtnSimple.Label"/>
+                <Icon>
+                  <bt:Image size="16" resid="IconSimple"/>
+                </Icon>
+                <Action xsi:type="ExecuteFunction">
+                  <FunctionName>accionBasica</FunctionName>
+                </Action>
+              </Control>
+              <Control xsi:type="Button" id="BtnConIcono">
+                <Label resid="BtnConIcono.Label"/>
+                <Icon>
+                  <bt:Image size="16" resid="IconAdd"/>
+                </Icon>
+                <Action xsi:type="ExecuteFunction">
+                  <FunctionName>accionIcono</FunctionName>
+                </Action>
+              </Control>
+            </Group>
+          </CustomTab>
 
-                <!-- Actualizar manualmente -->
-                <Control xsi:type="Button" id="BtnHardReload">
-                  <Label resid="BtnHardReload.Label"/>
-                  <Supertip>
-                    <Title resid="BtnHardReload.Label"/>
-                    <Description resid="BtnHardReload.Tip"/>
-                  </Supertip>
-                  <Icon>
-                    <bt:Image size="16" resid="Icon16"/>
-                    <bt:Image size="32" resid="Icon32"/>
-                    <bt:Image size="80" resid="Icon80"/>
-                  </Icon>
-                  <Action xsi:type="ExecuteFunction">
-                    <FunctionName>ribbonHardReload</FunctionName>
-                  </Action>
-                </Control>
+          <!-- ====================================================== -->
+          <!-- 🧩 PESTAÑA 2 - MENÚS -->
+          <!-- ====================================================== -->
+          <CustomTab id="TabPrueba2">
+            <Label resid="TabPrueba2.Label"/>
+            <Group id="GroupMenus" label="Menús desplegables">
+              <Control xsi:type="Menu" id="MenuDesplegable">
+                <Label resid="MenuDesplegable.Label"/>
+                <Icon>
+                  <bt:Image size="16" resid="IconMenu"/>
+                </Icon>
+                <Items>
+                  <Item id="MenuItem1" label="Opción A" onAction="menuAccionA"/>
+                  <Item id="MenuItem2" label="Opción B" onAction="menuAccionB"/>
+                </Items>
+              </Control>
+              <Control xsi:type="SplitButton" id="MenuDividido">
+                <Label resid="MenuDividido.Label"/>
+                <Icon>
+                  <bt:Image size="16" resid="IconSplit"/>
+                </Icon>
+                <Action xsi:type="ExecuteFunction">
+                  <FunctionName>accionPrincipal</FunctionName>
+                </Action>
+                <Menu>
+                  <Items>
+                    <Item id="SplitItem1" label="Subacción 1" onAction="accionSub1"/>
+                    <Item id="SplitItem2" label="Subacción 2" onAction="accionSub2"/>
+                  </Items>
+                </Menu>
+              </Control>
+            </Group>
+          </CustomTab>
 
-                <!-- Desinstalar -->
-                <Control xsi:type="Button" id="BtnUninstall">
-                  <Label resid="BtnUninstall.Label"/>
-                  <Supertip>
-                    <Title resid="BtnUninstall.Label"/>
-                    <Description resid="BtnUninstall.Tip"/>
-                  </Supertip>
-                  <Icon>
-                    <bt:Image size="16" resid="Icon16"/>
-                    <bt:Image size="32" resid="Icon32"/>
-                    <bt:Image size="80" resid="Icon80"/>
-                  </Icon>
-                  <Action xsi:type="ExecuteFunction">
-                    <FunctionName>openUninstallGuide</FunctionName>
-                  </Action>
-                </Control>
+          <!-- ====================================================== -->
+          <!-- 🧩 PESTAÑA 3 - GALERÍAS -->
+          <!-- ====================================================== -->
+          <CustomTab id="TabPrueba3">
+            <Label resid="TabPrueba3.Label"/>
+            <Group id="GroupGallery" label="Galerías y separadores">
+              <Control xsi:type="Gallery" id="GalleryDemo">
+                <Label resid="GalleryDemo.Label"/>
+                <GalleryItems>
+                  <Item id="GalleryItem1" label="Rojo" icon="IconRed" onAction="colorRojo"/>
+                  <Item id="GalleryItem2" label="Verde" icon="IconGreen" onAction="colorVerde"/>
+                  <Item id="GalleryItem3" label="Azul" icon="IconBlue" onAction="colorAzul"/>
+                </GalleryItems>
+              </Control>
+              <Control xsi:type="Separator" id="Separator1"/>
+              <Control xsi:type="Button" id="BtnFinal">
+                <Label resid="BtnFinal.Label"/>
+                <Icon>
+                  <bt:Image size="16" resid="IconCheck"/>
+                </Icon>
+                <Action xsi:type="ExecuteFunction">
+                  <FunctionName>accionFinal</FunctionName>
+                </Action>
+              </Control>
+            </Group>
+          </CustomTab>
 
-              </Group>
-            </CustomTab>
-          </ExtensionPoint>
-        </DesktopFormFactor>
+        </ExtensionPoint>
       </Host>
     </Hosts>
 
     <Resources>
       <bt:Images>
-        <bt:Image id="Icon16" DefaultValue="https://georgedeberas.github.io/mochileros/icon-16.png"/>
-        <bt:Image id="Icon32" DefaultValue="https://georgedeberas.github.io/mochileros/icon-32.png"/>
-        <bt:Image id="Icon80" DefaultValue="https://georgedeberas.github.io/mochileros/icon-80.png"/>
+        <bt:Image id="IconAbrir" DefaultValue="https://cdn-icons-png.flaticon.com/512/3208/3208707.png"/>
+        <bt:Image id="IconSimple" DefaultValue="https://cdn-icons-png.flaticon.com/512/1828/1828817.png"/>
+        <bt:Image id="IconAdd" DefaultValue="https://cdn-icons-png.flaticon.com/512/1828/1828919.png"/>
+        <bt:Image id="IconMenu" DefaultValue="https://cdn-icons-png.flaticon.com/512/2099/2099153.png"/>
+        <bt:Image id="IconSplit" DefaultValue="https://cdn-icons-png.flaticon.com/512/1828/1828749.png"/>
+        <bt:Image id="IconRed" DefaultValue="https://cdn-icons-png.flaticon.com/512/32/32195.png"/>
+        <bt:Image id="IconGreen" DefaultValue="https://cdn-icons-png.flaticon.com/512/32/32324.png"/>
+        <bt:Image id="IconBlue" DefaultValue="https://cdn-icons-png.flaticon.com/512/32/32177.png"/>
+        <bt:Image id="IconCheck" DefaultValue="https://cdn-icons-png.flaticon.com/512/1828/1828640.png"/>
       </bt:Images>
 
       <bt:Urls>
         <bt:Url id="Taskpane.Url" DefaultValue="https://georgedeberas.github.io/mochileros/index.html"/>
         <bt:Url id="Commands.Url" DefaultValue="https://georgedeberas.github.io/mochileros/commands.html"/>
-        <bt:Url id="Uninstall.Url" DefaultValue="https://georgedeberas.github.io/mochileros/uninstall.html"/>
-        <bt:Url id="Version.Url" DefaultValue="https://georgedeberas.github.io/mochileros/version.json"/>
       </bt:Urls>
 
       <bt:ShortStrings>
-        <bt:String id="TabLabel" DefaultValue="Mochileros RD"/>
-        <bt:String id="GroupLabel" DefaultValue="Herramientas"/>
-        <bt:String id="BtnOpen.Label" DefaultValue="Abrir panel"/>
-        <bt:String id="BtnHardReload.Label" DefaultValue="Actualizar"/>
-        <bt:String id="BtnUninstall.Label" DefaultValue="Desinstalar"/>
+        <bt:String id="TabMochileros.Label" DefaultValue="Mochileros RD"/>
+        <bt:String id="TabPrueba1.Label" DefaultValue="Prueba 1"/>
+        <bt:String id="TabPrueba2.Label" DefaultValue="Prueba 2"/>
+        <bt:String id="TabPrueba3.Label" DefaultValue="Prueba 3"/>
+        <bt:String id="BtnAbrirPanel.Label" DefaultValue="Abrir panel"/>
+        <bt:String id="BtnSimple.Label" DefaultValue="Botón simple"/>
+        <bt:String id="BtnConIcono.Label" DefaultValue="Botón con icono"/>
+        <bt:String id="MenuDesplegable.Label" DefaultValue="Menú desplegable"/>
+        <bt:String id="MenuDividido.Label" DefaultValue="Menú dividido"/>
+        <bt:String id="GalleryDemo.Label" DefaultValue="Galería de colores"/>
+        <bt:String id="BtnFinal.Label" DefaultValue="Finalizar"/>
       </bt:ShortStrings>
-
-      <bt:LongStrings>
-        <bt:String id="BtnOpen.Tip" DefaultValue="Abrir el panel lateral de Mochileros RD."/>
-        <bt:String id="BtnHardReload.Tip" DefaultValue="Forzar recarga de archivos desde GitHub (cache-buster)."/>
-        <bt:String id="BtnUninstall.Tip" DefaultValue="Abrir guía para quitar el complemento Mochileros RD."/>
-      </bt:LongStrings>
     </Resources>
+
   </VersionOverrides>
 </OfficeApp>
