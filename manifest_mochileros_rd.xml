@@ -5,13 +5,12 @@
            xmlns:ov="http://schemas.microsoft.com/office/taskpaneappversionoverrides"
            xsi:type="TaskPaneApp">
 
-  <!-- Identidad -->
   <Id>f3b7a6f5-0a45-4c0e-9c26-8a5bb9b0b7b0</Id>
-  <Version>1.2.0.0</Version>
+  <Version>1.3.0.0</Version>
   <ProviderName>Mochileros RD</ProviderName>
   <DefaultLocale>es-ES</DefaultLocale>
   <DisplayName DefaultValue="Mochileros RD"/>
-  <Description DefaultValue="Complemento de Excel con panel lateral y grupo propio en la pestaña Complementos."/>
+  <Description DefaultValue="Panel lateral y pestaña propia para organizar tours por mes y crear hojas desde plantillas."/>
   <IconUrl DefaultValue="https://georgedeberas.github.io/mochileros/icon-32.png"/>
   <SupportUrl DefaultValue="https://georgedeberas.github.io/mochileros/"/>
 
@@ -29,12 +28,14 @@
     <Hosts>
       <Host xsi:type="Workbook">
         <DesktopFormFactor>
+          <SupportsPinning>true</SupportsPinning>
           <FunctionFile resid="Commands.Url"/>
 
-          <!-- Grupo en la pestaña superior 'Complementos' -->
+          <!-- 1) Pestaña PROPIA en la cinta -->
           <ExtensionPoint xsi:type="PrimaryCommandSurface">
-            <OfficeTab id="TabAddIns">
-              <Group id="Mochileros.Group">
+            <CustomTab id="Mochileros.Tab">
+              <Label resid="TabLabel"/>
+              <Group id="Mochileros.Group.Custom">
                 <Label resid="GroupLabel"/>
                 <Icon>
                   <bt:Image size="16" resid="Icon16"/>
@@ -42,7 +43,7 @@
                   <bt:Image size="80" resid="Icon80"/>
                 </Icon>
 
-                <!-- Abrir panel (taskpane) -->
+                <!-- Abrir panel -->
                 <Control xsi:type="Button" id="Mochileros.Button.Open">
                   <Label resid="BtnOpen.Label"/>
                   <Supertip>
@@ -60,12 +61,12 @@
                   </Action>
                 </Control>
 
-                <!-- Actualizar (señal a panel mediante Settings) -->
-                <Control xsi:type="Button" id="Mochileros.Button.Refresh">
-                  <Label resid="BtnRefresh.Label"/>
+                <!-- Actualizar (archivos desde GitHub) -->
+                <Control xsi:type="Button" id="Mochileros.Button.HardReload">
+                  <Label resid="BtnHardReload.Label"/>
                   <Supertip>
-                    <Title resid="BtnRefresh.Label"/>
-                    <Description resid="BtnRefresh.Tip"/>
+                    <Title resid="BtnHardReload.Label"/>
+                    <Description resid="BtnHardReload.Tip"/>
                   </Supertip>
                   <Icon>
                     <bt:Image size="16" resid="Icon16"/>
@@ -73,25 +74,60 @@
                     <bt:Image size="80" resid="Icon80"/>
                   </Icon>
                   <Action xsi:type="ExecuteFunction">
-                    <FunctionName>ribbonRefresh</FunctionName>
+                    <FunctionName>ribbonHardReload</FunctionName>
                   </Action>
                 </Control>
 
-                <!-- Nuevo tour (abre/trae al frente el panel) -->
-                <Control xsi:type="Button" id="Mochileros.Button.New">
-                  <Label resid="BtnNew.Label"/>
+                <!-- Desinstalar (abre asistente) -->
+                <Control xsi:type="Button" id="Mochileros.Button.Uninstall">
+                  <Label resid="BtnUninstall.Label"/>
                   <Supertip>
-                    <Title resid="BtnNew.Label"/>
-                    <Description resid="BtnNew.Tip"/>
+                    <Title resid="BtnUninstall.Label"/>
+                    <Description resid="BtnUninstall.Tip"/>
                   </Supertip>
                   <Icon>
                     <bt:Image size="16" resid="Icon16"/>
                     <bt:Image size="32" resid="Icon32"/>
                     <bt:Image size="80" resid="Icon80"/>
                   </Icon>
+                  <Action xsi:type="ExecuteFunction">
+                    <FunctionName>openUninstallGuide</FunctionName>
+                  </Action>
+                </Control>
+              </Group>
+            </CustomTab>
+          </ExtensionPoint>
+
+          <!-- 2) Copia del grupo en pestaña Complementos (compatibilidad) -->
+          <ExtensionPoint xsi:type="PrimaryCommandSurface">
+            <OfficeTab id="TabAddIns">
+              <Group id="Mochileros.Group.Addins">
+                <Label resid="GroupLabel"/>
+                <Icon>
+                  <bt:Image size="16" resid="Icon16"/>
+                  <bt:Image size="32" resid="Icon32"/>
+                  <bt:Image size="80" resid="Icon80"/>
+                </Icon>
+
+                <Control xsi:type="Button" id="Mochileros.Button.Open2">
+                  <Label resid="BtnOpen.Label"/>
                   <Action xsi:type="ShowTaskpane">
                     <TaskpaneId>Taskpane1</TaskpaneId>
                     <SourceLocation resid="Taskpane.Url"/>
+                  </Action>
+                </Control>
+
+                <Control xsi:type="Button" id="Mochileros.Button.HardReload2">
+                  <Label resid="BtnHardReload.Label"/>
+                  <Action xsi:type="ExecuteFunction">
+                    <FunctionName>ribbonHardReload</FunctionName>
+                  </Action>
+                </Control>
+
+                <Control xsi:type="Button" id="Mochileros.Button.Uninstall2">
+                  <Label resid="BtnUninstall.Label"/>
+                  <Action xsi:type="ExecuteFunction">
+                    <FunctionName>openUninstallGuide</FunctionName>
                   </Action>
                 </Control>
               </Group>
@@ -101,7 +137,6 @@
       </Host>
     </Hosts>
 
-    <!-- Recursos -->
     <Resources>
       <bt:Images>
         <bt:Image id="Icon16" DefaultValue="https://georgedeberas.github.io/mochileros/icon-16.png"/>
@@ -110,21 +145,23 @@
       </bt:Images>
 
       <bt:Urls>
-        <bt:Url id="Taskpane.Url" DefaultValue="https://georgedeberas.github.io/mochileros/index.html"/>
-        <bt:Url id="Commands.Url" DefaultValue="https://georgedeberas.github.io/mochileros/commands.html"/>
+        <bt:Url id="Taskpane.Url"   DefaultValue="https://georgedeberas.github.io/mochileros/index.html"/>
+        <bt:Url id="Commands.Url"   DefaultValue="https://georgedeberas.github.io/mochileros/commands.html"/>
+        <bt:Url id="Uninstall.Url"  DefaultValue="https://georgedeberas.github.io/mochileros/uninstall.html"/>
       </bt:Urls>
 
       <bt:ShortStrings>
-        <bt:String id="GroupLabel" DefaultValue="Mochileros RD"/>
-        <bt:String id="BtnOpen.Label" DefaultValue="Abrir panel"/>
-        <bt:String id="BtnRefresh.Label" DefaultValue="Actualizar"/>
-        <bt:String id="BtnNew.Label" DefaultValue="Nuevo tour"/>
+        <bt:String id="TabLabel"           DefaultValue="Mochileros RD"/>
+        <bt:String id="GroupLabel"         DefaultValue="Mochileros RD"/>
+        <bt:String id="BtnOpen.Label"      DefaultValue="Abrir panel"/>
+        <bt:String id="BtnHardReload.Label" DefaultValue="Actualizar"/>
+        <bt:String id="BtnUninstall.Label" DefaultValue="Desinstalar"/>
       </bt:ShortStrings>
 
       <bt:LongStrings>
-        <bt:String id="BtnOpen.Tip" DefaultValue="Abre el panel lateral del complemento Mochileros RD."/>
-        <bt:String id="BtnRefresh.Tip" DefaultValue="Actualiza el menú del panel (relee hojas/estados)."/>
-        <bt:String id="BtnNew.Tip" DefaultValue="Abre el panel para crear un nuevo tour."/>
+        <bt:String id="BtnOpen.Tip"        DefaultValue="Abrir el panel lateral del complemento."/>
+        <bt:String id="BtnHardReload.Tip"  DefaultValue="Forzar recarga de los archivos del panel desde GitHub (cache-buster)."/>
+        <bt:String id="BtnUninstall.Tip"   DefaultValue="Abrir asistente para desinstalar el complemento de forma segura."/>
       </bt:LongStrings>
     </Resources>
   </VersionOverrides>
