@@ -1,15 +1,65 @@
-:root{--orange:#f58320;--bg:#fff;--text:#1f1f1f;--soft:#f8f8f8}
+:root{
+  --orange:#f58320;
+  --bg:#fff;
+  --text:#1f1f1f;
+  --muted:#6d6d6d;
+  --soft:#f5f5f7;
+  --border:#eaeaea;
+  --chip:#f0f0f0;
+  --ok:#28a745;
+  --warn:#ffc107;
+  --closed:#111;
+}
 *{box-sizing:border-box}
 html,body{height:100%}
 body{margin:0;font-family:Segoe UI,system-ui,Roboto,Arial,sans-serif;background:var(--bg);color:var(--text)}
+
 .bar{
-  display:flex; align-items:center; gap:12px;
+  display:flex; align-items:center; gap:10px;
   padding:10px 12px; background:#fff; position:sticky; top:0; z-index:10;
-  border-bottom:1px solid #eee;
+  border-bottom:1px solid var(--border);
 }
 .bar strong{color:var(--orange)}
 .bar .spacer{flex:1}
-.bar button{
+
+.btn{
   background:var(--orange); color:#fff; border:0; border-radius:8px; padding:8px 12px; cursor:pointer;
+  font-weight:600;
 }
-.content{padding:14px}
+.btn:hover{opacity:.9}
+.btn-ghost{
+  background:#fff; color:var(--orange); border:1px solid var(--orange);
+}
+
+.tools{
+  display:flex; gap:8px; padding:10px 12px; border-bottom:1px solid var(--border); background:#fff;
+}
+.tools input[type="search"]{
+  flex:1; padding:8px 10px; border:1px solid var(--border); border-radius:8px;
+}
+
+.content{padding:12px}
+.empty{
+  background:var(--soft); border:1px dashed var(--border); border-radius:12px; padding:14px;
+}
+.month{
+  margin:10px 0; border:1px solid var(--border); border-radius:12px; overflow:hidden; background:#fff;
+}
+.month summary{
+  list-style:none; padding:10px 12px; cursor:pointer; user-select:none; display:flex; align-items:center; gap:8px;
+  background:#fff;
+}
+.month summary::marker{display:none}
+.month summary .badge{background:var(--chip); padding:4px 8px; border-radius:999px; font-size:12px; color:var(--muted)}
+.month .list{padding:8px 12px; display:grid; gap:8px}
+
+.card{
+  border:1px solid var(--border); border-radius:10px; padding:10px 12px; display:flex; align-items:center; gap:10px; background:#fff;
+}
+.card .title{font-weight:600}
+.card .meta{font-size:12px; color:var(--muted)}
+.dot{width:10px; height:10px; border-radius:50%}
+.dot.open{background:var(--ok)}
+.dot.cancel{background:#0b3d91}
+.dot.closed{background:var(--closed)}
+.dot.sys{background:#fcff3c;border:1px solid #d2d600}
