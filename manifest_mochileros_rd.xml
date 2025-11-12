@@ -1,104 +1,125 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <OfficeApp
-    xmlns="http://schemas.microsoft.com/office/appforoffice/1.1"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:bt="http://schemas.microsoft.com/office/officeappbasictypes/1.0"
-    xmlns:ov="http://schemas.microsoft.com/office/taskpaneappversionoverrides"
-    xsi:type="TaskPaneApp">
-  <Id>f6f8e5b6-5e1b-4af3-9b7a-6c22e7d0a9d5</Id>
+  xmlns="http://schemas.microsoft.com/office/appforoffice/1.1"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:bt="http://schemas.microsoft.com/office/officeappbasictypes/1.0"
+  xsi:type="TaskPaneApp">
+
+  <!-- NUEVO GUID PARA QUE EXCEL LO TRATE COMO UN ADD-IN DISTINTO -->
+  <Id>a3b7c5aa-5c83-4adf-9e2a-86cd9ba5321f</Id>
+
+  <!-- Puedes usar tu propio esquema de versiones -->
   <Version>1.0.0.0</Version>
+
   <ProviderName>Mochileros RD</ProviderName>
   <DefaultLocale>es-ES</DefaultLocale>
-  <DisplayName DefaultValue="Mochileros RD" />
-  <Description DefaultValue="Panel de navegación para tours de Mochileros RD." />
-  <IconUrl DefaultValue="https://georgedeberas.github.io/mochileros/icon-32.png" />
-  <HighResolutionIconUrl DefaultValue="https://georgedeberas.github.io/mochileros/icon-80.png" />
-  <SupportUrl DefaultValue="https://georgedeberas.github.io/mochileros/" />
 
+  <DisplayName DefaultValue="Mochileros RD" />
+  <Description DefaultValue="Mochileros RD - Panel de gestión de tours en Excel." />
+
+  <!-- Iconos principales del add-in -->
+  <IconUrl DefaultValue="https://georgedebaras.github.io/mochileros/icon-32.png" />
+  <HighResolutionIconUrl DefaultValue="https://georgedebaras.github.io/mochileros/icon-80.png" />
+
+  <!-- Página de soporte (puede ser tu landing del add-in) -->
+  <SupportUrl DefaultValue="https://georgedebaras.github.io/mochileros/" />
+
+  <!-- Dominios permitidos para cargar contenido -->
   <AppDomains>
-    <AppDomain>https://georgedeberas.github.io</AppDomain>
+    <AppDomain>https://georgedebaras.github.io</AppDomain>
   </AppDomains>
 
+  <!-- Tipo de host: Excel -->
   <Hosts>
     <Host Name="Workbook" />
   </Hosts>
 
-  <Requirements>
-    <Sets DefaultMinVersion="1.3">
-      <Set Name="ExcelApi" MinVersion="1.13" />
-    </Sets>
-  </Requirements>
-
+  <!-- Página que se carga cuando el usuario abre el add-in desde "Mi complementos" -->
   <DefaultSettings>
-    <SourceLocation DefaultValue="https://georgedeberas.github.io/mochileros/index.html" />
+    <SourceLocation DefaultValue="https://georgedebaras.github.io/mochileros/index.html" />
   </DefaultSettings>
 
+  <!-- Permisos: lectura/escritura sobre el libro -->
   <Permissions>ReadWriteDocument</Permissions>
 
-  <VersionOverrides xmlns="http://schemas.microsoft.com/office/taskpaneappversionoverrides"
-                    xsi:type="VersionOverridesV1_0">
+  <!-- Versión de comandos y cinta -->
+  <VersionOverrides xmlns="http://schemas.microsoft.com/office/taskpaneappversionoverrides" xsi:type="VersionOverridesV1_0">
 
     <Hosts>
       <Host xsi:type="Workbook">
+
         <DesktopFormFactor>
 
+          <!-- Pantalla inicial "Get started" que aparece en la UI de Office -->
           <GetStarted>
             <Title resid="GetStarted.Title" />
             <Description resid="GetStarted.Description" />
             <LearnMoreUrl resid="Support.Url" />
           </GetStarted>
 
-          <!-- Archivo que contiene las funciones de los botones de la cinta -->
+          <!-- Archivo JS que contiene las funciones que usan los botones de la cinta -->
           <FunctionFile resid="Commands.Url" />
 
-          <!-- Cinta personalizada -->
+          <!-- Definición de la cinta personalizada -->
           <ExtensionPoint xsi:type="PrimaryCommandSurface">
-            <CustomTab id="MochilerosRD.Tab">
-              <Label resid="Tab.Label" />
-              <Icon>
-                <bt:Image size="16" resid="Icon.16x16" />
-                <bt:Image size="32" resid="Icon.32x32" />
-                <bt:Image size="80" resid="Icon.80x80" />
-              </Icon>
 
+            <CustomTab id="MochilerosRD.Tab">
+              <!-- Nombre de la pestaña -->
+              <Label resid="Tab.Label" />
+
+              <!-- Grupo principal dentro de la pestaña -->
               <Group id="MochilerosRD.GroupMain">
                 <Label resid="Group.Main.Label" />
+
+                <!-- Icono del grupo (usa los mismos que el add-in) -->
                 <Icon>
                   <bt:Image size="16" resid="Icon.16x16" />
                   <bt:Image size="32" resid="Icon.32x32" />
                   <bt:Image size="80" resid="Icon.80x80" />
                 </Icon>
 
-                <!-- Botón 1: Activar panel (abre el panel lateral) -->
+                <!-- BOTÓN 1: ACTIVAR PANEL (abre el panel lateral derecho) -->
                 <Control xsi:type="Button" id="MochilerosRD.TogglePanel">
+
                   <Label resid="Button.TogglePanel.Label" />
+
                   <Supertip>
                     <Title resid="Button.TogglePanel.Label" />
                     <Description resid="Button.TogglePanel.Tooltip" />
                   </Supertip>
+
                   <Icon>
                     <bt:Image size="16" resid="Icon.16x16" />
                     <bt:Image size="32" resid="Icon.32x32" />
                     <bt:Image size="80" resid="Icon.80x80" />
                   </Icon>
+
                   <Action xsi:type="ShowTaskpane">
                     <TaskpaneId>MochilerosRD.Taskpane</TaskpaneId>
                     <SourceLocation resid="Taskpane.Url" />
                   </Action>
                 </Control>
 
-                <!-- Botón 2: Actualizar sistema (gancho para futuras mejoras) -->
+                <!-- BOTÓN 2: ACTUALIZAR SISTEMA (ejecuta función JS en commands.js) -->
                 <Control xsi:type="Button" id="MochilerosRD.UpdateSystem">
+
                   <Label resid="Button.UpdateSystem.Label" />
+
                   <Supertip>
                     <Title resid="Button.UpdateSystem.Label" />
                     <Description resid="Button.UpdateSystem.Tooltip" />
                   </Supertip>
+
                   <Icon>
                     <bt:Image size="16" resid="Icon.16x16" />
                     <bt:Image size="32" resid="Icon.32x32" />
                     <bt:Image size="80" resid="Icon.80x80" />
                   </Icon>
+
+                  <!-- IMPORTANTE:
+                       Aquí solo declaramos el nombre de la función JS.
+                       Debes implementar 'mochilerosUpdateSystem' en commands.js
+                  -->
                   <Action xsi:type="ExecuteFunction">
                     <FunctionName>mochilerosUpdateSystem</FunctionName>
                   </Action>
@@ -108,7 +129,7 @@
             </CustomTab>
           </ExtensionPoint>
 
-          <!-- Definición del taskpane para Insertar → Mis complementos -->
+          <!-- Definición del panel lateral -->
           <ExtensionPoint xsi:type="Taskpane">
             <TaskpaneId>MochilerosRD.Taskpane</TaskpaneId>
             <SourceLocation resid="Taskpane.Url" />
@@ -119,30 +140,53 @@
       </Host>
     </Hosts>
 
+    <!-- Recursos compartidos: iconos, URLs, textos -->
     <Resources>
+
+      <!-- Iconos usados en cinta y grupo -->
       <bt:Images>
-        <bt:Image id="Icon.16x16" DefaultValue="https://georgedeberas.github.io/mochileros/icon-16.png" />
-        <bt:Image id="Icon.32x32" DefaultValue="https://georgedeberas.github.io/mochileros/icon-32.png" />
-        <bt:Image id="Icon.80x80" DefaultValue="https://georgedeberas.github.io/mochileros/icon-80.png" />
+        <bt:Image id="Icon.16x16" DefaultValue="https://georgedebaras.github.io/mochileros/icon-16.png" />
+        <bt:Image id="Icon.32x32" DefaultValue="https://georgedebaras.github.io/mochileros/icon-32.png" />
+        <bt:Image id="Icon.80x80" DefaultValue="https://georgedebaras.github.io/mochileros/icon-80.png" />
       </bt:Images>
 
+      <!-- URLs usadas por la cinta y el panel -->
       <bt:Urls>
-        <bt:Url id="Taskpane.Url" DefaultValue="https://georgedeberas.github.io/mochileros/index.html" />
-        <bt:Url id="Commands.Url" DefaultValue="https://georgedeberas.github.io/mochileros/commands.html" />
-        <bt:Url id="Support.Url" DefaultValue="https://georgedeberas.github.io/mochileros/" />
+        <!-- JS de comandos de la cinta -->
+        <bt:Url id="Commands.Url" DefaultValue="https://georgedebaras.github.io/mochileros/commands.html" />
+        <!-- Panel lateral -->
+        <bt:Url id="Taskpane.Url" DefaultValue="https://georgedebaras.github.io/mochileros/index.html" />
+        <!-- Soporte / ayuda -->
+        <bt:Url id="Support.Url" DefaultValue="https://georgedebaras.github.io/mochileros/" />
       </bt:Urls>
 
+      <!-- Textos cortos (títulos, etiquetas de botones, etc.) -->
       <bt:ShortStrings>
         <bt:String id="GetStarted.Title" DefaultValue="Mochileros RD" />
         <bt:String id="GetStarted.Description" DefaultValue="Usa el panel de Mochileros RD para gestionar tours, estados y navegación por fechas." />
+
         <bt:String id="Tab.Label" DefaultValue="Mochileros RD" />
         <bt:String id="Group.Main.Label" DefaultValue="Mochileros RD" />
+
+        <!-- Botón 1: Activar panel -->
         <bt:String id="Button.TogglePanel.Label" DefaultValue="Activar panel" />
         <bt:String id="Button.TogglePanel.Tooltip" DefaultValue="Mostrar el panel lateral de Mochileros RD." />
+
+        <!-- Botón 2: Actualizar sistema -->
         <bt:String id="Button.UpdateSystem.Label" DefaultValue="Actualizar sistema" />
-        <bt:String id="Button.UpdateSystem.Tooltip" DefaultValue="Vuelve a cargar el complemento con la última versión publicada." />
+        <bt:String id="Button.UpdateSystem.Tooltip" DefaultValue="Aplicar la última versión publicada del complemento." />
+
+        <!-- Título del panel -->
         <bt:String id="Taskpane.Title" DefaultValue="Panel Mochileros RD" />
       </bt:ShortStrings>
+
+      <!-- Textos largos (descripciones más extensas si las necesitas) -->
+      <bt:LongStrings>
+        <bt:String id="GetStarted.Description.Long" DefaultValue="Mochileros RD integra un panel lateral en Excel para gestionar tus tours, hojas de trabajo y estados de forma centralizada." />
+      </bt:LongStrings>
+
     </Resources>
+
   </VersionOverrides>
+
 </OfficeApp>
