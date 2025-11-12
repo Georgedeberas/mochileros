@@ -6,11 +6,11 @@
            xsi:type="TaskPaneApp">
 
   <Id>f3b7a6f5-0a45-4c0e-9c26-8a5bb9b0b7b0</Id>
-  <Version>1.3.1.0</Version>
+  <Version>1.4.0.0</Version>
   <ProviderName>Mochileros RD</ProviderName>
   <DefaultLocale>es-ES</DefaultLocale>
   <DisplayName DefaultValue="Mochileros RD"/>
-  <Description DefaultValue="Panel lateral y pestaña propia para organizar tours por mes y crear hojas desde plantillas."/>
+  <Description DefaultValue="Complemento para Excel con panel lateral, pestaña personalizada y actualización automática desde GitHub Pages."/>
   <IconUrl DefaultValue="https://georgedeberas.github.io/mochileros/icon-32.png"/>
   <SupportUrl DefaultValue="https://georgedeberas.github.io/mochileros/"/>
 
@@ -31,10 +31,7 @@
           <SupportsPinning>true</SupportsPinning>
           <FunctionFile resid="Commands.Url"/>
 
-          <!-- ✅ Solo un bloque PrimaryCommandSurface -->
           <ExtensionPoint xsi:type="PrimaryCommandSurface">
-
-            <!-- Pestaña propia -->
             <CustomTab id="Mochileros.Tab">
               <Label resid="TabLabel"/>
 
@@ -46,7 +43,7 @@
                   <bt:Image size="80" resid="Icon80"/>
                 </Icon>
 
-                <!-- Botón: Abrir panel -->
+                <!-- Abrir panel -->
                 <Control xsi:type="Button" id="BtnOpen">
                   <Label resid="BtnOpen.Label"/>
                   <Supertip>
@@ -64,7 +61,7 @@
                   </Action>
                 </Control>
 
-                <!-- Botón: Actualizar desde GitHub -->
+                <!-- Actualizar manualmente -->
                 <Control xsi:type="Button" id="BtnHardReload">
                   <Label resid="BtnHardReload.Label"/>
                   <Supertip>
@@ -81,7 +78,7 @@
                   </Action>
                 </Control>
 
-                <!-- Botón: Desinstalar -->
+                <!-- Desinstalar -->
                 <Control xsi:type="Button" id="BtnUninstall">
                   <Label resid="BtnUninstall.Label"/>
                   <Supertip>
@@ -116,6 +113,7 @@
         <bt:Url id="Taskpane.Url" DefaultValue="https://georgedeberas.github.io/mochileros/index.html"/>
         <bt:Url id="Commands.Url" DefaultValue="https://georgedeberas.github.io/mochileros/commands.html"/>
         <bt:Url id="Uninstall.Url" DefaultValue="https://georgedeberas.github.io/mochileros/uninstall.html"/>
+        <bt:Url id="Version.Url" DefaultValue="https://georgedeberas.github.io/mochileros/version.json"/>
       </bt:Urls>
 
       <bt:ShortStrings>
@@ -127,9 +125,9 @@
       </bt:ShortStrings>
 
       <bt:LongStrings>
-        <bt:String id="BtnOpen.Tip" DefaultValue="Abrir el panel lateral del complemento Mochileros RD."/>
-        <bt:String id="BtnHardReload.Tip" DefaultValue="Forzar recarga de los archivos desde GitHub Pages."/>
-        <bt:String id="BtnUninstall.Tip" DefaultValue="Abrir la guía para quitar el complemento Mochileros RD."/>
+        <bt:String id="BtnOpen.Tip" DefaultValue="Abrir el panel lateral de Mochileros RD."/>
+        <bt:String id="BtnHardReload.Tip" DefaultValue="Forzar recarga de archivos desde GitHub (cache-buster)."/>
+        <bt:String id="BtnUninstall.Tip" DefaultValue="Abrir guía para quitar el complemento Mochileros RD."/>
       </bt:LongStrings>
     </Resources>
   </VersionOverrides>
