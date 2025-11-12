@@ -7,7 +7,7 @@
 
   <!-- Identidad -->
   <Id>f3b7a6f5-0a45-4c0e-9c26-8a5bb9b0b7b0</Id>
-  <Version>1.1.1.0</Version>
+  <Version>1.2.0.0</Version>
   <ProviderName>Mochileros RD</ProviderName>
   <DefaultLocale>es-ES</DefaultLocale>
   <DisplayName DefaultValue="Mochileros RD"/>
@@ -19,25 +19,20 @@
     <Host Name="Workbook"/>
   </Hosts>
 
-  <!-- No hace falta ningún RequirementSet especial para PrimaryCommandSurface -->
   <DefaultSettings>
-    <!-- Página del panel lateral -->
     <SourceLocation DefaultValue="https://georgedeberas.github.io/mochileros/index.html"/>
   </DefaultSettings>
 
   <Permissions>ReadWriteDocument</Permissions>
 
-  <!-- Comandos de la cinta (colocado en TabAddIns) -->
   <VersionOverrides xmlns="http://schemas.microsoft.com/office/taskpaneappversionoverrides" Version="1.0">
     <Hosts>
       <Host xsi:type="Workbook">
         <DesktopFormFactor>
-          <!-- Archivo de funciones para comandos (puede estar vacío, pero debe existir) -->
           <FunctionFile resid="Commands.Url"/>
 
-          <!-- ***** AQUÍ VA LO QUE PEDISTE ***** -->
+          <!-- Grupo en la pestaña superior 'Complementos' -->
           <ExtensionPoint xsi:type="PrimaryCommandSurface">
-            <!-- Pestaña superior "Complementos" -->
             <OfficeTab id="TabAddIns">
               <Group id="Mochileros.Group">
                 <Label resid="GroupLabel"/>
@@ -47,12 +42,12 @@
                   <bt:Image size="80" resid="Icon80"/>
                 </Icon>
 
-                <!-- Botón principal: abrir el panel -->
+                <!-- Abrir panel (taskpane) -->
                 <Control xsi:type="Button" id="Mochileros.Button.Open">
-                  <Label resid="TaskpaneButton.Label"/>
+                  <Label resid="BtnOpen.Label"/>
                   <Supertip>
-                    <Title resid="TaskpaneButton.Label"/>
-                    <Description resid="TaskpaneButton.Tooltip"/>
+                    <Title resid="BtnOpen.Label"/>
+                    <Description resid="BtnOpen.Tip"/>
                   </Supertip>
                   <Icon>
                     <bt:Image size="16" resid="Icon16"/>
@@ -65,16 +60,48 @@
                   </Action>
                 </Control>
 
+                <!-- Actualizar (señal a panel mediante Settings) -->
+                <Control xsi:type="Button" id="Mochileros.Button.Refresh">
+                  <Label resid="BtnRefresh.Label"/>
+                  <Supertip>
+                    <Title resid="BtnRefresh.Label"/>
+                    <Description resid="BtnRefresh.Tip"/>
+                  </Supertip>
+                  <Icon>
+                    <bt:Image size="16" resid="Icon16"/>
+                    <bt:Image size="32" resid="Icon32"/>
+                    <bt:Image size="80" resid="Icon80"/>
+                  </Icon>
+                  <Action xsi:type="ExecuteFunction">
+                    <FunctionName>ribbonRefresh</FunctionName>
+                  </Action>
+                </Control>
+
+                <!-- Nuevo tour (abre/trae al frente el panel) -->
+                <Control xsi:type="Button" id="Mochileros.Button.New">
+                  <Label resid="BtnNew.Label"/>
+                  <Supertip>
+                    <Title resid="BtnNew.Label"/>
+                    <Description resid="BtnNew.Tip"/>
+                  </Supertip>
+                  <Icon>
+                    <bt:Image size="16" resid="Icon16"/>
+                    <bt:Image size="32" resid="Icon32"/>
+                    <bt:Image size="80" resid="Icon80"/>
+                  </Icon>
+                  <Action xsi:type="ShowTaskpane">
+                    <TaskpaneId>Taskpane1</TaskpaneId>
+                    <SourceLocation resid="Taskpane.Url"/>
+                  </Action>
+                </Control>
               </Group>
             </OfficeTab>
           </ExtensionPoint>
-          <!-- ***** FIN DE LO QUE PEDISTE ***** -->
-
         </DesktopFormFactor>
       </Host>
     </Hosts>
 
-    <!-- Recursos (iconos, urls y textos) -->
+    <!-- Recursos -->
     <Resources>
       <bt:Images>
         <bt:Image id="Icon16" DefaultValue="https://georgedeberas.github.io/mochileros/icon-16.png"/>
@@ -89,11 +116,15 @@
 
       <bt:ShortStrings>
         <bt:String id="GroupLabel" DefaultValue="Mochileros RD"/>
-        <bt:String id="TaskpaneButton.Label" DefaultValue="Abrir panel"/>
+        <bt:String id="BtnOpen.Label" DefaultValue="Abrir panel"/>
+        <bt:String id="BtnRefresh.Label" DefaultValue="Actualizar"/>
+        <bt:String id="BtnNew.Label" DefaultValue="Nuevo tour"/>
       </bt:ShortStrings>
 
       <bt:LongStrings>
-        <bt:String id="TaskpaneButton.Tooltip" DefaultValue="Abre el panel lateral del complemento Mochileros RD."/>
+        <bt:String id="BtnOpen.Tip" DefaultValue="Abre el panel lateral del complemento Mochileros RD."/>
+        <bt:String id="BtnRefresh.Tip" DefaultValue="Actualiza el menú del panel (relee hojas/estados)."/>
+        <bt:String id="BtnNew.Tip" DefaultValue="Abre el panel para crear un nuevo tour."/>
       </bt:LongStrings>
     </Resources>
   </VersionOverrides>
