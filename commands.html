@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <!-- Solo cargamos Office.js para inicializar los comandos -->
+  <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
+</head>
+<body>
+  <script>
+    // Office.initialize ya no es necesario en las últimas versiones; usamos Office.onReady
+    Office.onReady(() => {
+      // Página de comandos lista (no hay acciones definidas porque usamos ShowTaskpane)
+    });
+  </script>
+</body>
+</html>
