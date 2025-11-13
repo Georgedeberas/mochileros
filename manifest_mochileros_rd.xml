@@ -5,13 +5,15 @@
   xmlns:bt="http://schemas.microsoft.com/office/officeappbasictypes/1.0"
   xsi:type="TaskPaneApp">
 
-  <Id>a3b7c5aa-5c83-4adf-9e2a-86cd9ba5321f</Id>
+  <!-- Nuevo GUID para obligar a Excel a reconocerlo como Add-in distinto -->
+  <Id>8c5f43e1-2373-4c1d-a3c6-91d4a1cd4431</Id>
+
   <Version>1.0.0.0</Version>
   <ProviderName>Mochileros RD</ProviderName>
   <DefaultLocale>es-ES</DefaultLocale>
 
-  <DisplayName DefaultValue="Mochileros RD V2" />
-  <Description DefaultValue="Mochileros RD V2 - Panel de gestión de tours en Excel." />
+  <DisplayName DefaultValue="Mochileros RD" />
+  <Description DefaultValue="Mochileros RD - Panel de gestión de tours" />
 
   <IconUrl DefaultValue="https://georgedeberas.github.io/mochileros/icon-32.png" />
   <HighResolutionIconUrl DefaultValue="https://georgedeberas.github.io/mochileros/icon-80.png" />
@@ -38,19 +40,13 @@
 
   <Permissions>ReadWriteDocument</Permissions>
 
-  <!-- VERSION OVERRIDES (SIN ov:) PARA COMPATIBILIDAD EXCEL ONLINE -->
+  <!-- *** Ribbon compatible con Excel Online *** -->
   <VersionOverrides xmlns="http://schemas.microsoft.com/office/taskpaneappversionoverrides" xsi:type="VersionOverridesV1_0">
 
     <Hosts>
       <Host xsi:type="Workbook">
 
         <DesktopFormFactor>
-
-          <GetStarted>
-            <Title resid="GetStarted.Title" />
-            <Description resid="GetStarted.Description" />
-            <LearnMoreUrl resid="Support.Url" />
-          </GetStarted>
 
           <FunctionFile resid="Commands.Url" />
 
@@ -59,66 +55,97 @@
             <CustomTab id="MochilerosRD.Tab">
               <Label resid="Tab.Label" />
 
-              <Group id="MochilerosRD.GroupMain">
-                <Label resid="Group.Main.Label" />
+              <Group id="MochilerosRD.Group">
+                <Label resid="Group.Label" />
 
-                <Icon>
-                  <bt:Image size="16" resid="Icon.16x16" />
-                  <bt:Image size="32" resid="Icon.32x32" />
-                  <bt:Image size="80" resid="Icon.80x80" />
-                </Icon>
-
-                <!-- BOTÓN 1: PANEL -->
+                <!-- BOTÓN: ACTIVAR PANEL -->
                 <Control xsi:type="Button" id="MochilerosRD.TogglePanel">
 
-                  <Label resid="Button.TogglePanel.Label" />
+                  <Label resid="Button.Panel.Label" />
 
                   <Supertip>
-                    <Title resid="Button.TogglePanel.Label" />
-                    <Description resid="Button.TogglePanel.Tooltip" />
+                    <Title resid="Button.Panel.Label" />
+                    <Description resid="Button.Panel.Tooltip" />
                   </Supertip>
 
                   <Icon>
-                    <bt:Image size="16" resid="Icon.16x16" />
-                    <bt:Image size="32" resid="Icon.32x32" />
-                    <bt:Image size="80" resid="Icon.80x80" />
+                    <bt:Image size="16" resid="Icon.16" />
+                    <bt:Image size="32" resid="Icon.32" />
                   </Icon>
 
                   <Action xsi:type="ShowTaskpane">
                     <TaskpaneId>MochilerosRD.Taskpane</TaskpaneId>
                     <SourceLocation resid="Taskpane.Url" />
                   </Action>
+
                 </Control>
 
-                <!-- BOTÓN 2: ACTUALIZAR -->
+                <!-- BOTÓN: ACTUALIZAR SISTEMA -->
                 <Control xsi:type="Button" id="MochilerosRD.UpdateSystem">
 
-                  <Label resid="Button.UpdateSystem.Label" />
+                  <Label resid="Button.Update.Label" />
 
                   <Supertip>
-                    <Title resid="Button.UpdateSystem.Label" />
-                    <Description resid="Button.UpdateSystem.Tooltip" />
+                    <Title resid="Button.Update.Label" />
+                    <Description resid="Button.Update.Tooltip" />
                   </Supertip>
 
                   <Icon>
-                    <bt:Image size="16" resid="Icon.16x16" />
-                    <bt:Image size="32" resid="Icon.32x32" />
-                    <bt:Image size="80" resid="Icon.80x80" />
+                    <bt:Image size="16" resid="Icon.16" />
+                    <bt:Image size="32" resid="Icon.32" />
                   </Icon>
 
                   <Action xsi:type="ExecuteFunction">
                     <FunctionName>mochilerosUpdateSystem</FunctionName>
                   </Action>
+
                 </Control>
 
               </Group>
             </CustomTab>
+
           </ExtensionPoint>
 
+          <!-- Panel lateral -->
           <ExtensionPoint xsi:type="Taskpane">
             <TaskpaneId>MochilerosRD.Taskpane</TaskpaneId>
             <SourceLocation resid="Taskpane.Url" />
             <Title resid="Taskpane.Title" />
           </ExtensionPoint>
 
-        </DesktopFormFacto
+        </DesktopFormFactor>
+      </Host>
+    </Hosts>
+
+    <Resources>
+
+      <bt:Images>
+        <bt:Image id="Icon.16" DefaultValue="https://georgedeberas.github.io/mochileros/icon-16.png" />
+        <bt:Image id="Icon.32" DefaultValue="https://georgedeberas.github.io/mochileros/icon-32.png" />
+      </bt:Images>
+
+      <bt:Urls>
+        <bt:Url id="Commands.Url" DefaultValue="https://georgedeberas.github.io/mochileros/commands.html" />
+        <bt:Url id="Taskpane.Url" DefaultValue="https://georgedeberas.github.io/mochileros/index.html" />
+      </bt:Urls>
+
+      <bt:ShortStrings>
+
+        <bt:String id="Tab.Label" DefaultValue="Mochileros RD" />
+        <bt:String id="Group.Label" DefaultValue="Herramientas" />
+
+        <bt:String id="Button.Panel.Label" DefaultValue="Panel" />
+        <bt:String id="Button.Panel.Tooltip" DefaultValue="Mostrar el panel lateral." />
+
+        <bt:String id="Button.Update.Label" DefaultValue="Actualizar" />
+        <bt:String id="Button.Update.Tooltip" DefaultValue="Actualizar el sistema Mochileros RD." />
+
+        <bt:String id="Taskpane.Title" DefaultValue="Panel Mochileros RD" />
+
+      </bt:ShortStrings>
+
+    </Resources>
+
+  </VersionOverrides>
+
+</OfficeApp>
