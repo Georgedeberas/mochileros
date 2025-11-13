@@ -6,7 +6,7 @@
   xmlns:ov="http://schemas.microsoft.com/office/taskpaneappversionoverrides"
   xsi:type="TaskPaneApp">
 
-  <!-- NUEVO GUID PARA QUE EXCEL LO TRATE COMO UN ADD-IN DISTINTO -->
+  <!-- GUID del NUEVO add-in (distinto al viejo) -->
   <Id>a3b7c5aa-5c83-4adf-9e2a-86cd9ba5321f</Id>
 
   <Version>1.0.0.0</Version>
@@ -14,8 +14,9 @@
   <ProviderName>Mochileros RD</ProviderName>
   <DefaultLocale>es-ES</DefaultLocale>
 
-  <DisplayName DefaultValue="Mochileros RD" />
-  <Description DefaultValue="Mochileros RD - Panel de gestión de tours en Excel." />
+  <!-- Nombre que verás en la lista de complementos -->
+  <DisplayName DefaultValue="Mochileros RD V2" />
+  <Description DefaultValue="Mochileros RD V2 - Panel de gestión de tours en Excel." />
 
   <IconUrl DefaultValue="https://georgedeberas.github.io/mochileros/icon-32.png" />
   <HighResolutionIconUrl DefaultValue="https://georgedeberas.github.io/mochileros/icon-80.png" />
@@ -30,13 +31,11 @@
     <Host Name="Workbook" />
   </Hosts>
 
-  <!-- 🔥 ESTA PARTE ES LA QUE FALTABA -->
   <Requirements>
     <Sets DefaultMinVersion="1.1">
       <Set Name="ExcelApi" MinVersion="1.1" />
     </Sets>
   </Requirements>
-  <!-- 🔥 HASTA AQUÍ -->
 
   <DefaultSettings>
     <SourceLocation DefaultValue="https://georgedeberas.github.io/mochileros/index.html" />
@@ -44,7 +43,6 @@
 
   <Permissions>ReadWriteDocument</Permissions>
 
-  <!-- Usamos el esquema de overrides para comandos y panel -->
   <VersionOverrides xsi:type="ov:VersionOverridesV1_0">
 
     <ov:Hosts>
@@ -65,6 +63,7 @@
           <ov:ExtensionPoint xsi:type="PrimaryCommandSurface">
 
             <ov:CustomTab id="MochilerosRD.Tab">
+              <!-- Nombre de la pestaña en la cinta -->
               <ov:Label resid="Tab.Label" />
 
               <ov:Group id="MochilerosRD.GroupMain">
@@ -76,7 +75,7 @@
                   <bt:Image size="80" resid="Icon.80x80" />
                 </ov:Icon>
 
-                <!-- BOTÓN 1: ACTIVAR PANEL -->
+                <!-- BOTÓN 1: PANEL V2 -->
                 <ov:Control xsi:type="Button" id="MochilerosRD.TogglePanel">
 
                   <ov:Label resid="Button.TogglePanel.Label" />
@@ -98,7 +97,7 @@
                   </ov:Action>
                 </ov:Control>
 
-                <!-- BOTÓN 2: ACTUALIZAR SISTEMA -->
+                <!-- BOTÓN 2: ACTUALIZAR V2 -->
                 <ov:Control xsi:type="Button" id="MochilerosRD.UpdateSystem">
 
                   <ov:Label resid="Button.UpdateSystem.Label" />
@@ -150,26 +149,27 @@
       </bt:Urls>
 
       <bt:ShortStrings>
-        <bt:String id="GetStarted.Title" DefaultValue="Mochileros RD" />
-        <bt:String id="GetStarted.Description" DefaultValue="Usa el panel de Mochileros RD para gestionar tours, estados y navegación por fechas." />
+        <!-- Texto que verás en "Mis complementos" y en la pestaña -->
+        <bt:String id="GetStarted.Title" DefaultValue="Mochileros RD V2" />
+        <bt:String id="GetStarted.Description" DefaultValue="Usa Mochileros RD V2 para gestionar tours y hojas de trabajo." />
 
-        <bt:String id="Tab.Label" DefaultValue="Mochileros RD" />
-        <bt:String id="Group.Main.Label" DefaultValue="Mochileros RD" />
+        <bt:String id="Tab.Label" DefaultValue="Mochileros RD V2" />
+        <bt:String id="Group.Main.Label" DefaultValue="Mochileros RD V2" />
 
         <!-- Botón 1 -->
-        <bt:String id="Button.TogglePanel.Label" DefaultValue="Activar panel" />
-        <bt:String id="Button.TogglePanel.Tooltip" DefaultValue="Mostrar el panel lateral de Mochileros RD." />
+        <bt:String id="Button.TogglePanel.Label" DefaultValue="Panel V2" />
+        <bt:String id="Button.TogglePanel.Tooltip" DefaultValue="Mostrar el panel lateral de Mochileros RD V2." />
 
         <!-- Botón 2 -->
-        <bt:String id="Button.UpdateSystem.Label" DefaultValue="Actualizar sistema" />
-        <bt:String id="Button.UpdateSystem.Tooltip" DefaultValue="Aplicar la última versión publicada del complemento." />
+        <bt:String id="Button.UpdateSystem.Label" DefaultValue="Actualizar V2" />
+        <bt:String id="Button.UpdateSystem.Tooltip" DefaultValue="Ejecutar la lógica de actualización del sistema (V2)." />
 
-        <bt:String id="Taskpane.Title" DefaultValue="Panel Mochileros RD" />
+        <bt:String id="Taskpane.Title" DefaultValue="Panel Mochileros RD V2" />
       </bt:ShortStrings>
 
       <bt:LongStrings>
         <bt:String id="GetStarted.Description.Long"
-          DefaultValue="Mochileros RD integra un panel lateral en Excel para gestionar tus tours, hojas de trabajo y estados de forma centralizada." />
+          DefaultValue="Mochileros RD V2 integra un panel lateral en Excel para gestionar tus tours, hojas de trabajo y estados de forma centralizada." />
       </bt:LongStrings>
 
     </ov:Resources>
