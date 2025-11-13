@@ -10,10 +10,11 @@
   <Version>1.0.0.0</Version>
   <ProviderName>Mochileros RD</ProviderName>
   <DefaultLocale>en-US</DefaultLocale>
-  <DisplayName DefaultValue="Mochileros RD" />
-  <Description DefaultValue="Add-in moderno de Mochileros RD" />
 
-  <IconUrl DefaultValue="https://cdn-icons-png.flaticon.com/512/1828/1828778.png"/>
+  <DisplayName DefaultValue="Mochileros RD" />
+  <Description DefaultValue="Add-In de Mochileros RD" />
+
+  <IconUrl DefaultValue="https://cdn-icons-png.flaticon.com/512/1828/1828778.png" />
 
   <SupportUrl DefaultValue="https://georgedeberas.github.io/mochileros/" />
 
@@ -27,8 +28,8 @@
 
   <Requirements>
     <Sets DefaultMinVersion="1.1">
-      <Set Name="SharedRuntime" MinVersion="1.1"/>
-      <Set Name="RibbonApi" MinVersion="1.1"/>
+      <Set Name="SharedRuntime" MinVersion="1.1" />
+      <Set Name="RibbonApi" MinVersion="1.1" />
     </Sets>
   </Requirements>
 
@@ -39,36 +40,39 @@
   <Permissions>ReadWriteDocument</Permissions>
 
   <VersionOverrides xsi:type="ov:VersionOverrides" Version="1.0">
+
     <ov:Hosts>
       <ov:Host xsi:type="ov:Workbook">
 
         <ov:Runtimes>
-          <ov:Runtime resid="sharedruntime" lifetime="long"/>
+          <ov:Runtime resid="runtimeJS" lifetime="long" />
         </ov:Runtimes>
 
         <ov:ExtensionPoint xsi:type="ov:PrimaryCommandSurface">
-          <ov:CustomTab id="TabMochileros">
-            <ov:Label resid="tabLabel"/>
+          <ov:CustomTab id="MochilerosTab">
+            <ov:Label resid="TabLabel" />
 
-            <ov:Group id="GroupMochileros">
-              <ov:Label resid="groupLabel"/>
+            <ov:Group id="MochilerosGroup">
+              <ov:Label resid="GroupLabel" />
 
-              <ov:Control xsi:type="ov:Button" id="btnToggle">
-                <ov:Label resid="buttonLabel"/>
+              <ov:Control xsi:type="ov:Button" id="BTN_TOGGLE">
+                <ov:Label resid="ButtonLabel" />
                 <ov:Supertip>
-                  <ov:Title resid="buttonLabel"/>
-                  <ov:Description resid="buttonDesc"/>
+                  <ov:Title resid="ButtonLabel" />
+                  <ov:Description resid="ButtonDesc" />
                 </ov:Supertip>
+
                 <ov:Icon>
-                  <ov:Image size="16" resid="iconUrl"/>
-                  <ov:Image size="32" resid="iconUrl"/>
-                  <ov:Image size="80" resid="iconUrl"/>
+                  <ov:Image resid="Icon16" size="16" />
+                  <ov:Image resid="Icon32" size="32" />
+                  <ov:Image resid="Icon80" size="80" />
                 </ov:Icon>
+
                 <ov:Action xsi:type="ov:ExecuteFunction">
                   <ov:FunctionName>togglePanel</ov:FunctionName>
                 </ov:Action>
-              </ov:Control>
 
+              </ov:Control>
             </ov:Group>
 
           </ov:CustomTab>
@@ -80,18 +84,20 @@
     <ov:Resources>
 
       <ov:Images>
-        <ov:Image id="iconUrl" DefaultValue="https://cdn-icons-png.flaticon.com/512/1828/1828778.png"/>
+        <ov:Image id="Icon16" DefaultValue="https://cdn-icons-png.flaticon.com/512/1828/1828778.png" />
+        <ov:Image id="Icon32" DefaultValue="https://cdn-icons-png.flaticon.com/512/1828/1828778.png" />
+        <ov:Image id="Icon80" DefaultValue="https://cdn-icons-png.flaticon.com/512/1828/1828778.png" />
       </ov:Images>
 
       <ov:Urls>
-        <ov:Url id="sharedruntime" DefaultValue="https://georgedeberas.github.io/mochileros/app.js"/>
+        <ov:Url id="runtimeJS" DefaultValue="https://georgedeberas.github.io/mochileros/app.js"/>
       </ov:Urls>
 
       <ov:Strings>
-        <ov:String id="tabLabel" DefaultValue="Mochileros RD"/>
-        <ov:String id="groupLabel" DefaultValue="Opciones"/>
-        <ov:String id="buttonLabel" DefaultValue="Activar Panel"/>
-        <ov:String id="buttonDesc" DefaultValue="Activa o desactiva el panel lateral"/>
+        <ov:String id="TabLabel" DefaultValue="Mochileros RD"/>
+        <ov:String id="GroupLabel" DefaultValue="Opciones"/>
+        <ov:String id="ButtonLabel" DefaultValue="Activar Panel"/>
+        <ov:String id="ButtonDesc" DefaultValue="Abrir o cerrar el panel lateral"/>
       </ov:Strings>
 
     </ov:Resources>
