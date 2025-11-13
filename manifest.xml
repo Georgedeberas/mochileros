@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OfficeApp
+  xmlns="http://schemas.microsoft.com/office/appforoffice/1.1"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:bt="http://schemas.microsoft.com/office/officeappbasictypes/1.0"
+  xmlns:ov="http://schemas.microsoft.com/office/taskpaneappversionoverrides"
+  xsi:type="TaskPaneApp">
+
+  <Id>f1b1c001-aaaa-bbbb-cccc-123456789001</Id>
+  <Version>1.0.0.0</Version>
+  <ProviderName>Mochileros RD</ProviderName>
+  <DefaultLocale>en-US</DefaultLocale>
+  <DisplayName DefaultValue="Mochileros RD" />
+  <Description DefaultValue="Add-in moderno de Mochileros RD" />
+
+  <IconUrl DefaultValue="https://cdn-icons-png.flaticon.com/512/1828/1828778.png"/>
+
+  <SupportUrl DefaultValue="https://georgedeberas.github.io/mochileros/" />
+
+  <AppDomains>
+    <AppDomain>https://georgedeberas.github.io</AppDomain>
+  </AppDomains>
+
+  <Hosts>
+    <Host Name="Workbook" />
+  </Hosts>
+
+  <Requirements>
+    <Sets DefaultMinVersion="1.1">
+      <Set Name="SharedRuntime" MinVersion="1.1"/>
+      <Set Name="RibbonApi" MinVersion="1.1"/>
+    </Sets>
+  </Requirements>
+
+  <DefaultSettings>
+    <SourceLocation DefaultValue="https://georgedeberas.github.io/mochileros/index.html"/>
+  </DefaultSettings>
+
+  <Permissions>ReadWriteDocument</Permissions>
+
+  <VersionOverrides xsi:type="ov:VersionOverrides" Version="1.0">
+    <ov:Hosts>
+      <ov:Host xsi:type="ov:Workbook">
+
+        <ov:Runtimes>
+          <ov:Runtime resid="sharedruntime" lifetime="long"/>
+        </ov:Runtimes>
+
+        <ov:ExtensionPoint xsi:type="ov:PrimaryCommandSurface">
+          <ov:CustomTab id="TabMochileros">
+            <ov:Label resid="tabLabel"/>
+
+            <ov:Group id="GroupMochileros">
+              <ov:Label resid="groupLabel"/>
+
+              <ov:Control xsi:type="ov:Button" id="btnToggle">
+                <ov:Label resid="buttonLabel"/>
+                <ov:Supertip>
+                  <ov:Title resid="buttonLabel"/>
+                  <ov:Description resid="buttonDesc"/>
+                </ov:Supertip>
+                <ov:Icon>
+                  <ov:Image size="16" resid="iconUrl"/>
+                  <ov:Image size="32" resid="iconUrl"/>
+                  <ov:Image size="80" resid="iconUrl"/>
+                </ov:Icon>
+                <ov:Action xsi:type="ov:ExecuteFunction">
+                  <ov:FunctionName>togglePanel</ov:FunctionName>
+                </ov:Action>
+              </ov:Control>
+
+            </ov:Group>
+
+          </ov:CustomTab>
+        </ov:ExtensionPoint>
+
+      </ov:Host>
+    </ov:Hosts>
+
+    <ov:Resources>
+
+      <ov:Images>
+        <ov:Image id="iconUrl" DefaultValue="https://cdn-icons-png.flaticon.com/512/1828/1828778.png"/>
+      </ov:Images>
+
+      <ov:Urls>
+        <ov:Url id="sharedruntime" DefaultValue="https://georgedeberas.github.io/mochileros/app.js"/>
+      </ov:Urls>
+
+      <ov:Strings>
+        <ov:String id="tabLabel" DefaultValue="Mochileros RD"/>
+        <ov:String id="groupLabel" DefaultValue="Opciones"/>
+        <ov:String id="buttonLabel" DefaultValue="Activar Panel"/>
+        <ov:String id="buttonDesc" DefaultValue="Activa o desactiva el panel lateral"/>
+      </ov:Strings>
+
+    </ov:Resources>
+
+  </VersionOverrides>
+
+</OfficeApp>
