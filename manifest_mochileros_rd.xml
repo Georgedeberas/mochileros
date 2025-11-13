@@ -3,18 +3,13 @@
   xmlns="http://schemas.microsoft.com/office/appforoffice/1.1"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xmlns:bt="http://schemas.microsoft.com/office/officeappbasictypes/1.0"
-  xmlns:ov="http://schemas.microsoft.com/office/taskpaneappversionoverrides"
   xsi:type="TaskPaneApp">
 
-  <!-- GUID del NUEVO add-in (distinto al viejo) -->
   <Id>a3b7c5aa-5c83-4adf-9e2a-86cd9ba5321f</Id>
-
   <Version>1.0.0.0</Version>
-
   <ProviderName>Mochileros RD</ProviderName>
   <DefaultLocale>es-ES</DefaultLocale>
 
-  <!-- Nombre que verás en la lista de complementos -->
   <DisplayName DefaultValue="Mochileros RD V2" />
   <Description DefaultValue="Mochileros RD V2 - Panel de gestión de tours en Excel." />
 
@@ -43,137 +38,87 @@
 
   <Permissions>ReadWriteDocument</Permissions>
 
-  <VersionOverrides xsi:type="ov:VersionOverridesV1_0">
+  <!-- VERSION OVERRIDES (SIN ov:) PARA COMPATIBILIDAD EXCEL ONLINE -->
+  <VersionOverrides xmlns="http://schemas.microsoft.com/office/taskpaneappversionoverrides" xsi:type="VersionOverridesV1_0">
 
-    <ov:Hosts>
-      <ov:Host xsi:type="Workbook">
+    <Hosts>
+      <Host xsi:type="Workbook">
 
-        <ov:DesktopFormFactor>
+        <DesktopFormFactor>
 
-          <ov:GetStarted>
-            <ov:Title resid="GetStarted.Title" />
-            <ov:Description resid="GetStarted.Description" />
-            <ov:LearnMoreUrl resid="Support.Url" />
-          </ov:GetStarted>
+          <GetStarted>
+            <Title resid="GetStarted.Title" />
+            <Description resid="GetStarted.Description" />
+            <LearnMoreUrl resid="Support.Url" />
+          </GetStarted>
 
-          <!-- Function file con la lógica de la cinta -->
-          <ov:FunctionFile resid="Commands.Url" />
+          <FunctionFile resid="Commands.Url" />
 
-          <!-- CINTA PERSONALIZADA -->
-          <ov:ExtensionPoint xsi:type="PrimaryCommandSurface">
+          <ExtensionPoint xsi:type="PrimaryCommandSurface">
 
-            <ov:CustomTab id="MochilerosRD.Tab">
-              <!-- Nombre de la pestaña en la cinta -->
-              <ov:Label resid="Tab.Label" />
+            <CustomTab id="MochilerosRD.Tab">
+              <Label resid="Tab.Label" />
 
-              <ov:Group id="MochilerosRD.GroupMain">
-                <ov:Label resid="Group.Main.Label" />
+              <Group id="MochilerosRD.GroupMain">
+                <Label resid="Group.Main.Label" />
 
-                <ov:Icon>
+                <Icon>
                   <bt:Image size="16" resid="Icon.16x16" />
                   <bt:Image size="32" resid="Icon.32x32" />
                   <bt:Image size="80" resid="Icon.80x80" />
-                </ov:Icon>
+                </Icon>
 
-                <!-- BOTÓN 1: PANEL V2 -->
-                <ov:Control xsi:type="Button" id="MochilerosRD.TogglePanel">
+                <!-- BOTÓN 1: PANEL -->
+                <Control xsi:type="Button" id="MochilerosRD.TogglePanel">
 
-                  <ov:Label resid="Button.TogglePanel.Label" />
+                  <Label resid="Button.TogglePanel.Label" />
 
-                  <ov:Supertip>
-                    <ov:Title resid="Button.TogglePanel.Label" />
-                    <ov:Description resid="Button.TogglePanel.Tooltip" />
-                  </ov:Supertip>
+                  <Supertip>
+                    <Title resid="Button.TogglePanel.Label" />
+                    <Description resid="Button.TogglePanel.Tooltip" />
+                  </Supertip>
 
-                  <ov:Icon>
+                  <Icon>
                     <bt:Image size="16" resid="Icon.16x16" />
                     <bt:Image size="32" resid="Icon.32x32" />
                     <bt:Image size="80" resid="Icon.80x80" />
-                  </ov:Icon>
+                  </Icon>
 
-                  <ov:Action xsi:type="ShowTaskpane">
-                    <ov:TaskpaneId>MochilerosRD.Taskpane</ov:TaskpaneId>
-                    <ov:SourceLocation resid="Taskpane.Url" />
-                  </ov:Action>
-                </ov:Control>
+                  <Action xsi:type="ShowTaskpane">
+                    <TaskpaneId>MochilerosRD.Taskpane</TaskpaneId>
+                    <SourceLocation resid="Taskpane.Url" />
+                  </Action>
+                </Control>
 
-                <!-- BOTÓN 2: ACTUALIZAR V2 -->
-                <ov:Control xsi:type="Button" id="MochilerosRD.UpdateSystem">
+                <!-- BOTÓN 2: ACTUALIZAR -->
+                <Control xsi:type="Button" id="MochilerosRD.UpdateSystem">
 
-                  <ov:Label resid="Button.UpdateSystem.Label" />
+                  <Label resid="Button.UpdateSystem.Label" />
 
-                  <ov:Supertip>
-                    <ov:Title resid="Button.UpdateSystem.Label" />
-                    <ov:Description resid="Button.UpdateSystem.Tooltip" />
-                  </ov:Supertip>
+                  <Supertip>
+                    <Title resid="Button.UpdateSystem.Label" />
+                    <Description resid="Button.UpdateSystem.Tooltip" />
+                  </Supertip>
 
-                  <ov:Icon>
+                  <Icon>
                     <bt:Image size="16" resid="Icon.16x16" />
                     <bt:Image size="32" resid="Icon.32x32" />
                     <bt:Image size="80" resid="Icon.80x80" />
-                  </ov:Icon>
+                  </Icon>
 
-                  <ov:Action xsi:type="ExecuteFunction">
-                    <ov:FunctionName>mochilerosUpdateSystem</ov:FunctionName>
-                  </ov:Action>
-                </ov:Control>
+                  <Action xsi:type="ExecuteFunction">
+                    <FunctionName>mochilerosUpdateSystem</FunctionName>
+                  </Action>
+                </Control>
 
-              </ov:Group>
-            </ov:CustomTab>
-          </ov:ExtensionPoint>
+              </Group>
+            </CustomTab>
+          </ExtensionPoint>
 
-          <!-- PANEL LATERAL -->
-          <ov:ExtensionPoint xsi:type="Taskpane">
-            <ov:TaskpaneId>MochilerosRD.Taskpane</ov:TaskpaneId>
-            <ov:SourceLocation resid="Taskpane.Url" />
-            <ov:Title resid="Taskpane.Title" />
-          </ov:ExtensionPoint>
+          <ExtensionPoint xsi:type="Taskpane">
+            <TaskpaneId>MochilerosRD.Taskpane</TaskpaneId>
+            <SourceLocation resid="Taskpane.Url" />
+            <Title resid="Taskpane.Title" />
+          </ExtensionPoint>
 
-        </ov:DesktopFormFactor>
-      </ov:Host>
-    </ov:Hosts>
-
-    <!-- RECURSOS: ICONOS, URLs, TEXTOS -->
-    <ov:Resources>
-
-      <bt:Images>
-        <bt:Image id="Icon.16x16" DefaultValue="https://georgedeberas.github.io/mochileros/icon-16.png" />
-        <bt:Image id="Icon.32x32" DefaultValue="https://georgedeberas.github.io/mochileros/icon-32.png" />
-        <bt:Image id="Icon.80x80" DefaultValue="https://georgedeberas.github.io/mochileros/icon-80.png" />
-      </bt:Images>
-
-      <bt:Urls>
-        <bt:Url id="Commands.Url" DefaultValue="https://georgedeberas.github.io/mochileros/commands.html" />
-        <bt:Url id="Taskpane.Url" DefaultValue="https://georgedeberas.github.io/mochileros/index.html" />
-        <bt:Url id="Support.Url" DefaultValue="https://georgedeberas.github.io/mochileros/" />
-      </bt:Urls>
-
-      <bt:ShortStrings>
-        <!-- Texto que verás en "Mis complementos" y en la pestaña -->
-        <bt:String id="GetStarted.Title" DefaultValue="Mochileros RD V2" />
-        <bt:String id="GetStarted.Description" DefaultValue="Usa Mochileros RD V2 para gestionar tours y hojas de trabajo." />
-
-        <bt:String id="Tab.Label" DefaultValue="Mochileros RD V2" />
-        <bt:String id="Group.Main.Label" DefaultValue="Mochileros RD V2" />
-
-        <!-- Botón 1 -->
-        <bt:String id="Button.TogglePanel.Label" DefaultValue="Panel V2" />
-        <bt:String id="Button.TogglePanel.Tooltip" DefaultValue="Mostrar el panel lateral de Mochileros RD V2." />
-
-        <!-- Botón 2 -->
-        <bt:String id="Button.UpdateSystem.Label" DefaultValue="Actualizar V2" />
-        <bt:String id="Button.UpdateSystem.Tooltip" DefaultValue="Ejecutar la lógica de actualización del sistema (V2)." />
-
-        <bt:String id="Taskpane.Title" DefaultValue="Panel Mochileros RD V2" />
-      </bt:ShortStrings>
-
-      <bt:LongStrings>
-        <bt:String id="GetStarted.Description.Long"
-          DefaultValue="Mochileros RD V2 integra un panel lateral en Excel para gestionar tus tours, hojas de trabajo y estados de forma centralizada." />
-      </bt:LongStrings>
-
-    </ov:Resources>
-
-  </VersionOverrides>
-
-</OfficeApp>
+        </DesktopFormFacto
