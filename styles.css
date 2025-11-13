@@ -1,0 +1,18 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background: #ffffff;
+    color: #111;
+}
+
+#contenedor {
+    border-left: 3px solid #00000015;
+    padding-left: 12px;
+}
+
+h2 {
+    margin-top: 0;
+    font-size: 20px;
+    font-weight: 600;
+}
