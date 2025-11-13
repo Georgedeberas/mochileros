@@ -1,50 +1,50 @@
 Office.onReady(() => {
-    console.log("Mochileros RD Add-in listo.");
+    console.log("Mochileros RD Add-in iniciado correctamente.");
 });
 
-// ----------- TOGGLE PANEL -----------
+// -----------------------------
+//   TOGGLE PANEL
+// -----------------------------
 async function togglePanel() {
     try {
-        if (window._panelOpen) {
+        if (window._panelAbierto) {
             await Office.addin.hide();
-            window._panelOpen = false;
+            window._panelAbierto = false;
         } else {
             await Office.addin.showAsTaskpane();
-            window._panelOpen = true;
+            window._panelAbierto = true;
 
-            // Recarga completa al abrir (para cargar cambios desde GitHub)
-            reloadPanelFiles();
+            // Forzar actualización solo al abrir
+            reloadAssets();
         }
-    } catch (e) {
-        console.error("Error al alternar panel:", e);
+    } catch (err) {
+        console.error("Error en togglePanel:", err);
     }
 }
+
 Office.actions.associate("togglePanel", togglePanel);
 
+// -----------------------------
+//   RECARGA DE ARCHIVOS
+// -----------------------------
+function reloadAssets() {
+    const version = Date.now();
 
-// ----------- RECARGA AUTOMÁTICA CUANDO EL PANEL SE ABRE -----------
-
-function reloadPanelFiles() {
-    // Esta función fuerza a que los archivos se recarguen desde GitHub Pages.
-
-    // Agregamos un query-string con timestamp para evitar caché
-    const time = Date.now();
-
-    // Recargar CSS
+    // Recargar CSS (forzar sin cache)
     document.querySelectorAll('link[rel="stylesheet"]').forEach(link => {
-        const href = link.getAttribute('href').split('?')[0];
-        link.setAttribute('href', `${href}?v=${time}`);
+        const href = link.href.split("?")[0];
+        link.href = href + "?v=" + version;
     });
 
     // Recargar JS
     document.querySelectorAll('script').forEach(script => {
         if (script.src) {
-            const src = script.src.split('?')[0];
-            const nuevo = document.createElement('script');
-            nuevo.src = `${src}?v=${time}`;
+            const src = script.src.split("?")[0];
+            const nuevo = document.createElement("script");
+            nuevo.src = src + "?v=" + version;
             script.replaceWith(nuevo);
         }
     });
 
-    console.log("Archivos recargados desde GitHub:", time);
+    console.log("Archivos recargados:", version);
 }
