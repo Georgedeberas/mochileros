@@ -1,18 +1,17 @@
 body {
-    font-family: Arial, sans-serif;
     margin: 0;
     padding: 20px;
     background: #ffffff;
-    color: #111;
+    font-family: Arial, sans-serif;
 }
 
 #contenedor {
-    border-left: 3px solid #00000015;
+    border-left: 3px solid #00000022;
     padding-left: 12px;
 }
 
 h2 {
     margin-top: 0;
-    font-size: 20px;
+    font-size: 21px;
     font-weight: 600;
 }
