@@ -6,15 +6,15 @@
     xmlns:ov="http://schemas.microsoft.com/office/taskpaneappversionoverrides"
     xsi:type="TaskPaneApp">
 
-  <Id>a2256c90-1234-5678-9abc-1234567890ab</Id>
+  <Id>c821f837-9af0-42dc-893a-334455667788</Id>
   <Version>1.0.0.0</Version>
   <ProviderName>Mochileros RD</ProviderName>
   <DefaultLocale>es-ES</DefaultLocale>
   <DisplayName DefaultValue="Mochileros RD" />
-  <Description DefaultValue="Add-in para gestion de tours" />
+  <Description DefaultValue="Add-in de prueba" />
   
-  <IconUrl DefaultValue="https://via.placeholder.com/32.png" />
-  <HighResolutionIconUrl DefaultValue="https://via.placeholder.com/64.png" />
+  <IconUrl DefaultValue="https://officedev.github.io/Office-Add-in-TaskPane-React/assets/icon-32.png" />
+  <HighResolutionIconUrl DefaultValue="https://officedev.github.io/Office-Add-in-TaskPane-React/assets/icon-64.png" />
   <SupportUrl DefaultValue="https://georgedeberas.github.io/mochileros/" />
 
   <AppDomains>
@@ -76,9 +76,9 @@
     
     <Resources>
       <bt:Images>
-        <bt:Image id="icon16" DefaultValue="https://via.placeholder.com/16.png" />
-        <bt:Image id="icon32" DefaultValue="https://via.placeholder.com/32.png" />
-        <bt:Image id="icon80" DefaultValue="https://via.placeholder.com/80.png" />
+        <bt:Image id="icon16" DefaultValue="https://officedev.github.io/Office-Add-in-TaskPane-React/assets/icon-16.png" />
+        <bt:Image id="icon32" DefaultValue="https://officedev.github.io/Office-Add-in-TaskPane-React/assets/icon-32.png" />
+        <bt:Image id="icon80" DefaultValue="https://officedev.github.io/Office-Add-in-TaskPane-React/assets/icon-80.png" />
       </bt:Images>
       <bt:Urls>
         <bt:Url id="taskpaneUrl" DefaultValue="https://georgedeberas.github.io/mochileros/index.html" />
