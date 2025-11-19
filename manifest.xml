@@ -6,14 +6,16 @@
     xmlns:ov="http://schemas.microsoft.com/office/taskpaneappversionoverrides"
     xsi:type="TaskPaneApp">
 
-  <Id>a1b2c3d4-e5f6-7890-1234-56789abcdef0</Id> <Version>1.0.0.0</Version>
+  <Id>4c5d6e7f-8a9b-0c1d-2e3f-4a5b6c7d8e9f</Id>
+  <Version>1.0.0.0</Version>
   <ProviderName>Mochileros RD</ProviderName>
   <DefaultLocale>es-ES</DefaultLocale>
-  <DisplayName DefaultValue="Mochileros RD Add-in" />
-  <Description DefaultValue="Gestión de Tours para Mochileros RD" />
+  <DisplayName DefaultValue="Mochileros RD" />
+  <Description DefaultValue="Herramientas para tours y gestión." />
   
   <IconUrl DefaultValue="https://cdn-icons-png.flaticon.com/512/201/201623.png" />
   <HighResolutionIconUrl DefaultValue="https://cdn-icons-png.flaticon.com/512/201/201623.png" />
+  <SupportUrl DefaultValue="https://georgedeberas.github.io/mochileros/" />
 
   <AppDomains>
     <AppDomain>https://georgedeberas.github.io</AppDomain>
@@ -33,35 +35,34 @@
     <Hosts>
       <Host xsi:type="Workbook">
         <DesktopFormFactor>
-          
           <ExtensionPoint xsi:type="PrimaryCommandSurface">
             <CustomTab id="TabMochileros">
               <Group id="GroupTours">
-                <Label xsi:type="bt:String" bt:value="Operaciones" />
+                <Label residue="groupLabel" />
                 <Icon>
-                  <bt:Image size="16" bt:value="https://cdn-icons-png.flaticon.com/512/201/201623.png" />
-                  <bt:Image size="32" bt:value="https://cdn-icons-png.flaticon.com/512/201/201623.png" />
-                  <bt:Image size="80" bt:value="https://cdn-icons-png.flaticon.com/512/201/201623.png" />
+                  <bt:Image size="16" residue="icon16" />
+                  <bt:Image size="32" residue="icon32" />
+                  <bt:Image size="80" residue="icon80" />
                 </Icon>
                 
                 <Control xsi:type="Button" id="BtnTours">
-                  <Label xsi:type="bt:String" bt:value="Tours" />
+                  <Label residue="taskpaneButtonLabel" />
                   <Supertip>
-                    <Title xsi:type="bt:String" bt:value="Panel de Tours" />
-                    <Description xsi:type="bt:String" bt:value="Abre el panel lateral de gestión." />
+                    <Title residue="taskpaneButtonLabel" />
+                    <Description residue="taskpaneButtonDesc" />
                   </Supertip>
                   <Icon>
-                    <bt:Image size="16" bt:value="https://cdn-icons-png.flaticon.com/512/201/201623.png" />
-                    <bt:Image size="32" bt:value="https://cdn-icons-png.flaticon.com/512/201/201623.png" />
-                    <bt:Image size="80" bt:value="https://cdn-icons-png.flaticon.com/512/201/201623.png" />
+                    <bt:Image size="16" residue="icon16" />
+                    <bt:Image size="32" residue="icon32" />
+                    <bt:Image size="80" residue="icon80" />
                   </Icon>
                   <Action xsi:type="ShowTaskpane">
-                    <TaskpaneId>MochilerosTaskpane</TaskpaneId>
-                    <SourceLocation bt:value="https://georgedeberas.github.io/mochileros/index.html" />
+                    <TaskpaneId>ButtonId1</TaskpaneId>
+                    <SourceLocation residue="taskpaneUrl" />
                   </Action>
                 </Control>
               </Group>
-              <Label xsi:type="bt:String" bt:value="Mochileros RD" />
+              <Label residue="tabLabel" />
             </CustomTab>
           </ExtensionPoint>
         </DesktopFormFactor>
@@ -70,13 +71,21 @@
     
     <Resources>
       <bt:Images>
-        <bt:Image id="Icon16" DefaultValue="https://cdn-icons-png.flaticon.com/512/201/201623.png" />
-        <bt:Image id="Icon32" DefaultValue="https://cdn-icons-png.flaticon.com/512/201/201623.png" />
-        <bt:Image id="Icon80" DefaultValue="https://cdn-icons-png.flaticon.com/512/201/201623.png" />
+        <bt:Image id="icon16" DefaultValue="https://cdn-icons-png.flaticon.com/512/201/201623.png" />
+        <bt:Image id="icon32" DefaultValue="https://cdn-icons-png.flaticon.com/512/201/201623.png" />
+        <bt:Image id="icon80" DefaultValue="https://cdn-icons-png.flaticon.com/512/201/201623.png" />
       </bt:Images>
       <bt:Urls>
-        <bt:Url id="Taskpane.Url" DefaultValue="https://georgedeberas.github.io/mochileros/index.html" />
+        <bt:Url id="taskpaneUrl" DefaultValue="https://georgedeberas.github.io/mochileros/index.html" />
       </bt:Urls>
+      <bt:ShortStrings>
+        <bt:String id="tabLabel" DefaultValue="Mochileros RD" />
+        <bt:String id="groupLabel" DefaultValue="Operaciones" />
+        <bt:String id="taskpaneButtonLabel" DefaultValue="Tours" />
+      </bt:ShortStrings>
+      <bt:LongStrings>
+        <bt:String id="taskpaneButtonDesc" DefaultValue="Abre el panel lateral para gestionar los tours." />
+      </bt:LongStrings>
     </Resources>
   </VersionOverrides>
 </OfficeApp>
