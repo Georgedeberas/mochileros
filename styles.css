@@ -1,1 +1,23 @@
+/* Reset básico */
+html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: "Segoe UI", "Helvetica Neue", "Helvetica", sans-serif; /* Fuente nativa de Excel */
+}
 
+.padding {
+    padding: 15px;
+}
+
+h1 {
+    font-size: 20px;
+    color: #2b579a; /* Azul Excel */
+    margin-bottom: 10px;
+}
+
+p {
+    font-size: 14px;
+    color: #333;
+}
