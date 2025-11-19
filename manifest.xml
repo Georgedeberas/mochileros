@@ -6,30 +6,19 @@
     xmlns:ov="http://schemas.microsoft.com/office/taskpaneappversionoverrides"
     xsi:type="TaskPaneApp">
 
-  <Id>c821f837-9af0-42dc-893a-334455667788</Id>
+  <Id>6c5d4e3f-2a1b-0c9d-8e7f-6a5b4c3d2e1f</Id>
   <Version>1.0.0.0</Version>
-  <ProviderName>Mochileros RD</ProviderName>
-  <DefaultLocale>es-ES</DefaultLocale>
+  <ProviderName>Mochileros</ProviderName>
+  <DefaultLocale>en-US</DefaultLocale>
   <DisplayName DefaultValue="Mochileros RD" />
-  <Description DefaultValue="Add-in de prueba" />
+  <Description DefaultValue="Mochileros RD Tools" />
   
-  <IconUrl DefaultValue="https://officedev.github.io/Office-Add-in-TaskPane-React/assets/icon-32.png" />
-  <HighResolutionIconUrl DefaultValue="https://officedev.github.io/Office-Add-in-TaskPane-React/assets/icon-64.png" />
-  <SupportUrl DefaultValue="https://georgedeberas.github.io/mochileros/" />
-
-  <AppDomains>
-    <AppDomain>https://georgedeberas.github.io</AppDomain>
-  </AppDomains>
+  <IconUrl DefaultValue="https://localhost:3000/assets/icon-32.png" />
+  <HighResolutionIconUrl DefaultValue="https://localhost:3000/assets/icon-64.png" />
 
   <Hosts>
     <Host Name="Workbook" />
   </Hosts>
-
-  <Requirements>
-    <Sets DefaultMinVersion="1.1">
-      <Set Name="ExcelApi" MinVersion="1.1"/>
-    </Sets>
-  </Requirements>
 
   <DefaultSettings>
     <SourceLocation DefaultValue="https://georgedeberas.github.io/mochileros/index.html" />
@@ -43,31 +32,27 @@
         <DesktopFormFactor>
           <ExtensionPoint xsi:type="PrimaryCommandSurface">
             <CustomTab id="TabMochileros">
-              <Group id="GroupTours">
-                <Label residue="groupLabel" />
+              <Group id="Group1">
+                <Label residue="lblGroup" />
                 <Icon>
-                  <bt:Image size="16" residue="icon16" />
                   <bt:Image size="32" residue="icon32" />
-                  <bt:Image size="80" residue="icon80" />
                 </Icon>
-                <Control xsi:type="Button" id="BtnTours">
-                  <Label residue="taskpaneButtonLabel" />
+                <Control xsi:type="Button" id="Btn1">
+                  <Label residue="lblButton" />
                   <Supertip>
-                    <Title residue="taskpaneButtonLabel" />
-                    <Description residue="taskpaneButtonDesc" />
+                    <Title residue="lblButton" />
+                    <Description residue="lblDesc" />
                   </Supertip>
                   <Icon>
-                    <bt:Image size="16" residue="icon16" />
                     <bt:Image size="32" residue="icon32" />
-                    <bt:Image size="80" residue="icon80" />
                   </Icon>
                   <Action xsi:type="ShowTaskpane">
-                    <TaskpaneId>MochilerosTaskpane</TaskpaneId>
-                    <SourceLocation residue="taskpaneUrl" />
+                    <TaskpaneId>Pane1</TaskpaneId>
+                    <SourceLocation residue="urlHome" />
                   </Action>
                 </Control>
               </Group>
-              <Label residue="tabLabel" />
+              <Label residue="lblTab" />
             </CustomTab>
           </ExtensionPoint>
         </DesktopFormFactor>
@@ -76,20 +61,18 @@
     
     <Resources>
       <bt:Images>
-        <bt:Image id="icon16" DefaultValue="https://officedev.github.io/Office-Add-in-TaskPane-React/assets/icon-16.png" />
         <bt:Image id="icon32" DefaultValue="https://officedev.github.io/Office-Add-in-TaskPane-React/assets/icon-32.png" />
-        <bt:Image id="icon80" DefaultValue="https://officedev.github.io/Office-Add-in-TaskPane-React/assets/icon-80.png" />
       </bt:Images>
       <bt:Urls>
-        <bt:Url id="taskpaneUrl" DefaultValue="https://georgedeberas.github.io/mochileros/index.html" />
+        <bt:Url id="urlHome" DefaultValue="https://georgedeberas.github.io/mochileros/index.html" />
       </bt:Urls>
       <bt:ShortStrings>
-        <bt:String id="tabLabel" DefaultValue="Mochileros RD" />
-        <bt:String id="groupLabel" DefaultValue="Gestión" />
-        <bt:String id="taskpaneButtonLabel" DefaultValue="Tours" />
+        <bt:String id="lblTab" DefaultValue="Mochileros RD" />
+        <bt:String id="lblGroup" DefaultValue="General" />
+        <bt:String id="lblButton" DefaultValue="Abrir" />
       </bt:ShortStrings>
       <bt:LongStrings>
-        <bt:String id="taskpaneButtonDesc" DefaultValue="Abrir panel lateral" />
+        <bt:String id="lblDesc" DefaultValue="Abre el panel." />
       </bt:LongStrings>
     </Resources>
   </VersionOverrides>
