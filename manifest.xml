@@ -6,15 +6,15 @@
     xmlns:ov="http://schemas.microsoft.com/office/taskpaneappversionoverrides"
     xsi:type="TaskPaneApp">
 
-  <Id>5f8a6b2d-3e4c-4d5a-6b7c-8d9e0f1a2b3c</Id>
+  <Id>a2256c90-1234-5678-9abc-1234567890ab</Id>
   <Version>1.0.0.0</Version>
   <ProviderName>Mochileros RD</ProviderName>
   <DefaultLocale>es-ES</DefaultLocale>
   <DisplayName DefaultValue="Mochileros RD" />
-  <Description DefaultValue="Panel de gestión para Mochileros RD" />
+  <Description DefaultValue="Add-in para gestion de tours" />
   
-  <IconUrl DefaultValue="https://georgedeberas.github.io/mochileros/assets/icon-32.png" />
-  <HighResolutionIconUrl DefaultValue="https://georgedeberas.github.io/mochileros/assets/icon-80.png" />
+  <IconUrl DefaultValue="https://via.placeholder.com/32.png" />
+  <HighResolutionIconUrl DefaultValue="https://via.placeholder.com/64.png" />
   <SupportUrl DefaultValue="https://georgedeberas.github.io/mochileros/" />
 
   <AppDomains>
@@ -76,20 +76,20 @@
     
     <Resources>
       <bt:Images>
-        <bt:Image id="icon16" DefaultValue="https://localhost:3000/assets/icon-16.png" />
-        <bt:Image id="icon32" DefaultValue="https://localhost:3000/assets/icon-32.png" />
-        <bt:Image id="icon80" DefaultValue="https://localhost:3000/assets/icon-80.png" />
+        <bt:Image id="icon16" DefaultValue="https://via.placeholder.com/16.png" />
+        <bt:Image id="icon32" DefaultValue="https://via.placeholder.com/32.png" />
+        <bt:Image id="icon80" DefaultValue="https://via.placeholder.com/80.png" />
       </bt:Images>
       <bt:Urls>
         <bt:Url id="taskpaneUrl" DefaultValue="https://georgedeberas.github.io/mochileros/index.html" />
       </bt:Urls>
       <bt:ShortStrings>
         <bt:String id="tabLabel" DefaultValue="Mochileros RD" />
-        <bt:String id="groupLabel" DefaultValue="Operaciones" />
+        <bt:String id="groupLabel" DefaultValue="Gestión" />
         <bt:String id="taskpaneButtonLabel" DefaultValue="Tours" />
       </bt:ShortStrings>
       <bt:LongStrings>
-        <bt:String id="taskpaneButtonDesc" DefaultValue="Abre el panel lateral." />
+        <bt:String id="taskpaneButtonDesc" DefaultValue="Abrir panel lateral" />
       </bt:LongStrings>
     </Resources>
   </VersionOverrides>
