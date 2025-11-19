@@ -1,78 +1,82 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<OfficeApp 
-    xmlns="http://schemas.microsoft.com/office/appforoffice/1.1" 
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-    xmlns:bt="http://schemas.microsoft.com/office/officeappbasictypes/1.0" 
-    xmlns:ov="http://schemas.microsoft.com/office/taskpaneappversionoverrides"
-    xsi:type="TaskPaneApp">
-
-  <Id>6c5d4e3f-2a1b-0c9d-8e7f-6a5b4c3d2e1f</Id>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<OfficeApp xsi:type="TaskPaneApp" xmlns="http://schemas.microsoft.com/office/appforoffice/1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bt="http://schemas.microsoft.com/office/officeappbasictypes/1.0" xmlns:ov="http://schemas.microsoft.com/office/taskpaneappversionoverrides" xmlns:m="http://schemas.microsoft.com/office/officeappbasictypes/1.0">
+  <Id>4873f902-8261-4227-935e-789012345678</Id>
   <Version>1.0.0.0</Version>
-  <ProviderName>Mochileros</ProviderName>
+  <ProviderName>Microsoft</ProviderName>
   <DefaultLocale>en-US</DefaultLocale>
   <DisplayName DefaultValue="Mochileros RD" />
-  <Description DefaultValue="Mochileros RD Tools" />
+  <Description DefaultValue="Mochileros RD TaskPane" />
   
-  <IconUrl DefaultValue="https://localhost:3000/assets/icon-32.png" />
-  <HighResolutionIconUrl DefaultValue="https://localhost:3000/assets/icon-64.png" />
-
+  <IconUrl DefaultValue="https://officedev.github.io/Office-Add-in-TaskPane-JS/assets/icon-32.png" />
+  <HighResolutionIconUrl DefaultValue="https://officedev.github.io/Office-Add-in-TaskPane-JS/assets/icon-64.png" />
+  <SupportUrl DefaultValue="https://georgedeberas.github.io/help" />
+  
+  <AppDomains>
+    <AppDomain>https://georgedeberas.github.io</AppDomain>
+  </AppDomains>
+  
   <Hosts>
     <Host Name="Workbook" />
   </Hosts>
-
+  
   <DefaultSettings>
     <SourceLocation DefaultValue="https://georgedeberas.github.io/mochileros/index.html" />
   </DefaultSettings>
-
+  
   <Permissions>ReadWriteDocument</Permissions>
-
+  
   <VersionOverrides xmlns="http://schemas.microsoft.com/office/taskpaneappversionoverrides" xsi:type="VersionOverridesV1_0">
     <Hosts>
       <Host xsi:type="Workbook">
         <DesktopFormFactor>
           <ExtensionPoint xsi:type="PrimaryCommandSurface">
-            <CustomTab id="TabMochileros">
-              <Group id="Group1">
-                <Label residue="lblGroup" />
+            <CustomTab id="Contoso.Tab1">
+              <Group id="Contoso.Group1">
+                <Label residue="groupLabel" />
                 <Icon>
+                  <bt:Image size="16" residue="icon16" />
                   <bt:Image size="32" residue="icon32" />
+                  <bt:Image size="80" residue="icon80" />
                 </Icon>
-                <Control xsi:type="Button" id="Btn1">
-                  <Label residue="lblButton" />
+                <Control xsi:type="Button" id="TaskpaneButton">
+                  <Label residue="taskpaneButtonLabel" />
                   <Supertip>
-                    <Title residue="lblButton" />
-                    <Description residue="lblDesc" />
+                    <Title residue="taskpaneButtonLabel" />
+                    <Description residue="taskpaneButtonDesc" />
                   </Supertip>
                   <Icon>
+                    <bt:Image size="16" residue="icon16" />
                     <bt:Image size="32" residue="icon32" />
+                    <bt:Image size="80" residue="icon80" />
                   </Icon>
                   <Action xsi:type="ShowTaskpane">
-                    <TaskpaneId>Pane1</TaskpaneId>
-                    <SourceLocation residue="urlHome" />
+                    <TaskpaneId>ButtonId1</TaskpaneId>
+                    <SourceLocation residue="taskpaneUrl" />
                   </Action>
                 </Control>
               </Group>
-              <Label residue="lblTab" />
+              <Label residue="customTabLabel" />
             </CustomTab>
           </ExtensionPoint>
         </DesktopFormFactor>
       </Host>
     </Hosts>
-    
     <Resources>
       <bt:Images>
-        <bt:Image id="icon32" DefaultValue="https://officedev.github.io/Office-Add-in-TaskPane-React/assets/icon-32.png" />
+        <bt:Image id="icon16" DefaultValue="https://officedev.github.io/Office-Add-in-TaskPane-JS/assets/icon-16.png" />
+        <bt:Image id="icon32" DefaultValue="https://officedev.github.io/Office-Add-in-TaskPane-JS/assets/icon-32.png" />
+        <bt:Image id="icon80" DefaultValue="https://officedev.github.io/Office-Add-in-TaskPane-JS/assets/icon-80.png" />
       </bt:Images>
       <bt:Urls>
-        <bt:Url id="urlHome" DefaultValue="https://georgedeberas.github.io/mochileros/index.html" />
+        <bt:Url id="taskpaneUrl" DefaultValue="https://georgedeberas.github.io/mochileros/index.html" />
       </bt:Urls>
       <bt:ShortStrings>
-        <bt:String id="lblTab" DefaultValue="Mochileros RD" />
-        <bt:String id="lblGroup" DefaultValue="General" />
-        <bt:String id="lblButton" DefaultValue="Abrir" />
+        <bt:String id="groupLabel" DefaultValue="Mochileros" />
+        <bt:String id="customTabLabel" DefaultValue="Mochileros RD" />
+        <bt:String id="taskpaneButtonLabel" DefaultValue="Tours" />
       </bt:ShortStrings>
       <bt:LongStrings>
-        <bt:String id="lblDesc" DefaultValue="Abre el panel." />
+        <bt:String id="taskpaneButtonDesc" DefaultValue="Abre el panel lateral" />
       </bt:LongStrings>
     </Resources>
   </VersionOverrides>
