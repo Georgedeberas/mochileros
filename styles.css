@@ -1,23 +1,113 @@
-/* Reset básico */
+/* Reset y Base */
 html, body {
     width: 100%;
     height: 100%;
     margin: 0;
     padding: 0;
-    font-family: "Segoe UI", "Helvetica Neue", "Helvetica", sans-serif; /* Fuente nativa de Excel */
+    font-family: "Segoe UI", "Helvetica Neue", Helvetica, sans-serif;
+    background-color: #f3f2f1;
+    overflow-x: hidden;
 }
 
-.padding {
+/* Sistema de Navegación (SPA) */
+.page-section {
+    display: none; /* Ocultos por defecto */
     padding: 15px;
 }
 
-h1 {
-    font-size: 20px;
-    color: #2b579a; /* Azul Excel */
-    margin-bottom: 10px;
+.page-section.active {
+    display: block; /* Solo se muestra el activo */
+    animation: fadeIn 0.3s ease-in-out;
 }
 
-p {
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+h2 {
+    color: #201f1e;
+    margin-top: 0;
+    border-bottom: 1px solid #edebe9;
+    padding-bottom: 10px;
+    font-size: 18px;
+}
+
+/* --- ESTILOS CONTABILIDAD (TARJETAS) --- */
+.sheet-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sheet-card {
+    background: white;
+    border-radius: 4px;
+    padding: 12px 15px;
+    margin-bottom: 8px;
+    box-shadow: 0 1.6px 3.6px 0 rgba(0,0,0,0.132), 0 0.3px 0.9px 0 rgba(0,0,0,0.108);
+    cursor: pointer;
+    transition: transform 0.1s, box-shadow 0.1s;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-weight: 600;
     font-size: 14px;
-    color: #333;
+    user-select: none; /* Importante para Drag&Drop */
+}
+
+.sheet-card:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 3.2px 7.2px 0 rgba(0,0,0,0.132), 0 0.6px 1.8px 0 rgba(0,0,0,0.108);
+}
+
+/* Indicador de Drag & Drop */
+.sheet-card.drag-over-top {
+    border-top: 3px solid #107c10; /* Verde Excel */
+}
+.sheet-card.drag-over-bottom {
+    border-bottom: 3px solid #107c10;
+}
+.sheet-card.dragging {
+    opacity: 0.4;
+}
+
+/* --- ESTILOS CONFIGURACIÓN --- */
+.config-item {
+    background: white;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.config-label {
+    font-size: 14px;
+    color: #323130;
+}
+
+/* Botones de Acción */
+.action-btn {
+    width: 100%;
+    padding: 10px;
+    background-color: #0078d4;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+.action-btn:hover { background-color: #106ebe; }
+.action-btn.danger { background-color: #a80000; }
+
+/* Consola de Debug */
+#debug-output {
+    width: 100%;
+    height: 150px;
+    font-family: monospace;
+    font-size: 11px;
+    margin-top: 10px;
+    border: 1px solid #ccc;
 }
