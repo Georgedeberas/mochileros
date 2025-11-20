@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <OfficeApp xsi:type="TaskPaneApp" xmlns="http://schemas.microsoft.com/office/appforoffice/1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bt="http://schemas.microsoft.com/office/officeappbasictypes/1.0" xmlns:ov="http://schemas.microsoft.com/office/taskpaneappversionoverrides" xmlns:m="http://schemas.microsoft.com/office/officeappbasictypes/1.0">
-  <Id>5c83f902-8261-4227-935e-111122223333</Id>
+  <Id>9999f902-8261-4227-935e-789012349999</Id>
   <Version>1.0.0.0</Version>
   <ProviderName>Mochileros RD</ProviderName>
   <DefaultLocale>es-ES</DefaultLocale>
   <DisplayName DefaultValue="Mochileros RD" />
-  <Description DefaultValue="Panel de Mochileros" />
+  <Description DefaultValue="Mochileros RD Custom Tab" />
   
-  <IconUrl DefaultValue="https://officedev.github.io/Office-Add-in-TaskPane-JS/assets/icon-32.png" />
-  <HighResolutionIconUrl DefaultValue="https://officedev.github.io/Office-Add-in-TaskPane-JS/assets/icon-64.png" />
+  <IconUrl DefaultValue="https://officedev.github.io/Office-Add-in-commands-samples/Assets/icon-32.png" />
+  <HighResolutionIconUrl DefaultValue="https://officedev.github.io/Office-Add-in-commands-samples/Assets/icon-64.png" />
   <SupportUrl DefaultValue="https://georgedeberas.github.io/help" />
   
   <AppDomains>
@@ -30,14 +30,17 @@
       <Host xsi:type="Workbook">
         <DesktopFormFactor>
           <ExtensionPoint xsi:type="PrimaryCommandSurface">
-            <OfficeTab id="TabHome">
-              <Group id="MochilerosGroup">
+            
+            <CustomTab id="TabMochileros">
+              
+              <Group id="GroupMochileros">
                 <Label residue="groupLabel" />
                 <Icon>
                   <bt:Image size="16" residue="icon16" />
                   <bt:Image size="32" residue="icon32" />
                   <bt:Image size="80" residue="icon80" />
                 </Icon>
+                
                 <Control xsi:type="Button" id="TaskpaneButton">
                   <Label residue="taskpaneButtonLabel" />
                   <Supertip>
@@ -55,26 +58,31 @@
                   </Action>
                 </Control>
               </Group>
-            </OfficeTab>
+              
+              <Label residue="customTabLabel" />
+            </CustomTab>
+            
           </ExtensionPoint>
         </DesktopFormFactor>
       </Host>
     </Hosts>
+    
     <Resources>
       <bt:Images>
-        <bt:Image id="icon16" DefaultValue="https://officedev.github.io/Office-Add-in-TaskPane-JS/assets/icon-16.png" />
-        <bt:Image id="icon32" DefaultValue="https://officedev.github.io/Office-Add-in-TaskPane-JS/assets/icon-32.png" />
-        <bt:Image id="icon80" DefaultValue="https://officedev.github.io/Office-Add-in-TaskPane-JS/assets/icon-80.png" />
+        <bt:Image id="icon16" DefaultValue="https://officedev.github.io/Office-Add-in-commands-samples/Assets/icon-16.png" />
+        <bt:Image id="icon32" DefaultValue="https://officedev.github.io/Office-Add-in-commands-samples/Assets/icon-32.png" />
+        <bt:Image id="icon80" DefaultValue="https://officedev.github.io/Office-Add-in-commands-samples/Assets/icon-80.png" />
       </bt:Images>
       <bt:Urls>
         <bt:Url id="taskpaneUrl" DefaultValue="https://georgedeberas.github.io/mochileros/index.html" />
       </bt:Urls>
       <bt:ShortStrings>
-        <bt:String id="groupLabel" DefaultValue="Mochileros App" />
-        <bt:String id="taskpaneButtonLabel" DefaultValue="Abrir Mochileros" />
+        <bt:String id="groupLabel" DefaultValue="Operaciones" />
+        <bt:String id="customTabLabel" DefaultValue="Mochileros RD" />
+        <bt:String id="taskpaneButtonLabel" DefaultValue="Abrir Tours" />
       </bt:ShortStrings>
       <bt:LongStrings>
-        <bt:String id="taskpaneButtonDesc" DefaultValue="Abre el panel lateral de Mochileros RD" />
+        <bt:String id="taskpaneButtonDesc" DefaultValue="Abre el panel lateral de gestión de tours." />
       </bt:LongStrings>
     </Resources>
   </VersionOverrides>
