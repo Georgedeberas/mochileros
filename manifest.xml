@@ -5,11 +5,11 @@
   <ProviderName>Mochileros RD</ProviderName>
   <DefaultLocale>es-ES</DefaultLocale>
   <DisplayName DefaultValue="Mochileros RD" />
-  <Description DefaultValue="Mochileros RD Custom Tab" />
+  <Description DefaultValue="Suite de gestión Mochileros RD" />
   
-  <IconUrl DefaultValue="https://officedev.github.io/Office-Add-in-commands-samples/Assets/icon-32.png" />
-  <HighResolutionIconUrl DefaultValue="https://officedev.github.io/Office-Add-in-commands-samples/Assets/icon-64.png" />
-  <SupportUrl DefaultValue="https://georgedeberas.github.io/help" />
+  <IconUrl DefaultValue="https://officedev.github.io/Office-Add-in-TaskPane-JS/assets/icon-32.png" />
+  <HighResolutionIconUrl DefaultValue="https://officedev.github.io/Office-Add-in-TaskPane-JS/assets/icon-64.png" />
+  <SupportUrl DefaultValue="https://georgedeberas.github.io/mochileros/index.html" />
   
   <AppDomains>
     <AppDomain>https://georgedeberas.github.io</AppDomain>
@@ -30,38 +30,74 @@
       <Host xsi:type="Workbook">
         <DesktopFormFactor>
           <ExtensionPoint xsi:type="PrimaryCommandSurface">
-            
             <CustomTab id="TabMochileros">
-              
               <Group id="GroupMochileros">
-                <Label residue="groupLabel" />
+                <Label resid="groupLabel" />
                 <Icon>
-                  <bt:Image size="16" residue="icon16" />
-                  <bt:Image size="32" residue="icon32" />
-                  <bt:Image size="80" residue="icon80" />
+                  <bt:Image size="16" resid="icon16" />
+                  <bt:Image size="32" resid="icon32" />
+                  <bt:Image size="80" resid="icon80" />
                 </Icon>
                 
-                <Control xsi:type="Button" id="TaskpaneButton">
-                  <Label residue="taskpaneButtonLabel" />
-                  <Supertip>
-                    <Title residue="taskpaneButtonLabel" />
-                    <Description residue="taskpaneButtonDesc" />
-                  </Supertip>
+                <Control xsi:type="Button" id="BtnTours">
+                  <Label resid="lblTours" />
+                  <Supertip> <Title resid="lblTours" /> <Description resid="descTours" /> </Supertip>
                   <Icon>
-                    <bt:Image size="16" residue="icon16" />
-                    <bt:Image size="32" residue="icon32" />
-                    <bt:Image size="80" residue="icon80" />
+                    <bt:Image size="16" resid="icon16" />
+                    <bt:Image size="32" resid="icon32" />
+                    <bt:Image size="80" resid="icon80" />
                   </Icon>
                   <Action xsi:type="ShowTaskpane">
-                    <TaskpaneId>MochilerosPane</TaskpaneId>
-                    <SourceLocation residue="taskpaneUrl" />
+                    <TaskpaneId>PaneMochileros</TaskpaneId>
+                    <SourceLocation resid="urlTours" />
                   </Action>
                 </Control>
+
+                <Control xsi:type="Button" id="BtnAccounting">
+                  <Label resid="lblAccounting" />
+                  <Supertip> <Title resid="lblAccounting" /> <Description resid="descAccounting" /> </Supertip>
+                  <Icon>
+                    <bt:Image size="16" resid="icon16" />
+                    <bt:Image size="32" resid="icon32" />
+                    <bt:Image size="80" resid="icon80" />
+                  </Icon>
+                  <Action xsi:type="ShowTaskpane">
+                    <TaskpaneId>PaneMochileros</TaskpaneId>
+                    <SourceLocation resid="urlAccounting" />
+                  </Action>
+                </Control>
+
+                <Control xsi:type="Button" id="BtnSettings">
+                  <Label resid="lblSettings" />
+                  <Supertip> <Title resid="lblSettings" /> <Description resid="descSettings" /> </Supertip>
+                  <Icon>
+                    <bt:Image size="16" resid="icon16" />
+                    <bt:Image size="32" resid="icon32" />
+                    <bt:Image size="80" resid="icon80" />
+                  </Icon>
+                  <Action xsi:type="ShowTaskpane">
+                    <TaskpaneId>PaneMochileros</TaskpaneId>
+                    <SourceLocation resid="urlSettings" />
+                  </Action>
+                </Control>
+
+                <Control xsi:type="Button" id="BtnManual">
+                  <Label resid="lblManual" />
+                  <Supertip> <Title resid="lblManual" /> <Description resid="descManual" /> </Supertip>
+                  <Icon>
+                    <bt:Image size="16" resid="icon16" />
+                    <bt:Image size="32" resid="icon32" />
+                    <bt:Image size="80" resid="icon80" />
+                  </Icon>
+                  <Action xsi:type="ShowTaskpane">
+                    <TaskpaneId>PaneMochileros</TaskpaneId>
+                    <SourceLocation resid="urlManual" />
+                  </Action>
+                </Control>
+
               </Group>
-              
-              <Label residue="customTabLabel" />
+              <Label resid="customTabLabel" />
             </CustomTab>
-            
           </ExtensionPoint>
         </DesktopFormFactor>
       </Host>
@@ -69,20 +105,31 @@
     
     <Resources>
       <bt:Images>
-        <bt:Image id="icon16" DefaultValue="https://officedev.github.io/Office-Add-in-commands-samples/Assets/icon-16.png" />
-        <bt:Image id="icon32" DefaultValue="https://officedev.github.io/Office-Add-in-commands-samples/Assets/icon-32.png" />
-        <bt:Image id="icon80" DefaultValue="https://officedev.github.io/Office-Add-in-commands-samples/Assets/icon-80.png" />
+        <bt:Image id="icon16" DefaultValue="https://officedev.github.io/Office-Add-in-TaskPane-JS/assets/icon-16.png" />
+        <bt:Image id="icon32" DefaultValue="https://officedev.github.io/Office-Add-in-TaskPane-JS/assets/icon-32.png" />
+        <bt:Image id="icon80" DefaultValue="https://officedev.github.io/Office-Add-in-TaskPane-JS/assets/icon-80.png" />
       </bt:Images>
       <bt:Urls>
         <bt:Url id="taskpaneUrl" DefaultValue="https://georgedeberas.github.io/mochileros/index.html" />
+        <bt:Url id="urlTours" DefaultValue="https://georgedeberas.github.io/mochileros/index.html?page=tours" />
+        <bt:Url id="urlAccounting" DefaultValue="https://georgedeberas.github.io/mochileros/index.html?page=accounting" />
+        <bt:Url id="urlSettings" DefaultValue="https://georgedeberas.github.io/mochileros/index.html?page=settings" />
+        <bt:Url id="urlManual" DefaultValue="https://georgedeberas.github.io/mochileros/index.html?page=manual" />
       </bt:Urls>
       <bt:ShortStrings>
-        <bt:String id="groupLabel" DefaultValue="Operaciones" />
+        <bt:String id="groupLabel" DefaultValue="Gestión" />
         <bt:String id="customTabLabel" DefaultValue="Mochileros RD" />
-        <bt:String id="taskpaneButtonLabel" DefaultValue="Abrir Tours" />
+        
+        <bt:String id="lblTours" DefaultValue="Tours" />
+        <bt:String id="lblAccounting" DefaultValue="Contabilidad" />
+        <bt:String id="lblSettings" DefaultValue="Configuración" />
+        <bt:String id="lblManual" DefaultValue="Manual" />
       </bt:ShortStrings>
       <bt:LongStrings>
-        <bt:String id="taskpaneButtonDesc" DefaultValue="Abre el panel lateral de gestión de tours." />
+        <bt:String id="descTours" DefaultValue="Panel de gestión de Tours" />
+        <bt:String id="descAccounting" DefaultValue="Panel de gestión de Hojas y Contabilidad" />
+        <bt:String id="descSettings" DefaultValue="Configuración del sistema" />
+        <bt:String id="descManual" DefaultValue="Manual de usuario" />
       </bt:LongStrings>
     </Resources>
   </VersionOverrides>
