@@ -5,10 +5,10 @@
   <ProviderName>Mochileros RD</ProviderName>
   <DefaultLocale>es-ES</DefaultLocale>
   <DisplayName DefaultValue="Mochileros RD" />
-  <Description DefaultValue="Suite de gestión Mochileros RD" />
+  <Description DefaultValue="Suite de gestión de viajes" />
   
-  <IconUrl DefaultValue="https://officedev.github.io/Office-Add-in-TaskPane-JS/assets/icon-32.png" />
-  <HighResolutionIconUrl DefaultValue="https://officedev.github.io/Office-Add-in-TaskPane-JS/assets/icon-64.png" />
+  <IconUrl DefaultValue="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f392.png" />
+  <HighResolutionIconUrl DefaultValue="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f392.png" />
   <SupportUrl DefaultValue="https://georgedeberas.github.io/mochileros/index.html" />
   
   <AppDomains>
@@ -31,21 +31,22 @@
         <DesktopFormFactor>
           <ExtensionPoint xsi:type="PrimaryCommandSurface">
             <CustomTab id="TabMochileros">
-              <Group id="GroupMochileros">
-                <Label resid="groupLabel" />
+              
+              <Group id="GroupManagement">
+                <Label resid="groupMgmtLabel" />
                 <Icon>
-                  <bt:Image size="16" resid="icon16" />
-                  <bt:Image size="32" resid="icon32" />
-                  <bt:Image size="80" resid="icon80" />
+                  <bt:Image size="16" resid="iconTours" />
+                  <bt:Image size="32" resid="iconTours" />
+                  <bt:Image size="80" resid="iconTours" />
                 </Icon>
                 
                 <Control xsi:type="Button" id="BtnTours">
                   <Label resid="lblTours" />
                   <Supertip> <Title resid="lblTours" /> <Description resid="descTours" /> </Supertip>
                   <Icon>
-                    <bt:Image size="16" resid="icon16" />
-                    <bt:Image size="32" resid="icon32" />
-                    <bt:Image size="80" resid="icon80" />
+                    <bt:Image size="16" resid="iconTours" />
+                    <bt:Image size="32" resid="iconTours" />
+                    <bt:Image size="80" resid="iconTours" />
                   </Icon>
                   <Action xsi:type="ShowTaskpane">
                     <TaskpaneId>PaneMochileros</TaskpaneId>
@@ -57,9 +58,9 @@
                   <Label resid="lblAccounting" />
                   <Supertip> <Title resid="lblAccounting" /> <Description resid="descAccounting" /> </Supertip>
                   <Icon>
-                    <bt:Image size="16" resid="icon16" />
-                    <bt:Image size="32" resid="icon32" />
-                    <bt:Image size="80" resid="icon80" />
+                    <bt:Image size="16" resid="iconAccounting" />
+                    <bt:Image size="32" resid="iconAccounting" />
+                    <bt:Image size="80" resid="iconAccounting" />
                   </Icon>
                   <Action xsi:type="ShowTaskpane">
                     <TaskpaneId>PaneMochileros</TaskpaneId>
@@ -71,9 +72,9 @@
                   <Label resid="lblSettings" />
                   <Supertip> <Title resid="lblSettings" /> <Description resid="descSettings" /> </Supertip>
                   <Icon>
-                    <bt:Image size="16" resid="icon16" />
-                    <bt:Image size="32" resid="icon32" />
-                    <bt:Image size="80" resid="icon80" />
+                    <bt:Image size="16" resid="iconSettings" />
+                    <bt:Image size="32" resid="iconSettings" />
+                    <bt:Image size="80" resid="iconSettings" />
                   </Icon>
                   <Action xsi:type="ShowTaskpane">
                     <TaskpaneId>PaneMochileros</TaskpaneId>
@@ -85,17 +86,54 @@
                   <Label resid="lblManual" />
                   <Supertip> <Title resid="lblManual" /> <Description resid="descManual" /> </Supertip>
                   <Icon>
-                    <bt:Image size="16" resid="icon16" />
-                    <bt:Image size="32" resid="icon32" />
-                    <bt:Image size="80" resid="icon80" />
+                    <bt:Image size="16" resid="iconManual" />
+                    <bt:Image size="32" resid="iconManual" />
+                    <bt:Image size="80" resid="iconManual" />
                   </Icon>
                   <Action xsi:type="ShowTaskpane">
                     <TaskpaneId>PaneMochileros</TaskpaneId>
                     <SourceLocation resid="urlManual" />
                   </Action>
                 </Control>
-
               </Group>
+
+              <Group id="GroupVibes">
+                <Label resid="groupVibesLabel" />
+                <Icon>
+                  <bt:Image size="16" resid="iconPalm" />
+                  <bt:Image size="32" resid="iconPalm" />
+                  <bt:Image size="80" resid="iconPalm" />
+                </Icon>
+
+                <Control xsi:type="Button" id="BtnDestinations">
+                  <Label resid="lblDestinos" />
+                  <Supertip> <Title resid="lblDestinos" /> <Description resid="descDestinos" /> </Supertip>
+                  <Icon>
+                    <bt:Image size="16" resid="iconPlane" />
+                    <bt:Image size="32" resid="iconPlane" />
+                    <bt:Image size="80" resid="iconPlane" />
+                  </Icon>
+                  <Action xsi:type="ShowTaskpane">
+                    <TaskpaneId>PaneMochileros</TaskpaneId>
+                    <SourceLocation resid="urlTours" />
+                  </Action>
+                </Control>
+
+                <Control xsi:type="Button" id="BtnRelax">
+                  <Label resid="lblRelax" />
+                  <Supertip> <Title resid="lblRelax" /> <Description resid="descRelax" /> </Supertip>
+                  <Icon>
+                    <bt:Image size="16" resid="iconPalm" />
+                    <bt:Image size="32" resid="iconPalm" />
+                    <bt:Image size="80" resid="iconPalm" />
+                  </Icon>
+                  <Action xsi:type="ShowTaskpane">
+                    <TaskpaneId>PaneMochileros</TaskpaneId>
+                    <SourceLocation resid="urlTours" />
+                  </Action>
+                </Control>
+              </Group>
+
               <Label resid="customTabLabel" />
             </CustomTab>
           </ExtensionPoint>
@@ -105,10 +143,8 @@
     
     <Resources>
       <bt:Images>
-        <bt:Image id="icon16" DefaultValue="https://officedev.github.io/Office-Add-in-TaskPane-JS/assets/icon-16.png" />
-        <bt:Image id="icon32" DefaultValue="https://officedev.github.io/Office-Add-in-TaskPane-JS/assets/icon-32.png" />
-        <bt:Image id="icon80" DefaultValue="https://officedev.github.io/Office-Add-in-TaskPane-JS/assets/icon-80.png" />
-      </bt:Images>
+        <bt:Image id="iconTours" DefaultValue="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f68c.png" /> <bt:Image id="iconAccounting" DefaultValue="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f4ca.png" /> <bt:Image id="iconSettings" DefaultValue="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/2699.png" /> <bt:Image id="iconManual" DefaultValue="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f4d8.png" /> <bt:Image id="iconPlane" DefaultValue="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/2708.png" /> <bt:Image id="iconPalm" DefaultValue="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f334.png" /> </bt:Images>
+      
       <bt:Urls>
         <bt:Url id="taskpaneUrl" DefaultValue="https://georgedeberas.github.io/mochileros/index.html" />
         <bt:Url id="urlTours" DefaultValue="https://georgedeberas.github.io/mochileros/index.html?page=tours" />
@@ -116,20 +152,26 @@
         <bt:Url id="urlSettings" DefaultValue="https://georgedeberas.github.io/mochileros/index.html?page=settings" />
         <bt:Url id="urlManual" DefaultValue="https://georgedeberas.github.io/mochileros/index.html?page=manual" />
       </bt:Urls>
+      
       <bt:ShortStrings>
-        <bt:String id="groupLabel" DefaultValue="Gestión" />
+        <bt:String id="groupMgmtLabel" DefaultValue="Operaciones" />
+        <bt:String id="groupVibesLabel" DefaultValue="Inspiración" />
         <bt:String id="customTabLabel" DefaultValue="Mochileros RD" />
         
         <bt:String id="lblTours" DefaultValue="Tours" />
         <bt:String id="lblAccounting" DefaultValue="Contabilidad" />
-        <bt:String id="lblSettings" DefaultValue="Configuración" />
-        <bt:String id="lblManual" DefaultValue="Manual" />
+        <bt:String id="lblSettings" DefaultValue="Ajustes" />
+        <bt:String id="lblManual" DefaultValue="Ayuda" />
+        <bt:String id="lblDestinos" DefaultValue="Destinos" />
+        <bt:String id="lblRelax" DefaultValue="Relax" />
       </bt:ShortStrings>
       <bt:LongStrings>
-        <bt:String id="descTours" DefaultValue="Panel de gestión de Tours" />
-        <bt:String id="descAccounting" DefaultValue="Panel de gestión de Hojas y Contabilidad" />
-        <bt:String id="descSettings" DefaultValue="Configuración del sistema" />
-        <bt:String id="descManual" DefaultValue="Manual de usuario" />
+        <bt:String id="descTours" DefaultValue="Gestionar Tours" />
+        <bt:String id="descAccounting" DefaultValue="Ver Hojas y Finanzas" />
+        <bt:String id="descSettings" DefaultValue="Configurar Add-in" />
+        <bt:String id="descManual" DefaultValue="Ver Manual de Usuario" />
+        <bt:String id="descDestinos" DefaultValue="Explorar nuevos destinos" />
+        <bt:String id="descRelax" DefaultValue="Modo Zen" />
       </bt:LongStrings>
     </Resources>
   </VersionOverrides>
