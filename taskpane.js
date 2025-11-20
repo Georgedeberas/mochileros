@@ -1,308 +1,447 @@
-/* global Office, Excel, console */
+// Archivo de Referencia: taskpane.js
+/*
+ * PROMPT MAESTRO v2 - Arquitecto de Software
+ * Componente: Panel Lateral de Hojas (Contabilidad)
+ * Fase: Final (Consolidación en taskpane.js)
+ */
 
-// --- CONFIGURACIÓN GLOBAL Y ESTADO ---
-const CONFIG = {
-    autoReorder: true,
-    showHeadings: false,
-    clearConsole: true
-};
+// #region 1. CONSTANTES Y MODELO DE DATOS
+// -------------------------------------------------------------
 
-// --- INICIALIZACIÓN ---
-Office.onReady((info) => {
-    if (info.host === Office.HostType.Excel) {
-        // 1. Cargar Configuración guardada
-        loadSettings();
+const SETTINGS_KEY = 'sheetPanelSettings';
 
-        // 2. Disciplina de Silencio
-        if (CONFIG.clearConsole) console.clear();
+let _dragSource = null;
+let _currentSettings = { autoReorder: true, showHeaders: false, clearConsoleOnLoad: true }; 
+let _dropTargetPosition = "before"; 
 
-        // 3. Enrutamiento (Routing)
-        const urlParams = new URLSearchParams(window.location.search);
-        const page = urlParams.get('page') || 'accounting'; // Por defecto contabilidad
-        showPage(page);
+// #endregion
 
-        // 4. Listeners de Eventos Globales
-        document.getElementById('toggle-reorder').addEventListener('change', saveSettings);
-        document.getElementById('toggle-headings').addEventListener('change', toggleHeadings);
-        document.getElementById('toggle-clear-console').addEventListener('change', saveSettings);
-        document.getElementById('btn-debug-dump').addEventListener('click', dumpDebugInfo);
-        document.getElementById('btn-clear-console').addEventListener('click', () => console.clear());
+// #region 2. EXCEL API Y LÓGICA CRÍTICA
+// -------------------------------------------------------------
 
-        updateStatus("Sistema listo.");
-    }
-});
-
-// --- LÓGICA DE NAVEGACIÓN ---
-function showPage(pageId) {
-    // Ocultar todas
-    document.querySelectorAll('.page-section').forEach(el => el.classList.remove('active'));
+/** Gestiona errores bajo la disciplina de silencio. */
+function handleError(message, error) {
+    let userMessage = message;
+    let code = "N/A";
     
-    // Mostrar la solicitada
-    const target = document.getElementById(`page-${pageId}`);
-    if (target) {
-        target.classList.add('active');
-        // Si es contabilidad, cargar datos
-        if (pageId === 'accounting') loadSheets();
-    } else {
-        // Fallback si la pagina no existe
-        document.getElementById('page-accounting').classList.add('active');
-        loadSheets();
-    }
-}
-
-// --- GESTIÓN DE SETTINGS ---
-function loadSettings() {
-    const saved = localStorage.getItem('mochileros_cfg');
-    if (saved) {
-        const parsed = JSON.parse(saved);
-        CONFIG.autoReorder = parsed.autoReorder;
-        CONFIG.showHeadings = parsed.showHeadings;
-        CONFIG.clearConsole = parsed.clearConsole;
+    if (error && error.code) {
+        code = error.code;
+        if (code !== "PropertyNotLoaded" && error.message) {
+            userMessage = error.message;
+        }
+    } else if (error instanceof Error) {
+        userMessage = error.message;
     }
     
-    // Actualizar UI
-    document.getElementById('toggle-reorder').checked = CONFIG.autoReorder;
-    document.getElementById('toggle-headings').checked = CONFIG.showHeadings;
-    document.getElementById('toggle-clear-console').checked = CONFIG.clearConsole;
-}
-
-function saveSettings() {
-    CONFIG.autoReorder = document.getElementById('toggle-reorder').checked;
-    CONFIG.showHeadings = document.getElementById('toggle-headings').checked;
-    CONFIG.clearConsole = document.getElementById('toggle-clear-console').checked;
+    console.error(`[ERROR CRÍTICO] ${userMessage} (Code: ${code})`, error);
     
-    localStorage.setItem('mochileros_cfg', JSON.stringify(CONFIG));
+    setGlobalStatus(`❌ Fallo en operación. Use 💾 para detalles.`, "error");
 }
 
-// --- LÓGICA DE HOJAS (CONTABILIDAD) ---
-async function loadSheets() {
-    updateStatus("Cargando hojas...");
+/** [CRÍTICA] Activa la hoja en Excel. */
+async function activateSheet(sheetId) {
     try {
         await Excel.run(async (context) => {
-            const sheets = context.workbook.worksheets;
-            sheets.load("items/name, items/tabColor, items/id, items/position");
-            await context.sync();
-
-            renderSheetList(sheets.items);
-            updateStatus("Hojas cargadas.");
-        });
-    } catch (error) {
-        handleError(error);
-    }
-}
-
-function renderSheetList(sheets) {
-    const list = document.getElementById('sheet-list');
-    list.innerHTML = ''; // Limpiar
-
-    sheets.forEach(sheet => {
-        const li = document.createElement('li');
-        li.className = 'sheet-card';
-        li.textContent = sheet.name;
-        li.draggable = true; // Habilitar Drag
-        li.dataset.name = sheet.name;
-        li.dataset.id = sheet.id;
-
-        // Color y Contraste
-        const bgColor = sheet.tabColor || "#ffffff"; // Default blanco si es nulo
-        li.style.backgroundColor = bgColor;
-        li.style.color = getContrastYIQ(bgColor);
-
-        // Eventos
-        li.onclick = () => activateSheet(sheet.name);
-        
-        // Eventos Drag & Drop
-        addDnDEvents(li);
-
-        list.appendChild(li);
-    });
-}
-
-async function activateSheet(sheetName) {
-    try {
-        await Excel.run(async (context) => {
-            const sheet = context.workbook.worksheets.getItem(sheetName);
+            const sheet = context.workbook.worksheets.getItem(sheetId);
             sheet.activate();
             await context.sync();
         });
     } catch (error) {
-        handleError(error);
+        handleError("Fallo al activar la hoja.", error);
     }
 }
 
-async function toggleHeadings() {
-    saveSettings(); // Guardar estado
+/** [CRÍTICA] Escribe en Excel: Reordena una hoja. */
+async function reorderSheetInExcel(sourceId, targetId, dropType) {
+    showLoadingState("⏳ Sincronizando orden...");
     try {
         await Excel.run(async (context) => {
             const sheets = context.workbook.worksheets;
-            sheets.load("items");
+            sheets.load("items/position");
             await context.sync();
             
-            // Aplicar a todas las hojas
-            sheets.items.forEach(sheet => {
-                sheet.showHeadings = CONFIG.showHeadings;
-            });
+            const sourceSheet = sheets.getItem(sourceId);
+            const targetSheet = sheets.getItem(targetId);
             
+            targetSheet.load("position");
+            sourceSheet.load("position");
             await context.sync();
-            updateStatus(`Encabezados: ${CONFIG.showHeadings ? 'ON' : 'OFF'}`);
+            
+            let newPosition = targetSheet.position;
+
+            if (dropType === "after") {
+                if (sourceSheet.position === targetSheet.position + 1) return; 
+                newPosition += 1;
+            } else {
+                if (sourceSheet.position === targetSheet.position - 1) return;
+            }
+
+            const maxPosition = sheets.items.length - 1; 
+            newPosition = Math.min(Math.max(newPosition, 0), maxPosition);
+
+            sourceSheet.position = newPosition;
+            await context.sync();
         });
     } catch (error) {
-        handleError(error);
+        handleError("Fallo al reordenar la hoja.", error);
+    } finally {
+        await loadSheetsFromExcel(); 
     }
 }
 
-// --- UTILIDADES VISUALES ---
-function getContrastYIQ(hexcolor){
-    // Si no viene hex (ej: null), devolver negro
-    if(!hexcolor || hexcolor === '#ffffff') return '#323130';
-    
-    hexcolor = hexcolor.replace("#", "");
-    var r = parseInt(hexcolor.substr(0,2),16);
-    var g = parseInt(hexcolor.substr(2,2),16);
-    var b = parseInt(hexcolor.substr(4,2),16);
-    var yiq = ((r*299)+(g*587)+(b*114))/1000;
-    return (yiq >= 128) ? '#323130' : 'white';
-}
+/** Carga todas las hojas desde Excel y actualiza el UI. */
+async function loadSheetsFromExcel() {
+    showLoadingState("⏳ Cargando Contabilidad..."); 
+    try {
+        let sheetData = [];
+        await Excel.run(async (context) => {
+            const sheets = context.workbook.worksheets;
+            sheets.load("items/name, items/tabColor, items/position, items/id");
+            await context.sync();
 
-function updateStatus(msg) {
-    document.getElementById('status-msg').innerText = msg;
-}
+            sheetData = sheets.items.map(s => ({
+                id: s.id,
+                name: s.name,
+                color: s.tabColor === "" ? "#e1dfdd" : s.tabColor,
+                position: s.position
+            }));
+        });
 
-function handleError(error) {
-    console.error(error);
-    updateStatus("Error: " + error.message);
-    document.getElementById('debug-output').value += "\n[ERROR] " + error.message;
-}
+        sheetData.sort((a, b) => a.position - b.position);
+        renderSheetList(sheetData);
 
-function dumpDebugInfo() {
-    const info = {
-        timestamp: new Date().toISOString(),
-        config: CONFIG,
-        userAgent: navigator.userAgent,
-        url: window.location.href
-    };
-    document.getElementById('debug-output').value = JSON.stringify(info, null, 2);
-}
-
-// --- DRAG & DROP LOGIC ---
-let dragSrcEl = null;
-
-function addDnDEvents(elem) {
-    elem.addEventListener('dragstart', handleDragStart);
-    elem.addEventListener('dragenter', handleDragEnter);
-    elem.addEventListener('dragover', handleDragOver);
-    elem.addEventListener('dragleave', handleDragLeave);
-    elem.addEventListener('drop', handleDrop);
-    elem.addEventListener('dragend', handleDragEnd);
-}
-
-function handleDragStart(e) {
-    this.style.opacity = '0.4';
-    dragSrcEl = this;
-    e.dataTransfer.effectAllowed = 'move';
-    e.dataTransfer.setData('text/html', this.innerHTML);
-}
-
-function handleDragOver(e) {
-    if (e.preventDefault) e.preventDefault();
-    e.dataTransfer.dropEffect = 'move';
-    
-    // Calcular si estamos en la mitad superior o inferior
-    const bounding = this.getBoundingClientRect();
-    const offset = bounding.y + (bounding.height / 2);
-    
-    this.classList.remove('drag-over-top', 'drag-over-bottom');
-    
-    if (e.clientY - offset > 0) {
-        this.classList.add('drag-over-bottom');
-    } else {
-        this.classList.add('drag-over-top');
+    } catch (error) {
+        handleError("Fallo al cargar las hojas de Excel.", error);
+        showLoadingState(`❌ Error de carga. Use 🔄.`);
+    } finally {
+        hideLoadingState();
     }
-    return false;
 }
 
-function handleDragEnter(e) {
-    this.classList.add('over');
-}
+/** Aplica la configuración de encabezados a todas las hojas. */
+async function applyHeadingsSettingToAllSheets(show) {
+    try {
+        await Excel.run(async (context) => {
+            const sheets = context.workbook.worksheets;
+            sheets.load("items/showHeadings");
+            await context.sync();
 
-function handleDragLeave(e) {
-    this.classList.remove('drag-over-top', 'drag-over-bottom');
-}
-
-async function handleDrop(e) {
-    if (e.stopPropagation) e.stopPropagation();
-    
-    // Limpiar estilos visuales
-    this.classList.remove('drag-over-top', 'drag-over-bottom');
-
-    if (dragSrcEl !== this) {
-        // Si el reordenamiento automatico está apagado, no hacer nada en Excel
-        if (!CONFIG.autoReorder) {
-            updateStatus("Reordenamiento bloqueado por configuración.");
-            return false;
-        }
-
-        const srcName = dragSrcEl.dataset.name;
-        const targetName = this.dataset.name;
-        
-        // Determinar posición (Before o After)
-        const bounding = this.getBoundingClientRect();
-        const offset = bounding.y + (bounding.height / 2);
-        const position = (e.clientY - offset > 0) ? "After" : "Before";
-
-        updateStatus(`Moviendo ${srcName} ${position} ${targetName}...`);
-
-        // EJECUTAR EN EXCEL
-        try {
-            await Excel.run(async (context) => {
-                const sheets = context.workbook.worksheets;
-                const srcSheet = sheets.getItem(srcName);
-                const targetSheet = sheets.getItem(targetName);
-                
-                srcSheet.position = position === "After" 
-                    ? Excel.WorksheetPositionType.after 
-                    : Excel.WorksheetPositionType.before;
-                
-                // Parche crítico para API de posicionamiento: referenciar hoja destino
-                if(position === "After") {
-                    srcSheet.position = targetSheet.position + 1; // Lógica simplificada por limitaciones de API JS puras a veces
-                    // Nota: La API real usa reordering relativo, pero aqui usaremos reload para simplificar visual
-                } 
-                
-                // Método más robusto: Usar relative positioning de la API si está disponible
-                // Ojo: sheet.position acepta un indice numérico o un objeto relativo en algunas APIs nuevas.
-                // Vamos a usar el método de reordenar array y reasignar para máxima compatibilidad o reload.
-                
-                /* NOTA ARQUITECTO: La API de Excel para "Mover relative to" es compleja. 
-                   Para la V10, haremos el movimiento visual y forzaremos recarga.
-                   Implementación real requiere calcular indices numéricos.
-                */
-                
-                // RE-IMPLEMENTACIÓN ROBUSTA DE MOVIMIENTO
-                sheets.load("items/name, items/position, items/id");
-                await context.sync();
-                
-                let targetIndex = targetSheet.position;
-                // Ajuste
-                if (position === "After") targetIndex++;
-                
-                // Mover
-                srcSheet.position = targetIndex;
-                
-                await context.sync();
-                loadSheets(); // Recargar UI
+            sheets.items.forEach(sheet => {
+                sheet.showHeadings = show; 
             });
-        } catch (err) {
-            handleError(err);
-            loadSheets(); // Revertir UI si falla
-        }
+
+            await context.sync();
+        });
+    } catch (error) {
+        handleError("Fallo al aplicar la configuración de encabezados.", error);
     }
-    return false;
 }
 
-function handleDragEnd(e) {
-    this.style.opacity = '1';
-    document.querySelectorAll('.sheet-card').forEach(col => {
-        col.classList.remove('drag-over-top', 'drag-over-bottom');
+// #endregion
+
+// #region 3. GESTIÓN DE ESTADO Y CONFIGURACIÓN
+// -------------------------------------------------------------
+
+function loadSettings() {
+    try {
+        const stored = localStorage.getItem(SETTINGS_KEY);
+        if (stored) {
+            _currentSettings = { 
+                ..._currentSettings, 
+                ...JSON.parse(stored),
+                clearConsoleOnLoad: JSON.parse(stored).autoScrollConsole !== undefined 
+                    ? JSON.parse(stored).autoScrollConsole 
+                    : (_currentSettings.clearConsoleOnLoad || true)
+            };
+        }
+    } catch (e) {
+        console.warn("Fallo al cargar la configuración de localStorage. Usando valores por defecto.");
+    }
+    return _currentSettings;
+}
+
+function saveSettings() {
+    try {
+        localStorage.setItem(SETTINGS_KEY, JSON.stringify(_currentSettings));
+    } catch (e) {
+        console.error("Fallo al guardar la configuración de localStorage.");
+    }
+}
+
+function updateSetting(key, value) {
+    _currentSettings[key] = value;
+    saveSettings();
+    applySettings();
+}
+
+function applySettings() {
+    document.getElementById("toggle-auto-reorder").checked = _currentSettings.autoReorder;
+    document.getElementById("toggle-headers").checked = _currentSettings.showHeaders;
+    document.getElementById("toggle-clear-on-load").checked = _currentSettings.clearConsoleOnLoad; 
+    
+    applyHeadingsSettingToAllSheets(_currentSettings.showHeaders);
+}
+
+// #endregion
+
+// #region 4. LÓGICA DE UI Y DOM (RENDER/EVENTS)
+// -------------------------------------------------------------
+
+/** Calcula el color de texto contrastante. */
+function getContrastingTextColor(hexColor) {
+    let hex = hexColor.startsWith('#') ? hexColor.substring(1) : hexColor;
+    if (hex.length === 3) {
+        hex = hex.split('').map(c => c + c).join('');
+    }
+
+    const r = parseInt(hex.substring(0, 2), 16);
+    const g = parseInt(hex.substring(2, 4), 16);
+    const b = parseInt(hex.substring(4, 6), 16);
+
+    const luminance = (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;
+    return luminance > 0.5 ? '#323130' : '#ffffff'; 
+}
+
+/** Renderiza la lista de hojas en el panel. */
+function renderSheetList(data) {
+    const listContainer = document.getElementById("sheet-list");
+    listContainer.innerHTML = "";
+
+    data.forEach(sheet => {
+        const li = document.createElement("li");
+        li.className = "sheet-item";
+        li.draggable = true;
+        li.dataset.sheetId = sheet.id;
+        li.dataset.position = sheet.position.toString();
+        
+        const hexColor = sheet.color.startsWith('#') ? sheet.color : `#${sheet.color}`;
+        
+        li.style.backgroundColor = hexColor;
+        li.style.color = getContrastingTextColor(hexColor);
+
+        li.addEventListener('click', (e) => {
+            if (li.classList.contains('dragging')) return; 
+            activateSheet(sheet.id);
+        });
+
+        const dropdownIcon = document.createElement("div");
+        dropdownIcon.className = "dropdown-icon";
+        dropdownIcon.innerHTML = `&#9660;`; // Flecha descendente
+        
+        dropdownIcon.style.color = li.style.color; 
+        
+        const nameSpan = document.createElement("span");
+        nameSpan.className = "sheet-name";
+        nameSpan.textContent = sheet.name;
+        
+        li.appendChild(nameSpan);
+        li.appendChild(dropdownIcon);
+
+        addDnDEvents(li);
+
+        listContainer.appendChild(li);
     });
 }
+
+/** Configura los listeners de Drag and Drop. */
+function addDnDEvents(el) {
+    el.addEventListener('dragstart', (e) => {
+        _dragSource = el;
+        el.classList.add('dragging');
+        if (e.dataTransfer) {
+            e.dataTransfer.effectAllowed = 'move';
+            e.dataTransfer.setData('text/plain', JSON.stringify({
+                id: el.dataset.sheetId,
+                position: el.dataset.position
+            }));
+        }
+    });
+
+    el.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        if (e.dataTransfer) {
+            e.dataTransfer.dropEffect = 'move';
+        }
+
+        const rect = el.getBoundingClientRect();
+        
+        if (e.clientY < rect.top + rect.height / 2) {
+            el.classList.add('drop-target-top');
+            el.classList.remove('drop-target-bottom');
+            _dropTargetPosition = "before"; 
+        } else {
+            el.classList.add('drop-target-bottom');
+            el.classList.remove('drop-target-top');
+            _dropTargetPosition = "after"; 
+        }
+        return false;
+    });
+
+    el.addEventListener('dragleave', (e) => {
+        el.classList.remove('drop-target-top', 'drop-target-bottom');
+    });
+
+    el.addEventListener('drop', async (e) => {
+        e.stopPropagation();
+        el.classList.remove('drop-target-top', 'drop-target-bottom');
+        
+        const sourceData = JSON.parse(e.dataTransfer.getData('text/plain'));
+        const targetId = el.dataset.sheetId;
+        
+        if (sourceData.id !== targetId) {
+            if (_currentSettings.autoReorder) {
+                await reorderSheetInExcel(sourceData.id, targetId, _dropTargetPosition); 
+            } else {
+                loadSheetsFromExcel();
+            }
+        }
+        return false;
+    });
+
+    el.addEventListener('dragend', (e) => {
+        el.classList.remove('dragging');
+        el.classList.remove('drop-target-top', 'drop-target-bottom');
+        _dragSource = null;
+    });
+}
+
+/** Muestra un mensaje en la barra de estado global. */
+function setGlobalStatus(message, type = "info") {
+    const statusBar = document.getElementById("global-status-bar");
+    if (!statusBar) return;
+    
+    statusBar.innerText = message;
+    statusBar.className = `status-${type}`;
+    
+    if (type !== "loading" && type !== "error") {
+        window.setTimeout(() => {
+            statusBar.innerText = "✅ Listo.";
+            statusBar.className = "status-success";
+        }, 3000);
+    }
+}
+
+
+/** Muestra un volcado de datos de depuración a la consola y al textarea. */
+async function executeDebugDump() {
+    const outputArea = document.getElementById("debug-output");
+    const btnCopy = document.getElementById("btn-copy-debug");
+    
+    console.log("--- VOLCADO DE DATOS SOLICITADO POR EL USUARIO ---");
+    outputArea.value = "Generando volcado del sistema... espera.";
+    
+    try {
+        await Excel.run(async (context) => {
+            const sheets = context.workbook.worksheets;
+            sheets.load("items/name, items/id, items/position, items/tabColor, items/visibility, items/showHeadings");
+            
+            const app = context.application;
+            app.load("calculationMode");
+
+            await context.sync();
+
+            const debugObject = {
+                timestamp: new Date().toISOString(),
+                workbook: {
+                    sheetCount: sheets.items.length,
+                    sheets: sheets.items.map(s => ({
+                        index: s.position,
+                        name: s.name,
+                        id: s.id,
+                        color: s.tabColor,
+                        visible: s.visibility,
+                        showHeadings: s.showHeadings
+                    }))
+                },
+                appState: _currentSettings
+            };
+
+            const jsonString = JSON.stringify(debugObject, null, 2);
+            outputArea.value = jsonString;
+            btnCopy.classList.remove("hidden");
+            console.log(jsonString); 
+            setGlobalStatus("✅ Volcado de datos completado.", "info");
+        });
+    } catch (error) {
+        outputArea.value = "❌ ERROR: " + error.toString();
+        handleError("Fallo al generar el volcado de datos.", error);
+    }
+}
+
+/** Limpia la consola manualmente. */
+function clearConsoleLog() {
+    console.clear();
+    setGlobalStatus("🧹 Consola de Logs limpiada.", "info");
+}
+
+function copyDebugToClipboard() {
+    const outputArea = document.getElementById("debug-output");
+    outputArea.select();
+    document.execCommand("copy");
+    setGlobalStatus("📋 Datos copiados al portapapeles.", "info");
+}
+
+function showLoadingState(message) {
+    const list = document.getElementById("sheet-list");
+    list.innerHTML = `<li class="loading-state">${message}</li>`;
+    document.getElementById("app-container").classList.add("loading-active");
+}
+
+function hideLoadingState() {
+    document.getElementById("app-container").classList.remove("loading-active");
+}
+
+// #endregion
+
+// #region 5. OFFICE.ONREADY & INITIALIZATION
+// -------------------------------------------------------------
+
+Office.onReady(() => {
+    loadSettings(); 
+
+    if (_currentSettings.clearConsoleOnLoad) {
+        console.clear();
+    }
+    
+    console.log("Arquitecto v2: Sistema Contabilidad (taskpane.js) iniciado.");
+    
+    applySettings();
+
+    // Setup Listeners
+    document.getElementById("btn-refresh").onclick = loadSheetsFromExcel;
+    document.getElementById("btn-debug-dump").onclick = executeDebugDump;
+    document.getElementById("btn-copy-debug").onclick = copyDebugToClipboard;
+
+    document.getElementById("toggle-auto-reorder").onchange = (e) => {
+        updateSetting('autoReorder', e.target.checked);
+    };
+    document.getElementById("toggle-headers").onchange = (e) => {
+        updateSetting('showHeaders', e.target.checked);
+    };
+    document.getElementById("toggle-clear-on-load").onchange = (e) => { 
+        updateSetting('clearConsoleOnLoad', e.target.checked);
+    };
+    document.getElementById("btn-clear-console-manual").onclick = clearConsoleLog;
+    
+    // Función switchTab global para el HTML
+    window.switchTab = (tabName) => {
+        const tabs = ['sheets', 'config'];
+        tabs.forEach(t => {
+            const elContent = document.getElementById(`view-${t}`);
+            const elTab = document.getElementById(`tab-${t}`);
+            if (t === tabName) {
+                elContent.classList.add("active");
+                elContent.classList.remove("hidden");
+                elTab.classList.add("active");
+            } else {
+                elContent.classList.remove("active");
+                elContent.classList.add("hidden");
+                elTab.classList.remove("active");
+            }
+        });
+    };
+
+    loadSheetsFromExcel();
+});
+
+// #endregion
