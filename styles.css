@@ -1,113 +1,292 @@
-/* Reset y Base */
-html, body {
-    width: 100%;
-    height: 100%;
+/* Archivo de Referencia: styles.css */
+:root {
+    --bg-color: #f3f2f1; /* Fondo más oscuro/opaco para el cuerpo del panel */
+    --body-bg-color: #f8f8f8; /* Un poco más claro que el cuerpo para el scroll */
+    --text-color: #323130;
+    --border-color: #edebe9;
+    --hover-color: #e1dfdd; /* Ajustado por el nuevo fondo */
+    --primary-color: #107c10; /* Excel Green */
+    --nav-height: 44px;
+    --shadow-subtle: 0 1px 3px rgba(0, 0, 0, 0.2); /* Sombra más fuerte */
+    --border-radius-card: 10px; /* Esquinas más redondeadas */
+    --icon-size: 18px; /* Tamaño estándar para iconos de botón/emoji */
+}
+
+body {
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     margin: 0;
     padding: 0;
-    font-family: "Segoe UI", "Helvetica Neue", Helvetica, sans-serif;
-    background-color: #f3f2f1;
+    background-color: var(--body-bg-color); 
+    color: var(--text-color);
     overflow-x: hidden;
 }
 
-/* Sistema de Navegación (SPA) */
-.page-section {
-    display: none; /* Ocultos por defecto */
-    padding: 15px;
+#app-container {
+    background-color: var(--bg-color); 
 }
 
-.page-section.active {
-    display: block; /* Solo se muestra el activo */
-    animation: fadeIn 0.3s ease-in-out;
+/* Barra de Estado Global */
+#global-status-bar {
+    padding: 4px 16px;
+    font-size: 12px;
+    font-weight: 600;
+    text-align: center;
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+#global-status-bar.status-success {
+    background-color: #f6ffed;
+    color: #52c41a;
+}
+#global-status-bar.status-error {
+    background-color: #fff2f0;
+    color: #f5222d;
+}
+#global-status-bar.status-info {
+    background-color: #e6f7ff;
+    color: #1890ff;
 }
 
-h2 {
-    color: #201f1e;
-    margin-top: 0;
-    border-bottom: 1px solid #edebe9;
-    padding-bottom: 10px;
-    font-size: 18px;
+/* Navegación (Ajustes de Iconos) */
+.top-nav {
+    display: flex;
+    border-bottom: 1px solid var(--border-color);
+    height: var(--nav-height);
+    background: #ffffff; 
 }
 
-/* --- ESTILOS CONTABILIDAD (TARJETAS) --- */
+.nav-item {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.nav-item:hover {
+    background-color: var(--hover-color);
+}
+
+.nav-item.active {
+    border-bottom: 2px solid var(--primary-color);
+    color: var(--primary-color);
+    background-color: #fff;
+}
+
+#tab-sheets span, #tab-config span {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+#tab-config span {
+    font-size: 20px; 
+}
+
+#tab-config {
+    flex: 0 0 60px;
+}
+
+/* Contenido (Sin Cambios) */
+.content-view {
+    padding: 16px;
+}
+
+.content-view:not(.active) {
+    display: none;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Lista de Hojas */
 .sheet-list {
     list-style: none;
     padding: 0;
     margin: 0;
 }
 
-.sheet-card {
-    background: white;
-    border-radius: 4px;
-    padding: 12px 15px;
-    margin-bottom: 8px;
-    box-shadow: 0 1.6px 3.6px 0 rgba(0,0,0,0.132), 0 0.3px 0.9px 0 rgba(0,0,0,0.108);
-    cursor: pointer;
-    transition: transform 0.1s, box-shadow 0.1s;
+/* Estilo de Tarjeta/Botón */
+.sheet-item {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    padding: 14px 18px; 
+    margin-bottom: 12px;
+    border: none;
+    border-radius: var(--border-radius-card); 
+    box-shadow: var(--shadow-subtle); 
+    cursor: pointer; 
+    transition: box-shadow 0.2s, opacity 0.1s, transform 0.1s;
+    user-select: none;
     font-weight: 600;
-    font-size: 14px;
-    user-select: none; /* Importante para Drag&Drop */
+    position: relative; 
 }
 
-.sheet-card:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 3.2px 7.2px 0 rgba(0,0,0,0.132), 0 0.6px 1.8px 0 rgba(0,0,0,0.108);
+.sheet-item:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25); 
+    opacity: 0.95; 
+    transform: translateY(-2px); 
 }
 
-/* Indicador de Drag & Drop */
-.sheet-card.drag-over-top {
-    border-top: 3px solid #107c10; /* Verde Excel */
-}
-.sheet-card.drag-over-bottom {
-    border-bottom: 3px solid #107c10;
-}
-.sheet-card.dragging {
-    opacity: 0.4;
+.sheet-item.dragging {
+    opacity: 0.8;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    cursor: grabbing; 
 }
 
-/* --- ESTILOS CONFIGURACIÓN --- */
-.config-item {
-    background: white;
-    padding: 15px;
-    margin-bottom: 10px;
-    border-radius: 4px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.color-indicator { 
+    display: none; 
+} 
+
+.sheet-name {
+    font-size: 15px; 
+    flex-grow: 1;
 }
 
-.config-label {
-    font-size: 14px;
-    color: #323130;
+.dropdown-icon {
+    margin-left: 10px;
+    line-height: 1;
+    font-size: var(--icon-size); 
+    opacity: 0.8;
 }
 
-/* Botones de Acción */
+/* Botones (Ajuste de Iconos) */
 .action-btn {
     width: 100%;
-    padding: 10px;
-    background-color: #0078d4;
-    color: white;
-    border: none;
-    border-radius: 4px;
+    padding: 8px 16px;
+    border: 1px solid transparent;
+    border-radius: 2px;
     cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
     margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px; 
 }
-.action-btn:hover { background-color: #106ebe; }
-.action-btn.danger { background-color: #a80000; }
+.action-btn span {
+    font-size: var(--icon-size);
+}
+.action-btn.secondary {
+    color: var(--text-color);
+}
 
-/* Consola de Debug */
+
+/* Toggles (Configuración) */
+.toggle-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 20px;
+    margin-right: 10px;
+}
+
+.switch input { 
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 14px;
+    width: 14px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: .4s;
+}
+
+input:checked + .slider {
+    background-color: var(--primary-color);
+}
+
+input:checked + .slider:before {
+    transform: translateX(20px);
+}
+
+.slider.round {
+    border-radius: 20px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+/* Debug Area */
 #debug-output {
     width: 100%;
     height: 150px;
+    margin-top: 10px;
     font-family: monospace;
     font-size: 11px;
-    margin-top: 10px;
-    border: 1px solid #ccc;
+    border: 1px solid var(--border-color);
+    resize: vertical;
+    background: #ffffff; 
+}
+
+.loading-state {
+    text-align: center;
+    color: #605e5c;
+    font-style: italic;
+    margin-top: 20px;
+    min-height: 50px;
+}
+
+/* Efecto Overlay de Carga */
+.loading-active {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+/* UX: INDICADORES DE DROP MÁS VISIBLES */
+.sheet-item.drop-target-top::before,
+.sheet-item.drop-target-bottom::after {
+    content: '';
+    position: absolute;
+    left: -16px; 
+    right: -16px;
+    height: 4px; 
+    background-color: var(--primary-color);
+    transition: transform 0.1s ease;
+    z-index: 10;
+    box-shadow: 0 0 5px rgba(16, 124, 16, 0.5); 
+}
+
+/* Drop Antes del Elemento */
+.sheet-item.drop-target-top::before {
+    top: -4px;
+}
+
+/* Drop Después del Elemento */
+.sheet-item.drop-target-bottom::after {
+    bottom: -4px;
+}
+
+.sheet-item.over {
+    box-shadow: none; 
 }
