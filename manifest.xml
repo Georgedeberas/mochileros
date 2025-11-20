@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <OfficeApp xsi:type="TaskPaneApp" xmlns="http://schemas.microsoft.com/office/appforoffice/1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bt="http://schemas.microsoft.com/office/officeappbasictypes/1.0" xmlns:ov="http://schemas.microsoft.com/office/taskpaneappversionoverrides" xmlns:m="http://schemas.microsoft.com/office/officeappbasictypes/1.0">
-  <Id>4873f902-8261-4227-935e-789012345678</Id>
+  <Id>5c83f902-8261-4227-935e-111122223333</Id>
   <Version>1.0.0.0</Version>
-  <ProviderName>Microsoft</ProviderName>
-  <DefaultLocale>en-US</DefaultLocale>
+  <ProviderName>Mochileros RD</ProviderName>
+  <DefaultLocale>es-ES</DefaultLocale>
   <DisplayName DefaultValue="Mochileros RD" />
-  <Description DefaultValue="Mochileros RD TaskPane" />
+  <Description DefaultValue="Panel de Mochileros" />
   
   <IconUrl DefaultValue="https://officedev.github.io/Office-Add-in-TaskPane-JS/assets/icon-32.png" />
   <HighResolutionIconUrl DefaultValue="https://officedev.github.io/Office-Add-in-TaskPane-JS/assets/icon-64.png" />
@@ -30,8 +30,8 @@
       <Host xsi:type="Workbook">
         <DesktopFormFactor>
           <ExtensionPoint xsi:type="PrimaryCommandSurface">
-            <CustomTab id="Contoso.Tab1">
-              <Group id="Contoso.Group1">
+            <OfficeTab id="TabHome">
+              <Group id="MochilerosGroup">
                 <Label residue="groupLabel" />
                 <Icon>
                   <bt:Image size="16" residue="icon16" />
@@ -50,13 +50,12 @@
                     <bt:Image size="80" residue="icon80" />
                   </Icon>
                   <Action xsi:type="ShowTaskpane">
-                    <TaskpaneId>ButtonId1</TaskpaneId>
+                    <TaskpaneId>MochilerosPane</TaskpaneId>
                     <SourceLocation residue="taskpaneUrl" />
                   </Action>
                 </Control>
               </Group>
-              <Label residue="customTabLabel" />
-            </CustomTab>
+            </OfficeTab>
           </ExtensionPoint>
         </DesktopFormFactor>
       </Host>
@@ -71,12 +70,11 @@
         <bt:Url id="taskpaneUrl" DefaultValue="https://georgedeberas.github.io/mochileros/index.html" />
       </bt:Urls>
       <bt:ShortStrings>
-        <bt:String id="groupLabel" DefaultValue="Mochileros" />
-        <bt:String id="customTabLabel" DefaultValue="Mochileros RD" />
-        <bt:String id="taskpaneButtonLabel" DefaultValue="Tours" />
+        <bt:String id="groupLabel" DefaultValue="Mochileros App" />
+        <bt:String id="taskpaneButtonLabel" DefaultValue="Abrir Mochileros" />
       </bt:ShortStrings>
       <bt:LongStrings>
-        <bt:String id="taskpaneButtonDesc" DefaultValue="Abre el panel lateral" />
+        <bt:String id="taskpaneButtonDesc" DefaultValue="Abre el panel lateral de Mochileros RD" />
       </bt:LongStrings>
     </Resources>
   </VersionOverrides>
