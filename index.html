@@ -1,61 +1,78 @@
 <!DOCTYPE html>
-<html lang="es">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mochileros RD</title>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Panel de Contabilidad</title>
+    
+    <link rel="stylesheet" href="styles.css" />
+
     <script type="text/javascript" src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
-    <link href="styles.css" rel="stylesheet" type="text/css" />
 </head>
-<body class="ms-font-m">
-
-    <div id="page-tours" class="page-section">
-        <h2>Gestión de Tours</h2>
-        <p>Panel en construcción...</p>
-    </div>
-
-    <div id="page-accounting" class="page-section">
-        <h2>Contabilidad (Hojas)</h2>
-        <div id="sheet-list-container">
-            <p>Cargando hojas...</p>
-            <ul id="sheet-list" class="sheet-list"></ul>
-        </div>
-    </div>
-
-    <div id="page-settings" class="page-section">
-        <h2>Configuración</h2>
+<body>
+    <div id="app-container">
         
-        <div class="config-item">
-            <span class="config-label">Reordenamiento Automático</span>
-            <input type="checkbox" id="toggle-reorder" checked>
+        <nav class="top-nav">
+            <div class="nav-item active" id="tab-sheets" onclick="switchTab('sheets')">
+                <span>🗂️ Contabilidad</span>
+            </div>
+            <div class="nav-item" id="tab-config" onclick="switchTab('config')">
+                <span>⚙️</span>
+            </div>
+        </nav>
+
+        <div id="global-status-bar" class="status-success">✅ Listo.</div>
+
+        <div id="view-sheets" class="content-view active">
+            <ul id="sheet-list" class="sheet-list">
+                <li class="loading-state">⏳ Cargando hojas de Excel...</li>
+            </ul>
+            <button id="btn-refresh" class="action-btn secondary">🔄 Actualizar Lista</button>
         </div>
 
-        <div class="config-item">
-            <span class="config-label">Mostrar Encabezados (A,B,C...)</span>
-            <input type="checkbox" id="toggle-headings">
+        <div id="view-config" class="content-view hidden">
+            <div class="config-section">
+                <h3>General</h3>
+                
+                <div class="toggle-row">
+                    <label class="switch">
+                        <input type="checkbox" id="toggle-auto-reorder">
+                        <span class="slider round"></span>
+                    </label>
+                    <span>Reordenamiento Automático</span>
+                </div>
+
+                <div class="toggle-row">
+                    <label class="switch">
+                        <input type="checkbox" id="toggle-headers">
+                        <span class="slider round"></span>
+                    </label>
+                    <span>Mostrar Encabezados</span>
+                </div>
+            </div>
+
+            <div class="config-section">
+                <h3>Diagnóstico y Logs</h3>
+                
+                <div class="toggle-row">
+                    <label class="switch">
+                        <input type="checkbox" id="toggle-clear-on-load">
+                        <span class="slider round"></span>
+                    </label>
+                    <span>Limpiar Consola al Iniciar</span>
+                </div>
+                
+                <button id="btn-clear-console-manual" class="action-btn secondary">🧹 Limpiar Logs Ahora</button>
+
+                <p class="info-info">Usa Volcar Datos si el Arquitecto solicita el estado del entorno.</p>
+                <button id="btn-debug-dump" class="action-btn primary">💾 Volcar Datos de Depuración</button>
+                <textarea id="debug-output" readonly placeholder="El resultado aparecerá aquí..."></textarea>
+                <button id="btn-copy-debug" class="action-btn secondary hidden">📋 Copiar al Portapapeles</button>
+            </div>
         </div>
 
-        <div class="config-item">
-            <span class="config-label">Limpiar Consola al Iniciar</span>
-            <input type="checkbox" id="toggle-clear-console" checked>
-        </div>
-
-        <button id="btn-clear-console" class="action-btn">Limpiar Logs Ahora</button>
-        <button id="btn-debug-dump" class="action-btn danger">Volcar Datos Depuración</button>
-        
-        <textarea id="debug-output" placeholder="Logs del sistema..."></textarea>
     </div>
-
-    <div id="page-manual" class="page-section">
-        <h2>Manual de Usuario</h2>
-        <p>Documentación pendiente.</p>
-    </div>
-
-    <div style="position:fixed; bottom:0; width:100%; background:#eee; padding:5px; font-size:10px; border-top:1px solid #ccc;">
-        Status: <span id="status-msg">Listo</span>
-    </div>
-
     <script type="text/javascript" src="taskpane.js"></script>
 </body>
 </html>
